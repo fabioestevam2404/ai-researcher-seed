@@ -14,9 +14,11 @@ O histórico de commits também é material — cada fase é uma tag Git, e o `g
 
 ## Estado atual do repositório
 
-O Bloco 0 (fundação) ainda não foi concluído: não existem `package.json`, `apps/`, `packages/`, `infra/`, `evals/` nem `scripts/`. O que existe hoje é `docs/` (plano e tarefas), `.claude/` (este arquivo e as skills próprias), `.agents/skills/` (skills oficiais do Angular, instaladas via `npx skills add`) e `skills-lock.json`.
+O Bloco 0 (fundação) está em andamento. Já existem: monorepo pnpm workspaces + Turborepo (`package.json`, `pnpm-workspace.yaml`, `turbo.json`), tooling (`tsconfig.base.json`, `eslint.config.js`, `.prettierrc.json`, `.editorconfig`) e o primeiro pacote real, `packages/contracts` (schema zod de `/health`). `pnpm install`, `pnpm build`, `pnpm test` e `pnpm lint` já rodam verdes.
 
-O restante deste arquivo — Stack, Estrutura, Comandos — descreve o **estado-alvo** do projeto, não o estado atual. Antes de rodar um comando `pnpm` listado abaixo, confirme que o workspace já foi inicializado.
+Ainda não existem `apps/`, `packages/agent`, `packages/mcp-server`, `packages/corpus`, `infra/`, `evals/` nem `scripts/` — cada um nasce no seu próprio bloco (ver `docs/hero-project-tarefas.md`): `apps/api` e `apps/web` no Bloco C, `packages/agent` no D, `packages/mcp-server` no E, `packages/corpus` no B, `docker-compose.yml`/`Dockerfile` também no C.
+
+O restante deste arquivo — Stack, Estrutura, Comandos — descreve o **estado-alvo** completo do projeto, não o estado atual. `pnpm dev` já existe como script (delega para `turbo run dev`), mas não há nenhum pacote com tarefa `dev` ainda — só terá efeito a partir do Bloco C. `pnpm collect`, `pnpm seed` e `pnpm capstone:check` nem existem como script ainda; cada um é adicionado quando o bloco que o implementa chega (B.3, D.2, C.7/H.3, respectivamente).
 
 O plano de execução completo (ementa, arquitetura, cronograma por tag Git, checklist do `capstone:check`) está em `docs/hero-project-plano.md`. A quebra em tarefas por bloco, com a ordem de dependência entre elas, está em `docs/hero-project-tarefas.md` — comece por lá para saber o que fazer a seguir.
 
