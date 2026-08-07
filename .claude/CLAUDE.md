@@ -12,6 +12,16 @@ O histórico de commits também é material — cada fase é uma tag Git, e o `g
 
 ---
 
+## Estado atual do repositório
+
+O Bloco 0 (fundação) ainda não foi concluído: não existem `package.json`, `apps/`, `packages/`, `infra/`, `evals/` nem `scripts/`. O que existe hoje é `docs/` (plano e tarefas), `.claude/` (este arquivo e as skills próprias), `.agents/skills/` (skills oficiais do Angular, instaladas via `npx skills add`) e `skills-lock.json`.
+
+O restante deste arquivo — Stack, Estrutura, Comandos — descreve o **estado-alvo** do projeto, não o estado atual. Antes de rodar um comando `pnpm` listado abaixo, confirme que o workspace já foi inicializado.
+
+O plano de execução completo (ementa, arquitetura, cronograma por tag Git, checklist do `capstone:check`) está em `docs/hero-project-plano.md`. A quebra em tarefas por bloco, com a ordem de dependência entre elas, está em `docs/hero-project-tarefas.md` — comece por lá para saber o que fazer a seguir.
+
+---
+
 ## Stack
 
 | Camada | Tecnologia |
