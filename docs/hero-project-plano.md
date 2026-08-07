@@ -46,6 +46,8 @@ Langfuse Cloud · Grafana Cloud
 GitHub Actions ──(Workload Identity Federation)──► deploy
 ```
 
+**Ambiente local:** `docker-compose.yml` sobe um Postgres com `pgvector` local e efêmero — o Cloud SQL do diagrama acima é exclusivo de produção. Vertex AI e a busca web continuam sendo chamadas reais a partir do ambiente local, com as credenciais do próprio aluno; não há emulador para esses dois.
+
 **Modelos:** apenas versões estáveis, nunca preview — modelo em preview é descontinuado com duas semanas de aviso, o que inviabilizaria material gravado. Um modelo por papel, definido por variável de ambiente: o nó `grade` roda alto volume e classificação simples, o nó `answer` exige qualidade de citação. A diferença de custo entre os dois aparece no trace do Langfuse e é conteúdo da Unidade 5.
 
 **Padrão do agente:** Corrective RAG como grafo explícito em LangGraph.js.

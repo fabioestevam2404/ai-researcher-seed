@@ -74,13 +74,13 @@ Zero IA. O objetivo é a esteira funcionando ponta a ponta.
 |---|---|---|
 | C.1 | `apps/api` Fastify com `GET /health` | Responde local |
 | C.2 | `apps/web` Angular 22 criado com a skill oficial `angular-new-app`, consumindo `/health` | Mostra o status na tela |
-| C.3 | Dockerfile multi-stage + `docker compose up` local | Mesma imagem que vai para produção |
+| C.3 | Dockerfile multi-stage + `docker-compose.yml` (postgres/pgvector local, api, web) | `docker compose up` sobe tudo local; Postgres do compose é efêmero e nunca é o Cloud SQL |
 | C.4 | GitHub Actions: test → build → push → deploy Cloud Run | Push em `main` chega à URL pública |
 | C.5 | Deploy do Angular no Firebase Hosting pelo mesmo workflow | Front e API no ar |
 | C.6 | Conexão Cloud Run ↔ Cloud SQL validada | `/health` inclui checagem de banco |
 | C.7 | `capstone:check` v0 — itens 1, 2, 3 | CLI roda e emite bloco Markdown |
 
-**~8h** · Tag `v1`
+**~8h** · Tag `v1` · O Postgres do `docker-compose` é local — o Cloud SQL do Bloco A só passa a ser usado a partir de C.6, na validação do deploy real.
 
 ---
 
@@ -102,7 +102,7 @@ Metade do esforço técnico do projeto.
 | D.10 | Streaming SSE em `POST /chat` | Sem buffering no Cloud Run |
 | D.11 | **Passada limpa** — reescrever o grafo em commits legíveis | `git log` conta a história na ordem certa |
 
-**~20h** · Tag `v2`
+**~20h** · Tag `v2` · D.1 e D.2 devem rodar sem alteração contra o Postgres local do `docker-compose` e contra o Cloud SQL — a única diferença é o valor de `DATABASE_URL`.
 
 ---
 
