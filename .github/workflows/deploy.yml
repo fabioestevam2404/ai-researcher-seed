@@ -52,10 +52,12 @@ jobs:
 
       - name: Build e push da imagem da API
         run: |
-          gcloud builds submit . \
-            --config=infra/docker/cloudbuild-api.yaml \
-            --substitutions=_IMAGE=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/api:${{ github.sha }} \
-            --project=${{ env.PROJECT_ID }}
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+          docker build \
+            -f infra/docker/api.Dockerfile \
+            -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/api:${{ github.sha }} \
+            .
+          docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/api:${{ github.sha }}
 
       - name: Deploy no Cloud Run
         uses: google-github-actions/deploy-cloudrun@v3
