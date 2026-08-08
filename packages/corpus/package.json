@@ -1,0 +1,19 @@
+{
+  "name": "@hero/corpus",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "collect": "tsx src/collect/run.ts",
+    "report": "tsx src/collect/report.ts",
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "adm-zip": "0.6.0"
+  },
+  "devDependencies": {
+    "@types/adm-zip": "0.5.8"
+  }
+}

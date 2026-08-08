@@ -12,14 +12,17 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "test": "turbo run test",
-    "lint": "turbo run lint && prettier --check ."
+    "lint": "turbo run lint && prettier --check .",
+    "collect": "pnpm --filter @hero/corpus run collect"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@types/node": "24.13.3",
     "eslint": "10.8.1",
     "eslint-config-prettier": "10.1.8",
     "globals": "17.9.0",
     "prettier": "3.9.6",
+    "tsx": "4.23.11",
     "turbo": "2.10.9",
     "typescript": "5.9.3",
     "typescript-eslint": "8.66.0",
