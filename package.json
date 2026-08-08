@@ -13,7 +13,8 @@
     "build": "turbo run build",
     "test": "turbo run test",
     "lint": "turbo run lint && prettier --check .",
-    "collect": "pnpm --filter @hero/corpus run collect"
+    "collect": "pnpm --filter @hero/corpus run collect",
+    "capstone:check": "tsx scripts/capstone-check.ts"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
