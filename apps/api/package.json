@@ -12,6 +12,10 @@
   },
   "dependencies": {
     "@hero/contracts": "workspace:*",
-    "fastify": "5.11.2"
+    "fastify": "5.11.2",
+    "pg": "8.22.0"
+  },
+  "devDependencies": {
+    "@types/pg": "8.21.0"
   }
 }

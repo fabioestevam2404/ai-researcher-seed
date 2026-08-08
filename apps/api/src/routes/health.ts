@@ -1,9 +1,18 @@
 import type { FastifyPluginAsync } from 'fastify';
 import { healthResponseSchema } from '@hero/contracts';
 
-const healthRoute: FastifyPluginAsync = async (app) => {
+export interface HealthRouteOptions {
+  checkDatabase: () => Promise<boolean>;
+}
+
+const healthRoute: FastifyPluginAsync<HealthRouteOptions> = async (app, { checkDatabase }) => {
   app.get('/health', async () => {
-    return healthResponseSchema.parse({ status: 'ok', database: 'ok' });
+    const databaseOk = await checkDatabase();
+
+    return healthResponseSchema.parse({
+      status: databaseOk ? 'ok' : 'degraded',
+      database: databaseOk ? 'ok' : 'error',
+    });
   });
 };
 
