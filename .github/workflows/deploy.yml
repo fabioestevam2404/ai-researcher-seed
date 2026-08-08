@@ -70,7 +70,7 @@ jobs:
           flags: --add-cloudsql-instances=${{ env.PROJECT_ID }}:${{ env.REGION }}:ai-researcher-db
 
       - name: Build do Angular
-        run: pnpm --filter @hero/web build
+        run: pnpm turbo run build --filter=@hero/web
 
       - name: Deploy no Firebase Hosting
         run: npx firebase-tools deploy --only hosting --project ${{ env.PROJECT_ID }} --non-interactive
