@@ -29,6 +29,18 @@ workload_identity_provider: projects/473939301392/locations/global/workloadIdent
 service_account: github-actions-deployer@ai-researcher-capstone.iam.gserviceaccount.com
 ```
 
+## Bloco C — Deploy Zero
+
+Primeiro deploy real (`v1`) rodou verde ponta a ponta em `2026-08-08`: `apps/api` no Cloud Run (`ai-researcher-api`, `us-central1`) e `apps/web` no Firebase Hosting, via `.github/workflows/deploy.yml` autenticado por WIF.
+
+Três problemas só apareceram rodando o workflow de verdade contra produção (não em teoria) — os três documentados nos commits do Bloco C:
+
+1. O bucket de staging padrão do Cloud Build (`gs://ai-researcher-capstone_cloudbuild`, criado com ACL legada na primeira vez que rodei `gcloud builds submit` manualmente no A.2) recusava acesso da service account de deploy mesmo depois de IAM binding no bucket e `serviceusage.serviceUsageConsumer` no projeto. Resolvido trocando a etapa de build por `docker build` + `docker push` direto no runner do GitHub Actions, sem depender do Cloud Build.
+2. A service account **de execução** do Cloud Run (`473939301392-compute@developer.gserviceaccount.com`, a padrão do Compute — diferente da service account *de deploy*) precisou de `secretmanager.secretAccessor` no secret `database-url` pra conseguir ler o próprio segredo em runtime.
+3. `pnpm --filter @hero/web build` no job de deploy pulava o Turborepo e nunca buildava `@hero/contracts` primeiro — corrigido usando `pnpm turbo run build --filter=@hero/web`, que respeita `dependsOn: ["^build"]`.
+
+**Pendência conhecida, decisão deliberada:** o Cloud Run **não está público** — `gcloud run services add-iam-policy-binding ... --member=allUsers --role=roles/run.invoker` foi proposto e recusado (a exposição pra internet inteira merece confirmação explícita, não só seguir o plano). Efeito prático: `/api/health` responde 403 tanto direto no Cloud Run quanto via rewrite do Firebase Hosting; `capstone:check` item 1 falha até isso ser decidido. Rodar o comando acima quando a decisão for tomada — nada mais no pipeline depende disso.
+
 ## A.7 — Cronometragem
 
 Tempo do zero (conta com billing já configurado, mas máquina limpa — sem `gcloud`, sem `psql`, sem componente `cloud-sql-proxy`) até A.6 concluído: **~30 minutos**.
