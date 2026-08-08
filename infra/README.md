@@ -39,7 +39,7 @@ Três problemas só apareceram rodando o workflow de verdade contra produção (
 2. A service account **de execução** do Cloud Run (`473939301392-compute@developer.gserviceaccount.com`, a padrão do Compute — diferente da service account *de deploy*) precisou de `secretmanager.secretAccessor` no secret `database-url` pra conseguir ler o próprio segredo em runtime.
 3. `pnpm --filter @hero/web build` no job de deploy pulava o Turborepo e nunca buildava `@hero/contracts` primeiro — corrigido usando `pnpm turbo run build --filter=@hero/web`, que respeita `dependsOn: ["^build"]`.
 
-**Pendência conhecida, decisão deliberada:** o Cloud Run **não está público** — `gcloud run services add-iam-policy-binding ... --member=allUsers --role=roles/run.invoker` foi proposto e recusado (a exposição pra internet inteira merece confirmação explícita, não só seguir o plano). Efeito prático: `/api/health` responde 403 tanto direto no Cloud Run quanto via rewrite do Firebase Hosting; `capstone:check` item 1 falha até isso ser decidido. Rodar o comando acima quando a decisão for tomada — nada mais no pipeline depende disso.
+**Cloud Run público:** liberado via `gcloud run services add-iam-policy-binding ai-researcher-api --region=us-central1 --member=allUsers --role=roles/run.invoker` em `2026-08-08`, depois de confirmar explicitamente — é exposição real pra internet inteira, não algo pra seguir o plano sem checar. Risco aceito nesse estágio porque a única rota é `/api/health` (barata, sem custo de LLM); rate limiting e alerta de abuso entram no Bloco G, antes do `/chat` (Bloco D) trazer custo de verdade por requisição. `pnpm capstone:check --url https://ai-researcher-capstone.web.app` confirma 3/3.
 
 ## A.7 — Cronometragem
 
