@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { baixarEDescompactar } from './fetch-cvm.js';
+import { ArquivoCvmNaoEncontradoError, baixarEDescompactar } from './fetch-cvm.js';
 import { parseCsvCvm } from './parse-csv.js';
 import { nomeArquivoCsv, urlZipCvm, type TipoDocumento } from './cvm-urls.js';
 import type { Empresa, LinhaCvm, PeriodoColetado, ValorConta } from '../types.js';
@@ -63,13 +63,41 @@ function agruparPorEmpresa(linhas: LinhaCvm[]): Map<string, LinhaCvm[]> {
   return porEmpresa;
 }
 
+function demonstrativosVazios(): DemonstrativosAno {
+  return {
+    bpaCon: new Map(),
+    bpaInd: new Map(),
+    bppCon: new Map(),
+    bppInd: new Map(),
+    dreCon: new Map(),
+    dreInd: new Map(),
+    dfcCon: new Map(),
+    dfcInd: new Map(),
+  };
+}
+
 function carregarDemonstrativos(tipo: TipoDocumento, ano: number): Promise<DemonstrativosAno> {
   const chave = `${tipo}_${ano}`;
   const existente = cacheDemonstrativos.get(chave);
   if (existente) return existente;
 
   const promessa = (async () => {
-    const dir = await baixarEDescompactar(tipo, ano);
+    let dir: string;
+    try {
+      dir = await baixarEDescompactar(tipo, ano);
+    } catch (erro) {
+      // A CVM ainda não publicou o ZIP desse (tipo, ano) — ex.: DFP do ano corrente antes do
+      // prazo de entrega. Não derruba a coleta inteira: volta demonstrativos vazios, que fazem
+      // `demonstrativosDaEmpresa` devolver undefined pra toda empresa nesse trimestre, e
+      // `coletarUltimosTrimestres` já sabe ignorar um trimestre sem cobertura e seguir pro
+      // próximo candidato.
+      if (erro instanceof ArquivoCvmNaoEncontradoError) {
+        console.warn(`${erro.message} — ignorando ${tipo} ${ano}, sigo com os dados disponíveis.`);
+        return demonstrativosVazios();
+      }
+      throw erro;
+    }
+
     const carregar = (demonstrativo: string) =>
       agruparPorEmpresa(parseCsvCvm(path.join(dir, nomeArquivoCsv(tipo, demonstrativo, ano))));
 
