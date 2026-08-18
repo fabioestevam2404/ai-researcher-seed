@@ -2,13 +2,15 @@
 
 Recursos GCP provisionados no Bloco A, fora do controle de versão (não há Terraform/IaC ainda — isso é conteúdo de bloco futuro, se entrar no escopo). Este arquivo documenta o que existe e como foi criado, para reprodução manual.
 
+**`ai-researcher-capstone` nas tabelas abaixo é o projeto da instância de referência do curso — troque pelo id do seu próprio projeto em todo lugar.** Nenhum nome de recurso (`ai-researcher-db`, repo `ai-researcher`, service account `github-actions-deployer`, etc.) precisa mudar — são convenções deste projeto, não específicas de uma conta. Só o **project id**, o **número do projeto** (usado no caminho do Workload Identity Provider) e a **billing account** são específicos da sua conta. Ver "Configuração do GitHub Actions" abaixo pra saber onde esses três valores entram — nenhum é hardcoded em `deploy.yml`.
+
 ## Recursos criados
 
 | Recurso | Valor |
 |---|---|
-| Projeto GCP | `ai-researcher-capstone` |
+| Projeto GCP | `ai-researcher-capstone` (troque pelo seu — ver nota acima) |
 | Região padrão | `us-central1` (escolhida pela cobertura de modelos Gemini estáveis no Vertex AI; `southamerica-east1` tem cobertura mais restrita) |
-| Billing account | `<billing-account-do-aluno>` |
+| Billing account | específica da sua conta GCP — `gcloud billing accounts list` |
 | Artifact Registry | repo Docker `ai-researcher` em `us-central1` |
 | Cloud SQL | instância `ai-researcher-db`, Postgres 16, tier `db-f1-micro` (menor tier suportado em Postgres via edição Enterprise), zonal, sem backup automático, IP público |
 | Banco | `ai_researcher`, extensão `vector` (pgvector 0.8.1) habilitada |
@@ -20,14 +22,25 @@ Recursos GCP provisionados no Bloco A, fora do controle de versão (não há Ter
 
 Nenhuma credencial foi escrita em arquivo local ou versionado — a senha do `app_user` e a connection string só existem no Secret Manager.
 
-## Para o workflow do GitHub Actions (Bloco C.4)
+## Configuração do GitHub Actions (Bloco C.4)
 
-O `google-github-actions/auth` action vai precisar de:
+`deploy.yml` não hardcoda projeto, provider do WIF nem service account — lê tudo de **variáveis de repositório** (Settings → Secrets and variables → Actions → **Variables**, não Secrets — nenhum dos três é segredo, são identificadores). Configure com `gh variable set` (ou pela UI) antes do primeiro push que dispare o job `deploy`:
 
-```yaml
-workload_identity_provider: projects/473939301392/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider
-service_account: github-actions-deployer@ai-researcher-capstone.iam.gserviceaccount.com
+```bash
+gh variable set GCP_PROJECT_ID --body "<seu-project-id>"
+
+# Caminho completo do provider — pegue com:
+#   gcloud iam workload-identity-pools providers describe github-actions-provider \
+#     --location=global --workload-identity-pool=github-actions-pool --project=<seu-project-id> \
+#     --format="value(name)"
+gh variable set GCP_WIF_PROVIDER --body "projects/<numero-do-projeto>/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider"
+
+gh variable set GCP_DEPLOY_SERVICE_ACCOUNT --body "github-actions-deployer@<seu-project-id>.iam.gserviceaccount.com"
 ```
+
+Note que o caminho do provider usa o **número** do projeto (ex.: `473939301392`), não o project id — são coisas diferentes; `gcloud projects describe <seu-project-id> --format="value(projectNumber)"` devolve o número.
+
+`.firebaserc` também precisa do seu project id (`"default": "<seu-project-id>"`) — é lido pelo Firebase CLI localmente; o `deploy.yml` já passa `--project` explícito e não depende dele.
 
 ## Bloco C — Deploy Zero
 

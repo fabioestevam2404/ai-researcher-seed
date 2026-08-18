@@ -6,7 +6,10 @@ on:
   pull_request:
 
 env:
-  PROJECT_ID: ai-researcher-capstone
+  # Variáveis de repositório (Settings → Secrets and variables → Actions → Variables),
+  # não segredo — configuradas por quem faz fork do projeto pra própria conta GCP.
+  # Ver infra/README.md.
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
   REGION: us-central1
   ARTIFACT_REPO: ai-researcher
   CLOUD_RUN_SERVICE: ai-researcher-api
@@ -45,8 +48,8 @@ jobs:
       - id: auth
         uses: google-github-actions/auth@v3
         with:
-          workload_identity_provider: projects/473939301392/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider
-          service_account: github-actions-deployer@ai-researcher-capstone.iam.gserviceaccount.com
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SERVICE_ACCOUNT }}
 
       - uses: google-github-actions/setup-gcloud@v3
 
