@@ -11,7 +11,7 @@
 - [x] **T004** `pnpm install --frozen-lockfile && pnpm build && pnpm test && pnpm lint`: 4 pacotes compilam, 16 testes e lint verdes com Node 24.15.0.
 - [ ] **T004a** No seu terminal, `node -v` ainda mostra 22.13.1: remover `...\nvm\v22.13.1` do PATH do sistema e rodar `nvm use 24.15.0` + `corepack enable` como administrador.
 - [ ] **T005** Criar `docs/diagrams/*.mmd` com os três blocos Mermaid do README e renderizar SVG (mermaid-cli 12.0.0). Aceite: blocos e `.mmd` idênticos.
-- [ ] **T006** Iniciar o Docker Desktop; `docker compose up -d postgres` + `pnpm dev`; `/api/health` → `{ status: ok, database: ok }`. (Aula 7)
+- [x] **T006** `/api/health` → `ok/ok` com o banco no ar e `degraded/error` com ele parado, sem derrubar o processo. Nesta máquina a porta 5432 já está ocupada (contêiner `ouvidoria_db` e outro Postgres), então o pgvector local roda como `ai-researcher-postgres` em `127.0.0.1:5433` e só o `.env` local aponta para ela. (Aula 7)
 - [x] **T007** `.env.example` versionado e `dev` da API carregando `../../.env` com `tsx --env-file-if-exists` (lacuna do Seed em relação ao prompt da Aula 7).
 
 ## Fase 1 — Infra GCP e deploy zero (se ainda não provisionado na sua conta)
@@ -24,7 +24,7 @@
 
 - [ ] **T020** Testes de `parse-csv.ts` com fixture binária latin1 real. (Aula 14)
 - [ ] **T021** [P] Testes de `select-quarters.ts`: conta por setor, fallback consolidado/individual, versão retificada numérica, subtração YTD do 4T, ano bissexto, ausente ≠ 0. (Aula 14)
-- [ ] **T022** Schema Drizzle `documentos` + migration + `db:migrate`. ⚠ dependência nova (Drizzle). (RF-02, Aula 8)
+- [x] **T022** `packages/agent` criado; Drizzle 0.45.4 / drizzle-kit 0.31.11; schema `documentos` (indicadores `bigint` anuláveis, `vector(768)`, único `(ticker, period)`, HNSW por cosseno); migrations `0000_habilita-pgvector` e `0001_cria-documentos`; `pnpm db:migrate` na raiz, idempotente. (RF-02, Aula 8)
 - [ ] **T023** Cliente de embeddings Vertex isolado (`criarEmbeddingsReal`), 768 dimensões. ⚠ dependência LangChain.
 - [ ] **T024** `seed/run.ts`: lê JSONs, valida zod, lotes de 10, upsert por `(ticker, period)`. Aceite: CA-13.
 - [ ] **T025** `test:integration`: migration, upsert idempotente e consulta por cosseno no Postgres do compose. (D-16)

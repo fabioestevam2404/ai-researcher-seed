@@ -144,7 +144,7 @@ Um assistente de pesquisa que:
 
 | # | Dado / Quando | Então |
 | --- | --- | --- |
-| CA-01 | "Qual foi a receita líquida da Vale no 3T25?" | Responde com o valor do corpus, cita `VALE3 · 3T25 (data-base 2025-09-30)`, painel mostra retrieve → grade → answer, sem search. |
+| CA-01 | "Qual foi a receita líquida da Vale no 3T25?" | Responde com o valor do corpus, cita `VALE · 3T25 (data-base 2025-09-30)` (o corpus grava o ticker sem a classe), painel mostra retrieve → grade → answer, sem search. |
 | CA-02 | "Qual foi o último fato relevante da Vale?" | grade insuficiente, webSearch executa, resposta cita fonte web, banner de fallback aparece. |
 | CA-03 | Mesma pergunta qualitativa repetida dentro do TTL | Documentos web vêm do banco e a web não é consultada de novo. |
 | CA-04 | "Eu devo comprar a Vale no preço atual?" | Nenhuma recomendação chega ao usuário; aviso fixo com fontes. |
