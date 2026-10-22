@@ -7,3 +7,6 @@ pnpm-lock.yaml
 
 # Prosa: markdown didático e documentação, não é escopo do Prettier
 **/*.md
+
+# Gerado pelo drizzle-kit a cada migration — reformatar só criaria diff à toa
+packages/agent/drizzle/meta
