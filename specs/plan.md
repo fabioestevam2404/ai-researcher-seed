@@ -12,6 +12,18 @@
 | Lacunas do Seed | Sem `.env.example` e o `dev` da API não carrega `.env` (pedido no prompt da Aula 7). `.firebaserc` com `SEU_PROJECT_ID_AQUI`. O `infra/README.md` e o CLAUDE.md descrevem a infra GCP do autor do curso, não a sua. |
 | Toolchain local | Git 2.56, Node 24.13, Docker 29.2 (Desktop parado). pnpm via `corepack pnpm` (o `corepack enable` falhou com EPERM no sandbox; rode-o no seu terminal). **Faltam** `gcloud` e `gh`. |
 
+### Infra GCP desta instância (Fase 1)
+
+| Recurso | Valor |
+| --- | --- |
+| Projeto | `ai-researcher-fabio` (número `862472634940`), billing `01D94C-0D71D8-C7CEA1` |
+| APIs | Cloud Run, Artifact Registry, Secret Manager, IAM Credentials, STS, Vertex AI. **Cloud SQL Admin adiado** junto com a instância. |
+| Vertex AI | `gemini-embedding-001` (768 dim), `gemini-3.5-flash-lite` e `gemini-3.6-flash` verificados em `location=global` |
+| Artifact Registry | repo Docker `ai-researcher`, `us-central1` |
+| WIF | pool `github-actions-pool`, provider `github-actions-provider`, condição `assertion.repository=='fabioestevam2404/ai-researcher-seed'` |
+| SA de deploy | `github-actions-deployer@ai-researcher-fabio.iam.gserviceaccount.com`: `run.admin`, `artifactregistry.writer`, `iam.serviceAccountUser`, `secretmanager.secretAccessor`, `firebasehosting.admin`. Sem `cloudbuild.builds.editor` (o Seed builda no runner) e sem `cloudsql.client` até o banco existir. |
+| Cloud SQL | **Adiado por decisão do responsável** (custo fixo). Até lá, o deploy da API em produção não terá banco; `/api/health` responderá `degraded`. |
+
 Correspondência com o plano do autor: Fases 2–4 = Bloco D (`v2`); 5–6 = E (`v3`); 7–8 = F (`v4`); 9 = G (`v5`); 10 = H (`v6`). O `capstone:check` do Seed prevê 12 verificações (o material cita 11).
 
 ## 2. Arquitetura

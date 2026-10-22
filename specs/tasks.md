@@ -16,8 +16,11 @@
 
 ## Fase 1 — Infra GCP e deploy zero (se ainda não provisionado na sua conta)
 
-- [ ] **T010** Instalar `gcloud` e `gh`; dois logins (`gcloud auth login` e `application-default login`).
-- [ ] **T011** Trocar `SEU_PROJECT_ID_AQUI` no `.firebaserc` pelo seu projeto. Provisionar conforme `infra/README.md`, um comando por vez com aprovação: projeto + APIs; Artifact Registry; Cloud SQL Postgres 16 + `vector` + `app_user` com senha aleatória; secret `database-url`; WIF restrita ao **seu** repositório; variáveis do GitHub; Firebase Hosting. (Aula 6)
+- [x] **T010** `gcloud` 590.0.0 instalado; os dois logins feitos (`festevam30@gmail.com`); ADC com quota project. `gh` em instalação.
+- [x] **T011a** `.firebaserc` → `ai-researcher-fabio`; projeto + billing + APIs; Vertex AI verificado; Artifact Registry; WIF + SA de deploy (valores no plan.md §1). (Aula 6)
+- [ ] **T011b** Variáveis do GitHub (`GCP_PROJECT_ID`, `GCP_WIF_PROVIDER`, `GCP_DEPLOY_SERVICE_ACCOUNT`) via `gh` após `gh auth login`.
+- [ ] **T011c** Firebase Hosting: `firebase login` (interativo) + adicionar Firebase ao projeto + criar o site.
+- [ ] **T011d** Cloud SQL Postgres 16 + `vector` + `app_user` com senha aleatória + secret `database-url` + `cloudsql.client` na SA e `secretAccessor` na SA de execução. **Adiado** por decisão do responsável.
 - [ ] **T012** Primeiro push na `main`; liberar `/api/health` com `allUsers` → `run.invoker` após confirmação explícita. Aceite: produção `ok/ok`; `capstone:check` 3/11. Tag `v1`. (Aula 7)
 
 ## Fase 2 — Corpus e base vetorial
