@@ -8,11 +8,11 @@
 - [x] **T001** pnpm 11.20.0 disponível via `corepack pnpm`. Pendente para você: `corepack enable` no seu terminal (no sandbox deu EPERM).
 - [x] **T002** Seed importado com histórico; `origin` aponta para o seu repositório; README e `specs/` preservados.
 - [x] **T003** CLAUDE.md, skills, tarefas do autor e workflow lidos; divergências registradas no plan.md §1.
-- [ ] **T004** `pnpm install --frozen-lockfile && pnpm build && pnpm test && pnpm lint`. Parcial: tudo verde exceto `@hero/web`, bloqueado por **T004a**.
-- [ ] **T004a** Atualizar Node para ≥ 24.15 (exigência do Angular CLI) e repetir a T004.
+- [x] **T004** `pnpm install --frozen-lockfile && pnpm build && pnpm test && pnpm lint`: 4 pacotes compilam, 16 testes e lint verdes com Node 24.15.0.
+- [ ] **T004a** No seu terminal, `node -v` ainda mostra 22.13.1: remover `...\nvm\v22.13.1` do PATH do sistema e rodar `nvm use 24.15.0` + `corepack enable` como administrador.
 - [ ] **T005** Criar `docs/diagrams/*.mmd` com os três blocos Mermaid do README e renderizar SVG (mermaid-cli 12.0.0). Aceite: blocos e `.mmd` idênticos.
 - [ ] **T006** Iniciar o Docker Desktop; `docker compose up -d postgres` + `pnpm dev`; `/api/health` → `{ status: ok, database: ok }`. (Aula 7)
-- [ ] **T007** `.env.example` versionado e `dev` da API carregando `../../.env` com `tsx --env-file-if-exists` (lacuna do Seed em relação ao prompt da Aula 7).
+- [x] **T007** `.env.example` versionado e `dev` da API carregando `../../.env` com `tsx --env-file-if-exists` (lacuna do Seed em relação ao prompt da Aula 7).
 
 ## Fase 1 — Infra GCP e deploy zero (se ainda não provisionado na sua conta)
 
