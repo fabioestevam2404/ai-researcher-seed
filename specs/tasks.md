@@ -1,0 +1,117 @@
+# Tarefas — AI Researcher
+
+> Derivadas de [spec.md](spec.md) e [plan.md](plan.md). Cada fase termina com testes verdes e uma tag Git. `[P]` = pode rodar em paralelo com a anterior da mesma fase. Marque `[x]` ao concluir.
+> Regra do Seed: perguntar antes de adicionar dependência, criar abstração, mudar schema, contrato, infra ou mover arquivos.
+
+## Fase 0 — Importação e verificação do Seed (bloqueante)
+
+- [x] **T001** pnpm 11.20.0 disponível via `corepack pnpm`. Pendente para você: `corepack enable` no seu terminal (no sandbox deu EPERM).
+- [x] **T002** Seed importado com histórico; `origin` aponta para o seu repositório; README e `specs/` preservados.
+- [x] **T003** CLAUDE.md, skills, tarefas do autor e workflow lidos; divergências registradas no plan.md §1.
+- [ ] **T004** `pnpm install --frozen-lockfile && pnpm build && pnpm test && pnpm lint`. Parcial: tudo verde exceto `@hero/web`, bloqueado por **T004a**.
+- [ ] **T004a** Atualizar Node para ≥ 24.15 (exigência do Angular CLI) e repetir a T004.
+- [ ] **T005** Criar `docs/diagrams/*.mmd` com os três blocos Mermaid do README e renderizar SVG (mermaid-cli 12.0.0). Aceite: blocos e `.mmd` idênticos.
+- [ ] **T006** Iniciar o Docker Desktop; `docker compose up -d postgres` + `pnpm dev`; `/api/health` → `{ status: ok, database: ok }`. (Aula 7)
+- [ ] **T007** `.env.example` versionado e `dev` da API carregando `../../.env` com `tsx --env-file-if-exists` (lacuna do Seed em relação ao prompt da Aula 7).
+
+## Fase 1 — Infra GCP e deploy zero (se ainda não provisionado na sua conta)
+
+- [ ] **T010** Instalar `gcloud` e `gh`; dois logins (`gcloud auth login` e `application-default login`).
+- [ ] **T011** Trocar `SEU_PROJECT_ID_AQUI` no `.firebaserc` pelo seu projeto. Provisionar conforme `infra/README.md`, um comando por vez com aprovação: projeto + APIs; Artifact Registry; Cloud SQL Postgres 16 + `vector` + `app_user` com senha aleatória; secret `database-url`; WIF restrita ao **seu** repositório; variáveis do GitHub; Firebase Hosting. (Aula 6)
+- [ ] **T012** Primeiro push na `main`; liberar `/api/health` com `allUsers` → `run.invoker` após confirmação explícita. Aceite: produção `ok/ok`; `capstone:check` 3/11. Tag `v1`. (Aula 7)
+
+## Fase 2 — Corpus e base vetorial
+
+- [ ] **T020** Testes de `parse-csv.ts` com fixture binária latin1 real. (Aula 14)
+- [ ] **T021** [P] Testes de `select-quarters.ts`: conta por setor, fallback consolidado/individual, versão retificada numérica, subtração YTD do 4T, ano bissexto, ausente ≠ 0. (Aula 14)
+- [ ] **T022** Schema Drizzle `documentos` + migration + `db:migrate`. ⚠ dependência nova (Drizzle). (RF-02, Aula 8)
+- [ ] **T023** Cliente de embeddings Vertex isolado (`criarEmbeddingsReal`), 768 dimensões. ⚠ dependência LangChain.
+- [ ] **T024** `seed/run.ts`: lê JSONs, valida zod, lotes de 10, upsert por `(ticker, period)`. Aceite: CA-13.
+- [ ] **T025** `test:integration`: migration, upsert idempotente e consulta por cosseno no Postgres do compose. (D-16)
+
+## Fase 3 — Nós retrieve, grade e busca web
+
+- [ ] **T030** `db/retrieve-similar.ts` + nó `retrieve` (factory, top-k 5, similaridade = 1 − distância). Teste com fakes. (RF-03, Aula 9)
+- [ ] **T031** `prompts/grade.ts` + nó `grade` com saída estruturada `{sufficient, missingAspects}`; testes do prompt e do nó. (RF-04)
+- [ ] **T032** `search/`: `SearchProvider`, Serper, Google CSE, `criarSearchProvider()`; testes com `vi.stubGlobal`. (RF-05, Aula 10)
+- [ ] **T033** Tabela `documentos_web` + migration + HNSW; coluna/indicação de origem. ⚠ schema. (Aula 11)
+- [ ] **T034** Nó `webSearch`: queries por aspecto, top 3, fetch com timeout 10 s, extração de texto, chunks 1000/100, embedding, gravação com TTL; falhas de página ignoradas. `buscarPagina` injetável. (RF-05)
+- [ ] **T035** Estender a busca para combinar CVM + web não expirada por distância. Aceite: CA-03 em teste.
+
+## Fase 4 — Grafo, answer e SSE
+
+- [ ] **T040** `graph.ts` com `StateGraph`, reducer de `iterations`, `MAX_ITERATIONS = 2`, `GraphDeps` por função. Testes: caminho direto, loop, guard (CA-06). (RF-06, Aula 12)
+- [ ] **T041** `prompts/answer.ts` + nó `answer` + `answer/format-resposta.ts` (regex, aviso fixo, bloco Fontes deduplicado). Testes: resposta normal, CA-05 (obrigatório), prompt instrui a não recomendar, variações e pedidos disfarçados. Canal `answerText`. (RF-07, Aula 13)
+- [ ] **T042** Contratos `ChatRequest` e `ChatEvent` (com `durationMs`). ⚠ contrato.
+- [ ] **T043** `POST /api/chat` SSE com headers manuais, `GraphLike`, evento `error` sem derrubar o processo. Teste com grafo fake. (RF-08)
+- [ ] **T044** Teste manual local com Vertex real: CA-01, CA-02, CA-04. Tag `v2`.
+
+## Fase 5 — Qualidade e resiliência
+
+- [ ] **T050** Modo demo da busca web: fixtures Vale/Petrobras/Klabin do `evals/dataset.json` + genérica; `DEMO` lido em um só lugar; `.env.example`. (RF-12, Aula 14)
+- [ ] **T051** Timeout `AbortSignal` nos providers + `comResiliencia()` (retry, backoff, circuit breaker) com relógio injetável. (RNF-02, Aula 15)
+- [ ] **T052** try/catch por query no `webSearch`; teste E2E do grafo com provider sempre falhando (CA-07). (RNF-03)
+- [ ] **T053** Error handler central + schema `Problem` em contratos; mapeamento 400/503/500; teste do duck typing do circuito; remover tratamento por rota. Aceite: CA-08, CA-09. (RF-09, Aula 16)
+
+## Fase 6 — MCP
+
+- [ ] **T060** `getRealGraph` memoizado em `packages/agent` (clientes de embeddings, grade e answer reutilizáveis). (D-10)
+- [ ] **T061** `packages/mcp-server`: tool `perguntar`, descrição para o agente, `GetGraph` por parâmetro, `isError` genérico; teste com `InMemoryTransport`; transporte stdio; `claude mcp add`. ⚠ dependência MCP SDK. (RF-10, Aula 17)
+- [ ] **T062** Streamable HTTP stateless: `mcpHttpPlugin`, servidor standalone (3100) e gateway `/api/mcp`; superfície de biblioteca sem efeitos colaterais.
+- [ ] **T063** `/api/chat` passa a receber `getGraph`; `getChatGraph` e `getMcpGraph` usam a mesma `getRealGraph`. Teste de instância única. Aceite: CA-11. Tag `v3`.
+
+## Fase 7 — Frontend
+
+- [ ] **T070** Protótipo (Claude Design ou Stitch) exportado em HTML standalone em `docs/design/prototype/`. (Aula 18)
+- [ ] **T071** Skill `.claude/skills/frontend-design/` a partir do protótipo; regra: só ciano como cor de estado.
+- [ ] **T072** Tokens globais em `styles.scss` + casca estática do chat (header, disclaimer, mensagens, composer).
+- [ ] **T073** Rotas (`''` → Chat, `health` → Health) com `provideRouter`. (Aula 19)
+- [ ] **T074** `ChatService.ask()` (fetch + ReadableStream → AsyncGenerator de `ChatEvent`).
+- [ ] **T075** [P] `ChatStore` (revelação 70 ms, `tokenize`, erro fixo, limpeza de timers) e `parseAnswer` com testes.
+- [ ] **T076** Ligar o componente Chat (Enter/Shift+Enter, botão desabilitado também no visual, `@if`/`@for`).
+- [ ] **T077** `GraphStore` (conclui última etapa e prevê próxima; espelha `MAX_ITERATIONS` sem importar `@hero/agent`) + `GraphPanelComponent` (timeline, spinner, check, duração do servidor, banner de fallback ciano). (Aula 20)
+- [ ] **T078** Disclaimer incondicional (sem `@if`, sem fechar). Verificação no navegador. (Aula 21)
+
+## Fase 8 — Demo completo e E2E
+
+- [ ] **T080** Estender `DEMO=true` ao grafo inteiro: embeddings zero, busca fixa Vale 3T25, grade sempre suficiente, answer fixa; seed nunca em demo. (RF-12)
+- [ ] **T081** Playwright `apps/web/e2e/chat-happy-path.spec.ts` com webServer (API demo + ng serve). Aceite: CA-12. ⚠ dependência Playwright.
+- [ ] **T082** E2E no job de testes do CI. Tag `v4`.
+
+## Fase 9 — Observabilidade, custo e canary
+
+- [ ] **T090** Langfuse: OTel no boot de API e dos dois transportes MCP; `CallbackHandler` por chamada; sem chaves → no-op. Teste com `DEMO=false`. (RNF-05, Aula 22)
+- [ ] **T091** `prom-client`: `llm_tokens_total`, `llm_cost_usd_total`, callback por `runId` a partir de `usage_metadata`, tabela de preços; callbacks somados no call site. (RNF-06, Aula 23)
+- [ ] **T092** `GET /api/metrics` com interface mínima do Registry.
+- [ ] **T093** Rate limit (`@fastify/rate-limit`, opções calculadas no `build()`, isenção `/health` e `/metrics`) + orçamento diário em memória antes do primeiro byte SSE; mapear 429 no error handler. Aceite: CA-10.
+- [ ] **T094** Decidir pendências §9 do plan (acesso MCP, SSE via Hosting, limites).
+- [ ] **T095** `deploy.yml` canary: candidata `--no-traffic --tag`, smoke, 5/25/50/100 com gates, rollback para revisão estável explícita, frontend após backend, deploys serializados (`concurrency`). ⚠ workflow. (RNF-09)
+- [ ] **T096** Exercitar rollback com gate forçado a falhar. Aceite: CA-15.
+- [ ] **T097** `capstone:check` 11/11 em produção (CA-14). Tag `v5`.
+
+## Fase 10 — Documentação e encerramento
+
+- [ ] **T100** Atualizar README: comandos reais, status, roadmap marcado; diagramas Mermaid (nó `agentGraph`, não `graph`) renderizados.
+- [ ] **T101** Rodar `evals/dataset.json` e registrar resultado.
+- [ ] **T102** Encerrar o projeto GCP pelo console ao fim do laboratório (janela de 30 dias) após preservar o necessário.
+
+## Rastreabilidade
+
+| Requisito | Tarefas |
+| --- | --- |
+| RF-01 | T020, T021 |
+| RF-02 | T022–T025, T033 |
+| RF-03 | T030, T035 |
+| RF-04 | T031 |
+| RF-05 | T032, T034 |
+| RF-06 | T040 |
+| RF-07 | T041 |
+| RF-08 | T042, T043, T063 |
+| RF-09 | T053, T093 |
+| RF-10 | T060–T063 |
+| RF-11 | T070–T078 |
+| RF-12 | T050, T080 |
+| RNF-01 | T011, T012, T097 |
+| RNF-02/03 | T051, T052 |
+| RNF-05/06 | T090–T093 |
+| RNF-08/09/10 | T012, T082, T094–T097 |
