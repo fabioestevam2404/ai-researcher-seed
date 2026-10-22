@@ -28,8 +28,8 @@
 - [ ] **T020** Testes de `parse-csv.ts` com fixture binária latin1 real. (Aula 14)
 - [ ] **T021** [P] Testes de `select-quarters.ts`: conta por setor, fallback consolidado/individual, versão retificada numérica, subtração YTD do 4T, ano bissexto, ausente ≠ 0. (Aula 14)
 - [x] **T022** `packages/agent` criado; Drizzle 0.45.4 / drizzle-kit 0.31.11; schema `documentos` (indicadores `bigint` anuláveis, `vector(768)`, único `(ticker, period)`, HNSW por cosseno); migrations `0000_habilita-pgvector` e `0001_cria-documentos`; `pnpm db:migrate` na raiz, idempotente. (RF-02, Aula 8)
-- [ ] **T023** Cliente de embeddings Vertex isolado (`criarEmbeddingsReal`), 768 dimensões. ⚠ dependência LangChain.
-- [ ] **T024** `seed/run.ts`: lê JSONs, valida zod, lotes de 10, upsert por `(ticker, period)`. Aceite: CA-13.
+- [x] **T023** `criarEmbeddings()` isolado (Vertex AI via `@langchain/google-vertexai` 2.3.4, `dimensions: 768`, modelo por `MODEL_EMBEDDING`).
+- [x] **T024** `pnpm seed`: lê os 80 JSONs, valida com zod, lotes de 10, upsert por `(ticker, period)`. CA-13 verificado (80 → 80); busca por cosseno traz `VALE · 3T25` em 1º (0,891). 5 testes com fakes.
 - [ ] **T025** `test:integration`: migration, upsert idempotente e consulta por cosseno no Postgres do compose. (D-16)
 
 ## Fase 3 — Nós retrieve, grade e busca web
