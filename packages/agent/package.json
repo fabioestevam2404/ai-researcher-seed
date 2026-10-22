@@ -9,14 +9,18 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "vitest run --passWithNoTests",
+    "test": "vitest run",
     "lint": "eslint src",
+    "seed": "tsx --env-file-if-exists=../../.env src/seed/run.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
+    "@langchain/core": "1.2.20",
+    "@langchain/google-vertexai": "2.3.4",
     "drizzle-orm": "0.45.4",
-    "pg": "8.22.0"
+    "pg": "8.22.0",
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@types/pg": "8.21.0",
