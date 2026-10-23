@@ -1,3 +1,5 @@
+import { modoDemo } from '../demo/modo-demo.js';
+import { demoSearchProvider } from '../demo/web.js';
 import { makeGoogleCustomSearchProvider } from './google-custom-search.js';
 import { makeSerperProvider } from './serper.js';
 import type { SearchProvider } from './types.js';
@@ -14,8 +16,10 @@ function exigir(nome: string, env: NodeJS.ProcessEnv): string {
 }
 
 // Único lugar que lê SEARCH_PROVIDER. Recebe o env por parâmetro para o teste não
-// depender do ambiente da máquina.
+// depender do ambiente da máquina. No modo demo nenhuma chave é exigida.
 export function criarSearchProvider(env: NodeJS.ProcessEnv = process.env): SearchProvider {
+  if (modoDemo(env)) return demoSearchProvider;
+
   const provider = env.SEARCH_PROVIDER ?? 'serper';
 
   switch (provider) {

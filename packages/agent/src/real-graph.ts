@@ -5,7 +5,7 @@ import { buildGraph } from './graph.js';
 import { criarAnswerLlm, criarGradeLlm } from './llm/chat.js';
 import { criarEmbeddings } from './llm/embeddings.js';
 import { criarSearchProvider } from './search/index.js';
-import { buscarPagina } from './web/buscar-pagina.js';
+import { criarBuscarPagina } from './web/index.js';
 
 export type RealGraph = ReturnType<typeof buildGraph>;
 
@@ -29,7 +29,7 @@ export function getRealGraph(): Promise<RealGraph> {
       gradeLlm: criarGradeLlm(),
       answerLlm: criarAnswerLlm(),
       searchProvider: criarSearchProvider(),
-      buscarPagina,
+      buscarPagina: criarBuscarPagina(),
       inserirDocumentosWeb: criarInserirDocumentosWeb(db),
     });
   });
