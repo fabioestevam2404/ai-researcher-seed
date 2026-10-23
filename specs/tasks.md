@@ -22,7 +22,7 @@
 - [x] **T011c** Firebase adicionado pelo console (termos aceitos); site `https://ai-researcher-fabio.web.app`. Plano Blaze com crédito de teste válido até 2027-01-21.
 - [x] **T011d** Cloud SQL `ai-researcher-db` (Postgres 16, `db-f1-micro`, 10 GB SSD, sem backup, proteção contra exclusão); banco `ai_researcher`; `vector` 0.8.5; `app_user` com senha aleatória que só existe no secret `database-url` (socket Unix); `cloudsql.client` na SA de deploy; `secretAccessor` na SA de execução. Migrations e seed aplicados via Cloud SQL Auth Proxy: 80/80 documentos, 768 dimensões.
 - [x] **T011e** Alerta de orçamento `ai-researcher-fabio-mensal`: R$ 100/mês, avisos em 50/90/100 %, **excluindo créditos** (mede o consumo bruto).
-- [ ] **T012** Primeiro push na `main`; liberar `/api/health` com `allUsers` → `run.invoker` após confirmação explícita. Aceite: produção `ok/ok`; `capstone:check` 3/11. Tag `v1`. (Aula 7)
+- [x] **T012** Deploy verde (run `39980373363`, após conceder `serviceUsageConsumer`): API em `ai-researcher-api-00002-n57`, site no ar; acesso público liberado com confirmação explícita (2026-10-23); produção `/api/health` → `ok/ok`; `capstone:check` 3/3. Tag `v1`. (Aula 7)
 
 ## Fase 2 — Corpus e base vetorial
 
@@ -49,6 +49,10 @@
 - [ ] **T042** Contratos `ChatRequest` e `ChatEvent` (com `durationMs`). ⚠ contrato.
 - [ ] **T043** `POST /api/chat` SSE com headers manuais, `GraphLike`, evento `error` sem derrubar o processo. Teste com grafo fake. (RF-08)
 - [ ] **T044** Teste manual local com Vertex real: CA-01, CA-02, CA-04. Tag `v2`.
+- [ ] **T045** ⛔ **Gate de produção do `/api/chat` — bloqueia o push da `main` que leva a rota ao Cloud Run.** Desde a T012 o serviço `ai-researcher-api` está público (`allUsers` → `run.invoker`); com o `/api/chat`, qualquer pessoa geraria custo de Vertex AI. Antes desse push, cumprir **uma** das saídas:
+  1. Antecipar a T093 (rate limit global + orçamento diário de tokens verificado antes do primeiro byte SSE) e incluir os testes de 429 no mesmo push; **ou**
+  2. Revogar o acesso público (`gcloud run services remove-iam-policy-binding ai-researcher-api --region=us-central1 --member=allUsers --role=roles/run.invoker`) até a T093 existir.
+  Aceite: escolha registrada aqui, e `curl -X POST https://ai-researcher-fabio.web.app/api/chat` em produção devolve 429 depois do limite (saída 1) ou 403 (saída 2).
 
 ## Fase 5 — Qualidade e resiliência
 

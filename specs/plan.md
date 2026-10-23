@@ -21,7 +21,7 @@
 | Vertex AI | `gemini-embedding-001` (768 dim), `gemini-3.5-flash-lite` e `gemini-3.6-flash` verificados em `location=global` |
 | Artifact Registry | repo Docker `ai-researcher`, `us-central1` |
 | WIF | pool `github-actions-pool`, provider `github-actions-provider`, condição `assertion.repository=='fabioestevam2404/ai-researcher-seed'` |
-| SA de deploy | `github-actions-deployer@ai-researcher-fabio.iam.gserviceaccount.com`: `run.admin`, `artifactregistry.writer`, `iam.serviceAccountUser`, `secretmanager.secretAccessor`, `firebasehosting.admin`, `cloudsql.client`. Sem `cloudbuild.builds.editor` (o Seed builda no runner). |
+| SA de deploy | `github-actions-deployer@ai-researcher-fabio.iam.gserviceaccount.com`: `run.admin`, `artifactregistry.writer`, `iam.serviceAccountUser`, `secretmanager.secretAccessor`, `firebasehosting.admin`, `cloudsql.client`, `serviceusage.serviceUsageConsumer` (o `firebase deploy` consulta se a API do Hosting está habilitada e dava 403 sem ele — não consta no `infra/README` do Seed). Sem `cloudbuild.builds.editor` (o Seed builda no runner). |
 | SA de execução | `862472634940-compute@developer.gserviceaccount.com`: `editor` (padrão) + `secretAccessor` no secret `database-url`. |
 | Cloud SQL | `ai-researcher-db`, Postgres 16, `db-f1-micro`, `us-central1-f`, 10 GB SSD, sem backup automático, `--deletion-protection`, IP público sem redes autorizadas (acesso só via Auth Proxy / socket do Cloud Run). Banco `ai_researcher`, `vector` 0.8.5, usuário `app_user`. |
 | Firebase | Site `ai-researcher-fabio.web.app`, plano Blaze (crédito de teste até 2027-01-21). |
@@ -149,4 +149,5 @@ Regra (Aula 15): teste que falha é corrigido no código, nunca ajustado para pa
 | CVM muda arquivos (ex.: ano ausente) | Coleta tolera 404 (já tratado no Seed); testes com fixture. |
 | Nomes de modelos indisponíveis na região `global` | Validar no Model Garden; manter por variável. |
 | Filtro regex não cobre paráfrases | Testes com variações e pedidos disfarçados; registrar limite; avaliação via `evals`. |
+| Cloud Run público (`allUsers`) antes de existir rate limit | Liberado na T012 só porque a única rota é `/api/health`. A T045 bloqueia o deploy do `/api/chat` até haver rate limit + orçamento (T093) ou até o acesso público ser revogado. O alerta de orçamento avisa, não bloqueia. |
 | Cloud SQL cobra parado | Alerta de faturamento; encerrar projeto ao fim (Aula 24). |
