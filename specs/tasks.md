@@ -44,10 +44,10 @@
 
 ## Fase 4 — Grafo, answer e SSE
 
-- [ ] **T040** `graph.ts` com `StateGraph`, reducer de `iterations`, `MAX_ITERATIONS = 2`, `GraphDeps` por função. Testes: caminho direto, loop, guard (CA-06). (RF-06, Aula 12)
-- [ ] **T041** `prompts/answer.ts` + nó `answer` + `answer/format-resposta.ts` (regex, aviso fixo, bloco Fontes deduplicado). Testes: resposta normal, CA-05 (obrigatório), prompt instrui a não recomendar, variações e pedidos disfarçados. Canal `answerText`. (RF-07, Aula 13)
-- [ ] **T042** Contratos `ChatRequest` e `ChatEvent` (com `durationMs`). ⚠ contrato.
-- [ ] **T043** `POST /api/chat` SSE com headers manuais, `GraphLike`, evento `error` sem derrubar o processo. Teste com grafo fake. (RF-08)
+- [x] **T040** `graph.ts` com `StateGraph`, reducer de `iterations`, `MAX_ITERATIONS = 2`, `GraphDeps` por função. Testes: caminho direto, loop, guard (CA-06). (RF-06, Aula 12)
+- [x] **T041** `prompts/answer.ts` + nó `answer` + `answer/format-resposta.ts` (regex, aviso fixo, bloco Fontes deduplicado). Testes: resposta normal, CA-05 (obrigatório), prompt instrui a não recomendar, variações e pedidos disfarçados. Canal `answerText`. (RF-07, Aula 13)
+- [x] **T042** Contratos `ChatRequest` e `ChatEvent` (com `durationMs`). ⚠ contrato.
+- [x] **T043** `POST /api/chat` SSE com headers manuais, `GraphLike`, evento `error` sem derrubar o processo. Teste com grafo fake. (RF-08)
 - [ ] **T044** Teste manual local com Vertex real: CA-01, CA-02, CA-04. Tag `v2`.
 - [ ] **T045** ⛔ **Gate de produção do `/api/chat` — bloqueia o push da `main` que leva a rota ao Cloud Run.** Desde a T012 o serviço `ai-researcher-api` está público (`allUsers` → `run.invoker`); com o `/api/chat`, qualquer pessoa geraria custo de Vertex AI. Antes desse push, cumprir **uma** das saídas:
   1. Antecipar a T093 (rate limit global + orçamento diário de tokens verificado antes do primeiro byte SSE) e incluir os testes de 429 no mesmo push; **ou**
