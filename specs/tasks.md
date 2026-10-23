@@ -64,8 +64,8 @@
 
 ## Fase 6 — MCP
 
-- [ ] **T060** `getRealGraph` memoizado em `packages/agent` (clientes de embeddings, grade e answer reutilizáveis). (D-10)
-- [ ] **T061** `packages/mcp-server`: tool `perguntar`, descrição para o agente, `GetGraph` por parâmetro, `isError` genérico; teste com `InMemoryTransport`; transporte stdio; `claude mcp add`. ⚠ dependência MCP SDK. (RF-10, Aula 17)
+- [x] **T060** `getRealGraph` memoizado em `packages/agent` (clientes de embeddings, grade e answer reutilizáveis). (D-10) Antecipada na T043 (`real-graph.ts`).
+- [x] **T061** `packages/mcp-server`: tool `perguntar`, descrição para o agente, `GetGraph` por parâmetro, `isError` genérico; teste com `InMemoryTransport`; transporte stdio; `claude mcp add`. ⚠ dependência MCP SDK. (RF-10, Aula 17) SDK `@modelcontextprotocol/sdk` 1.32.1 aprovado em 2026-10-23. Stdio validado com cliente MCP real (CA-01 com citação). Registro no Claude Code, depois de `pnpm build`: `claude mcp add ai-researcher -- node --env-file=<repo>/.env <repo>/packages/mcp-server/dist/stdio.js`.
 - [ ] **T062** Streamable HTTP stateless: `mcpHttpPlugin`, servidor standalone (3100) e gateway `/api/mcp`; superfície de biblioteca sem efeitos colaterais.
 - [ ] **T063** `/api/chat` passa a receber `getGraph`; `getChatGraph` e `getMcpGraph` usam a mesma `getRealGraph`. Teste de instância única. Aceite: CA-11. Tag `v3`.
 
