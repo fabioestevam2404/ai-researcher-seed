@@ -12,7 +12,9 @@ export function makeSerperProvider(apiKey: string): SearchProvider {
       const resposta = await fetch(SERPER_URL, {
         method: 'POST',
         headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: query }),
+        // País e idioma do Brasil: sem eles, "Vale" vira "vale a pena" e a busca traz
+        // resenha de videogame em vez da mineradora.
+        body: JSON.stringify({ q: query, gl: 'br', hl: 'pt-br' }),
       });
 
       if (!resposta.ok) {

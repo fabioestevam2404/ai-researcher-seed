@@ -36,7 +36,11 @@ describe('makeSerperProvider', () => {
     expect(url).toBe('https://google.serper.dev/search');
     expect(init?.method).toBe('POST');
     expect(new Headers(init?.headers).get('X-API-KEY')).toBe('chave-fake');
-    expect(JSON.parse(String(init?.body))).toEqual({ q: 'Vale fato relevante' });
+    expect(JSON.parse(String(init?.body))).toEqual({
+      q: 'Vale fato relevante',
+      gl: 'br',
+      hl: 'pt-br',
+    });
     expect(resultados).toEqual([
       {
         title: 'Vale divulga fato relevante',
