@@ -1,4 +1,9 @@
-import { SearchProviderError, type SearchProvider, type SearchResult } from './types.js';
+import {
+  SearchProviderError,
+  TIMEOUT_BUSCA_MS,
+  type SearchProvider,
+  type SearchResult,
+} from './types.js';
 
 const GOOGLE_CSE_URL = 'https://www.googleapis.com/customsearch/v1';
 
@@ -17,7 +22,7 @@ export function makeGoogleCustomSearchProvider(apiKey: string, cx: string): Sear
       url.searchParams.set('cx', cx);
       url.searchParams.set('q', query);
 
-      const resposta = await fetch(url);
+      const resposta = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT_BUSCA_MS) });
 
       if (!resposta.ok) {
         throw new SearchProviderError('Google Custom Search', resposta.status);

@@ -41,6 +41,7 @@ describe('makeSerperProvider', () => {
       gl: 'br',
       hl: 'pt-br',
     });
+    expect(init?.signal).toBeInstanceOf(AbortSignal);
     expect(resultados).toEqual([
       {
         title: 'Vale divulga fato relevante',
@@ -72,6 +73,7 @@ describe('makeGoogleCustomSearchProvider', () => {
     expect(url.searchParams.get('key')).toBe('k');
     expect(url.searchParams.get('cx')).toBe('cx-1');
     expect(url.searchParams.get('q')).toBe('Petrobras lucro');
+    expect(fetchFake.mock.calls[0][1]?.signal).toBeInstanceOf(AbortSignal);
     expect(resultados).toEqual([
       { title: 'Petrobras', snippet: 'Resultado', url: 'https://ex.com/p' },
     ]);

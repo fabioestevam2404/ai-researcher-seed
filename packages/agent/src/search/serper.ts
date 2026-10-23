@@ -1,4 +1,9 @@
-import { SearchProviderError, type SearchProvider, type SearchResult } from './types.js';
+import {
+  SearchProviderError,
+  TIMEOUT_BUSCA_MS,
+  type SearchProvider,
+  type SearchResult,
+} from './types.js';
 
 const SERPER_URL = 'https://google.serper.dev/search';
 
@@ -15,6 +20,7 @@ export function makeSerperProvider(apiKey: string): SearchProvider {
         // País e idioma do Brasil: sem eles, "Vale" vira "vale a pena" e a busca traz
         // resenha de videogame em vez da mineradora.
         body: JSON.stringify({ q: query, gl: 'br', hl: 'pt-br' }),
+        signal: AbortSignal.timeout(TIMEOUT_BUSCA_MS),
       });
 
       if (!resposta.ok) {
