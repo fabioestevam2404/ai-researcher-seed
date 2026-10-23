@@ -1,9 +1,10 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import type { EmbeddingsInterface } from '@langchain/core/embeddings';
 import { FakeListChatModel } from '@langchain/core/utils/testing';
 import { AVISO_GUARDRAIL } from './answer/format-resposta.js';
 import type { DocumentoRecuperado } from './documento.js';
 import { buildGraph, MAX_ITERATIONS, type GraphDeps } from './graph.js';
+import { AVISO_CONTEXTO_INCOMPLETO } from './prompts/answer.js';
 
 const documentoVale: DocumentoRecuperado = {
   origem: 'cvm',
@@ -85,6 +86,28 @@ describe('buildGraph', () => {
     expect(visitados.filter((no) => no === 'grade')).toHaveLength(MAX_ITERATIONS);
     expect(visitados).toEqual(['retrieve', 'grade', 'webSearch', 'retrieve', 'grade', 'answer']);
     expect(answerText).not.toBe('');
+  });
+
+  // CA-07: degradação graciosa. A busca web nunca responde, e mesmo assim a pergunta termina
+  // em resposta real, com o answer instruído a avisar que o contexto está incompleto.
+  it('busca web sempre falhando: o grafo ainda termina em answer, sinalizando contexto parcial', async () => {
+    const sempreInsuficiente = Array.from({ length: 10 }, () => ({
+      sufficient: false,
+      missingAspects: ['último fato relevante'],
+    }));
+    const deps = depsCom(sempreInsuficiente);
+    deps.searchProvider = {
+      search: async () => {
+        throw new Error('Serper fora do ar');
+      },
+    };
+    const promptDoAnswer = vi.spyOn(deps.answerLlm, 'invoke');
+
+    const { visitados, answerText } = await executar(deps, 'Último fato relevante da Vale?');
+
+    expect(visitados).toEqual(['retrieve', 'grade', 'webSearch', 'retrieve', 'grade', 'answer']);
+    expect(answerText).toContain('R$ 56,7 bilhões');
+    expect(JSON.stringify(promptDoAnswer.mock.calls[0][0])).toContain(AVISO_CONTEXTO_INCOMPLETO);
   });
 
   // Guardrail de ponta a ponta no grafo — complementa o teste obrigatório do nó answer.

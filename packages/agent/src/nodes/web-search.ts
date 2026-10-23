@@ -44,38 +44,49 @@ export function makeWebSearchNode({
   ttlDias = TTL_PADRAO_DIAS,
   agora = () => new Date(),
 }: WebSearchDeps) {
+  // Uma query: busca, baixa as páginas, gera os embeddings e grava os trechos.
+  async function pesquisarEGravar(query: string): Promise<void> {
+    const resultados = (await searchProvider.search(query)).slice(0, RESULTADOS_POR_QUERY);
+    const trechos: Array<{ title: string; sourceUrl: string; content: string }> = [];
+
+    for (const resultado of resultados) {
+      try {
+        const texto = extrairTexto(await buscarPagina(resultado.url));
+        if (texto.length < MIN_CARACTERES_PAGINA) continue;
+        for (const content of dividirEmChunks(texto).slice(0, MAX_CHUNKS_POR_PAGINA)) {
+          trechos.push({ title: resultado.title, sourceUrl: resultado.url, content });
+        }
+      } catch {
+        // Página fora do ar ou lenta demais: ignora este resultado e segue com os outros.
+      }
+    }
+
+    if (trechos.length === 0) return;
+
+    const vetores = await embeddings.embedDocuments(trechos.map((trecho) => trecho.content));
+    const fetchedAt = agora();
+    const expiresAt = new Date(fetchedAt.getTime() + ttlDias * UM_DIA_MS);
+
+    const documentos: NovoDocumentoWeb[] = trechos.map((trecho, i) => ({
+      query,
+      ...trecho,
+      fetchedAt,
+      expiresAt,
+      embedding: vetores[i],
+    }));
+
+    await inserirDocumentosWeb(documentos);
+  }
+
   return async (state: { question: string; missingAspects: string[] }): Promise<object> => {
     for (const query of montarQueries(state.question, state.missingAspects)) {
-      const resultados = (await searchProvider.search(query)).slice(0, RESULTADOS_POR_QUERY);
-      const trechos: Array<{ title: string; sourceUrl: string; content: string }> = [];
-
-      for (const resultado of resultados) {
-        try {
-          const texto = extrairTexto(await buscarPagina(resultado.url));
-          if (texto.length < MIN_CARACTERES_PAGINA) continue;
-          for (const content of dividirEmChunks(texto).slice(0, MAX_CHUNKS_POR_PAGINA)) {
-            trechos.push({ title: resultado.title, sourceUrl: resultado.url, content });
-          }
-        } catch {
-          // Página fora do ar ou lenta demais: ignora este resultado e segue com os outros.
-        }
+      try {
+        await pesquisarEGravar(query);
+      } catch {
+        // Busca fora do ar mesmo depois das tentativas (ou circuito aberto): a web é um
+        // enriquecimento, não um requisito. O grafo segue com o que tem e o answer avisa que
+        // o contexto está incompleto, em vez de a pergunta inteira virar erro.
       }
-
-      if (trechos.length === 0) continue;
-
-      const vetores = await embeddings.embedDocuments(trechos.map((trecho) => trecho.content));
-      const fetchedAt = agora();
-      const expiresAt = new Date(fetchedAt.getTime() + ttlDias * UM_DIA_MS);
-
-      const documentos: NovoDocumentoWeb[] = trechos.map((trecho, i) => ({
-        query,
-        ...trecho,
-        fetchedAt,
-        expiresAt,
-        embedding: vetores[i],
-      }));
-
-      await inserirDocumentosWeb(documentos);
     }
 
     return {};

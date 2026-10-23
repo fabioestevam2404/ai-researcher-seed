@@ -26,6 +26,7 @@ function resultado(n: number): SearchResult {
 function montar({
   resultados = [resultado(1)],
   paginas = { 'https://ex.com/1': pagina('Fato relevante da Vale') } as Record<string, string>,
+  buscaFalhaEm = [] as string[],
 } = {}) {
   const queriesBuscadas: string[] = [];
   const gravados: NovoDocumentoWeb[] = [];
@@ -34,6 +35,7 @@ function montar({
   const searchProvider: SearchProvider = {
     search: async (query) => {
       queriesBuscadas.push(query);
+      if (buscaFalhaEm.includes(query)) throw new Error('Serper fora do ar');
       return resultados;
     },
   };
@@ -163,5 +165,14 @@ describe('makeWebSearchNode', () => {
 
     expect(queriesBuscadas).toEqual(['Vale? a', 'Vale? b']);
     expect(lotes()).toBe(2);
+  });
+
+  it('busca que falha numa query não derruba o nó: as outras queries seguem', async () => {
+    const { webSearch, gravados, queriesBuscadas } = montar({ buscaFalhaEm: ['Vale? a'] });
+
+    await expect(webSearch({ question: 'Vale?', missingAspects: ['a', 'b'] })).resolves.toEqual({});
+
+    expect(queriesBuscadas).toEqual(['Vale? a', 'Vale? b']);
+    expect(gravados.map((d) => d.query)).toEqual(['Vale? b']);
   });
 });
