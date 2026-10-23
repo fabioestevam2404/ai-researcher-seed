@@ -3,6 +3,7 @@ import healthRoute from './routes/health.js';
 import chatRoute from './routes/chat.js';
 import type { GetGraph } from './routes/chat-event.js';
 import { checkDatabase as defaultCheckDatabase } from './db.js';
+import { registrarTratamentoDeErros } from './erros.js';
 
 export interface BuildOptions {
   checkDatabase?: () => Promise<boolean>;
@@ -20,6 +21,9 @@ export function build({
   getGraph = grafoNaoConfigurado,
 }: BuildOptions = {}) {
   const app = Fastify({ logger: true });
+
+  // Registrado na raiz antes das rotas: vale para todas elas, inclusive as de /api.
+  registrarTratamentoDeErros(app);
 
   app.register(
     async (api) => {
