@@ -48,3 +48,23 @@ export const documentos = pgTable(
     index('documentos_embedding_idx').using('hnsw', table.embedding.op('vector_cosine_ops')),
   ],
 );
+
+// Trechos de páginas da web gravados pelo nó webSearch. Ao contrário do corpus da CVM, que é
+// a informação daquela época e não muda, notícia envelhece: cada registro tem prazo de
+// validade, e o retrieve só enxerga os que ainda não expiraram.
+export const documentosWeb = pgTable(
+  'documentos_web',
+  {
+    id: serial('id').primaryKey(),
+    query: text('query').notNull(),
+    title: text('title').notNull(),
+    content: text('content').notNull(),
+    sourceUrl: text('source_url').notNull(),
+    fetchedAt: timestamp('fetched_at', { withTimezone: true }).notNull(),
+    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    embedding: vector('embedding', { dimensions: EMBEDDING_DIMENSIONS }).notNull(),
+  },
+  (table) => [
+    index('documentos_web_embedding_idx').using('hnsw', table.embedding.op('vector_cosine_ops')),
+  ],
+);
