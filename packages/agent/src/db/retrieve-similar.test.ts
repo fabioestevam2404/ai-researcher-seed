@@ -48,6 +48,16 @@ describe('combinarPorSimilaridade', () => {
     expect(resultado.map((d) => d.origem)).toEqual(['web', 'web', 'web']);
   });
 
+  it('o mesmo trecho web gravado duas vezes ocupa uma vaga só', () => {
+    const resultado = combinarPorSimilaridade(
+      [cvm('3T25', 0.7)],
+      [web('ri-vale', 0.8), web('ri-vale', 0.8)],
+      5,
+    );
+
+    expect(resultado.map((d) => d.origem)).toEqual(['web', 'cvm']);
+  });
+
   it('sem nada na web (ou tudo expirado), devolve só a CVM', () => {
     expect(combinarPorSimilaridade([cvm('3T25', 0.9)], [], 5)).toEqual([cvm('3T25', 0.9)]);
   });

@@ -8,6 +8,18 @@ export type BuscarDocumentosSimilares = (
   topK: number,
 ) => Promise<DocumentoRecuperado[]>;
 
+// A mesma página pode ter sido gravada por duas buscas web dentro do TTL. Trecho repetido
+// não acrescenta contexto e ocupa uma vaga do top-k, então fica só a primeira ocorrência.
+function semTrechosRepetidos(web: DocumentoWeb[]): DocumentoWeb[] {
+  const vistos = new Set<string>();
+  return web.filter((doc) => {
+    const chave = `${doc.sourceUrl}\n${doc.content}`;
+    if (vistos.has(chave)) return false;
+    vistos.add(chave);
+    return true;
+  });
+}
+
 // Junta as duas fontes e fica com os top-k mais próximos da pergunta, sem preferência de
 // origem: quem decide se o contexto basta é o grade, não a ordem da busca.
 export function combinarPorSimilaridade(
@@ -15,7 +27,9 @@ export function combinarPorSimilaridade(
   web: DocumentoWeb[],
   topK: number,
 ): DocumentoRecuperado[] {
-  return [...cvm, ...web].sort((a, b) => b.similaridade - a.similaridade).slice(0, topK);
+  return [...cvm, ...semTrechosRepetidos(web)]
+    .sort((a, b) => b.similaridade - a.similaridade)
+    .slice(0, topK);
 }
 
 // Busca os top-k documentos mais próximos do embedding da pergunta, no corpus da CVM e nos
