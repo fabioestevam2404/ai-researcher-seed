@@ -49,10 +49,11 @@
 - [x] **T042** Contratos `ChatRequest` e `ChatEvent` (com `durationMs`). ⚠ contrato.
 - [x] **T043** `POST /api/chat` SSE com headers manuais, `GraphLike`, evento `error` sem derrubar o processo. Teste com grafo fake. (RF-08)
 - [ ] **T044** Teste manual local com Vertex real: CA-01, CA-02, CA-04. Tag `v2`.
-- [ ] **T045** ⛔ **Gate de produção do `/api/chat` — bloqueia o push da `main` que leva a rota ao Cloud Run.** Desde a T012 o serviço `ai-researcher-api` está público (`allUsers` → `run.invoker`); com o `/api/chat`, qualquer pessoa geraria custo de Vertex AI. Antes desse push, cumprir **uma** das saídas:
+- [x] **T045** ⛔ **Gate de produção do `/api/chat` — bloqueia o push da `main` que leva a rota ao Cloud Run.** Desde a T012 o serviço `ai-researcher-api` está público (`allUsers` → `run.invoker`); com o `/api/chat`, qualquer pessoa geraria custo de Vertex AI. Antes desse push, cumprir **uma** das saídas:
   1. Antecipar a T093 (rate limit global + orçamento diário de tokens verificado antes do primeiro byte SSE) e incluir os testes de 429 no mesmo push; **ou**
   2. Revogar o acesso público (`gcloud run services remove-iam-policy-binding ai-researcher-api --region=us-central1 --member=allUsers --role=roles/run.invoker`) até a T093 existir.
   Aceite: escolha registrada aqui, e `curl -X POST https://ai-researcher-fabio.web.app/api/chat` em produção devolve 429 depois do limite (saída 1) ou 403 (saída 2).
+  **Escolha (2026-10-23): saída 2.** `allUsers` revogado; `/api/health` e `/api/chat` respondem 403 tanto no Cloud Run direto quanto via Firebase Hosting. O `deploy.yml` não usa `--allow-unauthenticated`, então novos deploys mantêm o serviço fechado. Efeito colateral aceito: o `capstone:check` (item 1, endpoint público) falha até a T093 existir — reabrir o acesso só junto com ela.
 
 ## Fase 5 — Qualidade e resiliência
 
