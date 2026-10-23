@@ -38,9 +38,9 @@
 - [x] **T030** `db/retrieve-similar.ts` + nó `retrieve` (factory, top-k 5, similaridade = 1 − distância). Teste com fakes. (RF-03, Aula 9)
 - [x] **T031** `prompts/grade.ts` + nó `grade` com saída estruturada `{sufficient, missingAspects}`; testes do prompt e do nó. (RF-04)
 - [x] **T032** `search/`: `SearchProvider`, Serper, Google CSE, `criarSearchProvider()`; testes com `vi.stubGlobal`. (RF-05, Aula 10)
-- [ ] **T033** Tabela `documentos_web` + migration + HNSW; coluna/indicação de origem. ⚠ schema. (Aula 11)
-- [ ] **T034** Nó `webSearch`: queries por aspecto, top 3, fetch com timeout 10 s, extração de texto, chunks 1000/100, embedding, gravação com TTL; falhas de página ignoradas. `buscarPagina` injetável. (RF-05)
-- [ ] **T035** Estender a busca para combinar CVM + web não expirada por distância. Aceite: CA-03 em teste.
+- [x] **T033** Tabela `documentos_web` (query, title, content, source_url, fetched_at, expires_at, `vector(768)` + HNSW) na migration `0002`, aditiva; aplicada no Postgres local. Origem identificada pela tabela, sem coluna nova em `documentos`. **Aplicar no Cloud SQL antes do deploy do grafo (T045).** (Aula 11)
+- [x] **T034** Nó `webSearch`: queries por aspecto, top 3, fetch com timeout 10 s, extração de texto (sem menu/rodapé), chunks 1000/100 (máx. 10 por página), descarte de páginas com < 500 caracteres, um lote de embedding por query, gravação com TTL de 7 dias; falhas de página ignoradas; `buscarPagina` e relógio injetáveis. Teste real: 2 páginas do RI da Vale, 8 chunks. (RF-05)
+- [x] **T035** Busca combina CVM + web não expirada (`expires_at > now()`) e corta no top-k só pela similaridade; `DocumentoRecuperado` vira união `cvm | web`; prompt do grade marca `[CVM]`/`[WEB]` e aceita trecho web para pergunta qualitativa. Real: trecho web aparece enquanto válido e some ao expirar. Observação: para "último fato relevante da Vale" a busca trouxe a página-índice do RI, sem o fato em si — o grade corretamente manteve "insuficiente" (candidato a caso de avaliação em `evals`).
 
 ## Fase 4 — Grafo, answer e SSE
 
