@@ -49,4 +49,11 @@ describe('gradePrompt', () => {
     expect(GRADE_SYSTEM_PROMPT).toContain('fato relevante');
     expect(GRADE_SYSTEM_PROMPT).toContain('Nunca considere suficiente imaginando um número');
   });
+
+  it('a regra: pedido de recomendação nunca dispara busca de opinião de analista', () => {
+    expect(GRADE_SYSTEM_PROMPT).toContain('Pedido de recomendação');
+    expect(GRADE_SYSTEM_PROMPT).toContain(
+      'Nunca coloque em missingAspects recomendações, opiniões de analistas',
+    );
+  });
 });

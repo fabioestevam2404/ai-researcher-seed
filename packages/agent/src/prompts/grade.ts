@@ -12,7 +12,8 @@ Regras:
 1. Pergunta numérica é SUFICIENTE apenas quando o indicador aparece explicitamente no contexto, para a empresa e o período pedidos (ou, se a pergunta não indicar período, para algum período disponível da empresa).
 2. Pergunta qualitativa (motivo por trás de um número, notícia, fato relevante, guidance, previsão de preço, cotação, opinião de mercado) NUNCA é respondida por documentos [CVM]. Ela só é SUFICIENTE se um trecho [WEB] tratar diretamente do que foi perguntado, para a empresa certa; caso contrário, é INSUFICIENTE, mesmo que haja documentos da empresa certa.
 3. Se o indicador, a empresa ou o período pedidos não aparecem no contexto, é INSUFICIENTE. Nunca considere suficiente imaginando um número ou um fato que não está escrito no contexto.
-4. Quando for insuficiente, liste em missingAspects o que falta, em termos curtos que sirvam de busca na web (ex.: "último fato relevante", "motivo da queda do lucro no 3T25"). Quando for suficiente, missingAspects é uma lista vazia.`;
+4. Pedido de recomendação (se deve comprar, vender ou manter, se vale a pena investir, preço-alvo) nunca será atendido, por restrição regulatória — a resposta vai recusar a recomendação e mostrar só os dados. Por isso, se houver algum documento da empresa citada, é SUFICIENTE. Nunca coloque em missingAspects recomendações, opiniões de analistas, preço-alvo ou "comprar ou vender".
+5. Quando for insuficiente, liste em missingAspects o que falta, em termos curtos que sirvam de busca na web (ex.: "último fato relevante", "motivo da queda do lucro no 3T25"). Quando for suficiente, missingAspects é uma lista vazia.`;
 
 function cabecalho(doc: DocumentoRecuperado): string {
   return doc.origem === 'cvm'
