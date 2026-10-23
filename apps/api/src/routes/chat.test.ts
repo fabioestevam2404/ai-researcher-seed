@@ -45,7 +45,7 @@ const passosDoGrafo = [
 
 describe('POST /api/chat', () => {
   it('transmite um evento SSE por nó concluído, com os headers de streaming', async () => {
-    const app = build({ getGraph: async () => grafoFake(passosDoGrafo) });
+    const app = build({ getChatGraph: async () => grafoFake(passosDoGrafo) });
 
     const response = await app.inject({
       method: 'POST',
@@ -79,7 +79,7 @@ describe('POST /api/chat', () => {
 
   it('o evento do grade traz o total de iterações, não o incremento do nó', async () => {
     const umaPassagem = { grade: { sufficient: false, missingAspects: ['x'], iterations: 1 } };
-    const app = build({ getGraph: async () => grafoFake([umaPassagem, umaPassagem]) });
+    const app = build({ getChatGraph: async () => grafoFake([umaPassagem, umaPassagem]) });
 
     const response = await app.inject({
       method: 'POST',
@@ -92,7 +92,7 @@ describe('POST /api/chat', () => {
   });
 
   it('erro no meio do stream vira evento de erro genérico, sem detalhe interno', async () => {
-    const app = build({ getGraph: async () => grafoFake(passosDoGrafo.slice(0, 1), true) });
+    const app = build({ getChatGraph: async () => grafoFake(passosDoGrafo.slice(0, 1), true) });
 
     const response = await app.inject({
       method: 'POST',
@@ -107,7 +107,7 @@ describe('POST /api/chat', () => {
 
   it('a API continua de pé depois de um erro do grafo', async () => {
     const app = build({
-      getGraph: async () => grafoFake([], true),
+      getChatGraph: async () => grafoFake([], true),
       checkDatabase: async () => true,
     });
 
@@ -118,7 +118,7 @@ describe('POST /api/chat', () => {
   });
 
   it('corpo inválido responde 400 em problem+json, sem abrir stream', async () => {
-    const app = build({ getGraph: async () => grafoFake(passosDoGrafo) });
+    const app = build({ getChatGraph: async () => grafoFake(passosDoGrafo) });
 
     const response = await app.inject({ method: 'POST', url: '/api/chat', payload: {} });
 
