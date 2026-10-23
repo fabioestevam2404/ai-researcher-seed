@@ -18,9 +18,10 @@
 
 - [x] **T010** `gcloud` 590.0.0 instalado; os dois logins feitos (`festevam30@gmail.com`); ADC com quota project. `gh` em instalação.
 - [x] **T011a** `.firebaserc` → `ai-researcher-fabio`; projeto + billing + APIs; Vertex AI verificado; Artifact Registry; WIF + SA de deploy (valores no plan.md §1). (Aula 6)
-- [ ] **T011b** Variáveis do GitHub (`GCP_PROJECT_ID`, `GCP_WIF_PROVIDER`, `GCP_DEPLOY_SERVICE_ACCOUNT`) via `gh` após `gh auth login`.
-- [ ] **T011c** Firebase Hosting: `firebase login` (interativo) + adicionar Firebase ao projeto + criar o site.
-- [ ] **T011d** Cloud SQL Postgres 16 + `vector` + `app_user` com senha aleatória + secret `database-url` + `cloudsql.client` na SA e `secretAccessor` na SA de execução. **Adiado** por decisão do responsável.
+- [x] **T011b** `gh` 2.103.0 + login (`fabioestevam2404`); variáveis `GCP_PROJECT_ID`, `GCP_WIF_PROVIDER`, `GCP_DEPLOY_SERVICE_ACCOUNT` criadas no repositório.
+- [x] **T011c** Firebase adicionado pelo console (termos aceitos); site `https://ai-researcher-fabio.web.app`. Plano Blaze com crédito de teste válido até 2027-01-21.
+- [x] **T011d** Cloud SQL `ai-researcher-db` (Postgres 16, `db-f1-micro`, 10 GB SSD, sem backup, proteção contra exclusão); banco `ai_researcher`; `vector` 0.8.5; `app_user` com senha aleatória que só existe no secret `database-url` (socket Unix); `cloudsql.client` na SA de deploy; `secretAccessor` na SA de execução. Migrations e seed aplicados via Cloud SQL Auth Proxy: 80/80 documentos, 768 dimensões.
+- [x] **T011e** Alerta de orçamento `ai-researcher-fabio-mensal`: R$ 100/mês, avisos em 50/90/100 %, **excluindo créditos** (mede o consumo bruto).
 - [ ] **T012** Primeiro push na `main`; liberar `/api/health` com `allUsers` → `run.invoker` após confirmação explícita. Aceite: produção `ok/ok`; `capstone:check` 3/11. Tag `v1`. (Aula 7)
 
 ## Fase 2 — Corpus e base vetorial

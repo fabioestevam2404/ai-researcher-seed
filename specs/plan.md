@@ -17,12 +17,17 @@
 | Recurso | Valor |
 | --- | --- |
 | Projeto | `ai-researcher-fabio` (número `862472634940`), billing `01D94C-0D71D8-C7CEA1` |
-| APIs | Cloud Run, Artifact Registry, Secret Manager, IAM Credentials, STS, Vertex AI. **Cloud SQL Admin adiado** junto com a instância. |
+| APIs | Cloud Run, Artifact Registry, Secret Manager, IAM Credentials, STS, Vertex AI, Cloud SQL Admin, Firebase, Firebase Hosting, Billing Budgets. |
 | Vertex AI | `gemini-embedding-001` (768 dim), `gemini-3.5-flash-lite` e `gemini-3.6-flash` verificados em `location=global` |
 | Artifact Registry | repo Docker `ai-researcher`, `us-central1` |
 | WIF | pool `github-actions-pool`, provider `github-actions-provider`, condição `assertion.repository=='fabioestevam2404/ai-researcher-seed'` |
-| SA de deploy | `github-actions-deployer@ai-researcher-fabio.iam.gserviceaccount.com`: `run.admin`, `artifactregistry.writer`, `iam.serviceAccountUser`, `secretmanager.secretAccessor`, `firebasehosting.admin`. Sem `cloudbuild.builds.editor` (o Seed builda no runner) e sem `cloudsql.client` até o banco existir. |
-| Cloud SQL | **Adiado por decisão do responsável** (custo fixo). Até lá, o deploy da API em produção não terá banco; `/api/health` responderá `degraded`. |
+| SA de deploy | `github-actions-deployer@ai-researcher-fabio.iam.gserviceaccount.com`: `run.admin`, `artifactregistry.writer`, `iam.serviceAccountUser`, `secretmanager.secretAccessor`, `firebasehosting.admin`, `cloudsql.client`. Sem `cloudbuild.builds.editor` (o Seed builda no runner). |
+| SA de execução | `862472634940-compute@developer.gserviceaccount.com`: `editor` (padrão) + `secretAccessor` no secret `database-url`. |
+| Cloud SQL | `ai-researcher-db`, Postgres 16, `db-f1-micro`, `us-central1-f`, 10 GB SSD, sem backup automático, `--deletion-protection`, IP público sem redes autorizadas (acesso só via Auth Proxy / socket do Cloud Run). Banco `ai_researcher`, `vector` 0.8.5, usuário `app_user`. |
+| Firebase | Site `ai-researcher-fabio.web.app`, plano Blaze (crédito de teste até 2027-01-21). |
+| Orçamento | `ai-researcher-fabio-mensal`: R$ 100/mês, 50/90/100 %, excluindo créditos. |
+
+**Como parar a cobrança do Cloud SQL:** pausar com `gcloud sql instances patch ai-researcher-db --activation-policy=NEVER` (religar com `ALWAYS`); apagar exige antes `--no-deletion-protection`; no fim do laboratório, encerrar o projeto (Aula 24).
 
 Correspondência com o plano do autor: Fases 2–4 = Bloco D (`v2`); 5–6 = E (`v3`); 7–8 = F (`v4`); 9 = G (`v5`); 10 = H (`v6`). O `capstone:check` do Seed prevê 12 verificações (o material cita 11).
 
