@@ -60,7 +60,7 @@
 - [x] **T050** Modo demo da busca web: fixtures Vale/Petrobras/Klabin do `evals/dataset.json` + genérica; `DEMO` lido em um só lugar; `.env.example`. (RF-12, Aula 14) Conteúdo das fixtures é fictício e se declara assim (título `[DEMO]`, domínio `demo.ai-researcher.invalid`, aviso no texto). Ainda grava em `documentos_web`: depois de usar o demo, limpar com `DELETE FROM documentos_web WHERE source_url LIKE 'https://demo.ai-researcher.invalid/%'` — a T080 deve impedir essa gravação.
 - [x] **T051** Timeout `AbortSignal` nos providers + `comResiliencia()` (retry, backoff, circuit breaker) com relógio injetável. (RNF-02, Aula 15) 3 tentativas (esperas de 500 e 1000 ms), só para rede/timeout/429/5xx; circuito abre após 3 buscas falhas seguidas e fica 30 s fechado para chamadas; a primeira busca depois disso decide se fecha ou reabre.
 - [x] **T052** try/catch por query no `webSearch`; teste E2E do grafo com provider sempre falhando (CA-07). (RNF-03)
-- [ ] **T053** Error handler central + schema `Problem` em contratos; mapeamento 400/503/500; teste do duck typing do circuito; remover tratamento por rota. Aceite: CA-08, CA-09. (RF-09, Aula 16)
+- [x] **T053** Error handler central + schema `Problem` em contratos; mapeamento 400/503/500; teste do duck typing do circuito; remover tratamento por rota. Aceite: CA-08, CA-09. (RF-09, Aula 16)
 
 ## Fase 6 — MCP
 
