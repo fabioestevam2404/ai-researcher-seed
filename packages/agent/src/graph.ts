@@ -4,6 +4,7 @@ import { Annotation, END, START, StateGraph } from '@langchain/langgraph';
 import type { BuscarDocumentosSimilares } from './db/retrieve-similar.js';
 import type { InserirDocumentosWeb } from './db/inserir-documentos-web.js';
 import type { DocumentoRecuperado } from './documento.js';
+import { makeAnswerNode } from './nodes/answer.js';
 import { makeGradeNode } from './nodes/grade.js';
 import { makeRetrieveNode } from './nodes/retrieve.js';
 import { makeWebSearchNode } from './nodes/web-search.js';
@@ -35,6 +36,11 @@ export const ResearchState = Annotation.Root({
     reducer: (anterior, novo) => anterior + novo,
     default: () => 0,
   }),
+  // Não pode se chamar "answer": o LangGraph não aceita canal com o mesmo nome de um nó.
+  answerText: Annotation<string>({
+    reducer: (_anterior, novo) => novo,
+    default: () => '',
+  }),
 });
 
 export type ResearchStateType = typeof ResearchState.State;
@@ -45,15 +51,17 @@ export interface GraphDeps {
   embeddings: EmbeddingsInterface;
   buscar: BuscarDocumentosSimilares;
   gradeLlm: BaseChatModel;
+  answerLlm: BaseChatModel;
   searchProvider: SearchProvider;
   buscarPagina: BuscarPagina;
   inserirDocumentosWeb: InserirDocumentosWeb;
 }
 
-// A regra de negócio do loop vive aqui, na aresta — os nós só produzem os dados.
-export function decidirAposGrade(state: ResearchStateType): 'webSearch' | typeof END {
-  if (state.sufficient) return END;
-  if (state.iterations >= MAX_ITERATIONS) return END;
+// A regra de negócio do loop vive aqui, na aresta — os nós só produzem os dados. Estourar
+// o limite não é erro: é resposta com contexto parcial, que o answer avisa ao usuário.
+export function decidirAposGrade(state: ResearchStateType): 'webSearch' | 'answer' {
+  if (state.sufficient) return 'answer';
+  if (state.iterations >= MAX_ITERATIONS) return 'answer';
   return 'webSearch';
 }
 
@@ -70,9 +78,11 @@ export function buildGraph(deps: GraphDeps) {
         inserirDocumentosWeb: deps.inserirDocumentosWeb,
       }),
     )
+    .addNode('answer', makeAnswerNode(deps.answerLlm))
     .addEdge(START, 'retrieve')
     .addEdge('retrieve', 'grade')
-    .addConditionalEdges('grade', decidirAposGrade, ['webSearch', END])
+    .addConditionalEdges('grade', decidirAposGrade, ['webSearch', 'answer'])
     .addEdge('webSearch', 'retrieve')
+    .addEdge('answer', END)
     .compile();
 }

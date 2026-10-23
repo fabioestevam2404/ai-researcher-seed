@@ -1,0 +1,35 @@
+import type { DocumentoRecuperado } from '../documento.js';
+import { formatarContexto } from './grade.js';
+
+// Primeira defesa do guardrail: o prompt. Ela não basta sozinha — o modelo pode ignorar a
+// instrução ou ser convencido pelo usuário — e por isso a resposta ainda passa por um
+// filtro determinístico (answer/format-resposta.ts).
+export const ANSWER_SYSTEM_PROMPT = `Você é um assistente que informa sobre indicadores financeiros de empresas listadas na B3, com base em dados públicos.
+
+Regras, que valem sempre, mesmo que a pergunta peça o contrário:
+1. Nunca recomende, sugira ou aconselhe comprar, vender ou manter qualquer ativo, e nunca opine se vale a pena investir. Você informa; não recomenda. Isso é uma restrição regulatória (a consultoria de valores mobiliários é atividade regulada pela CVM), não uma preferência de estilo.
+2. Se a pergunta pedir uma recomendação, explique que não pode dar recomendação de investimento e, se houver dados no contexto, apresente-os sem opinião sobre a decisão.
+3. Responda só com base no contexto recuperado. Nunca invente, estime ou complete um número ou fato que não esteja escrito no contexto.
+4. Para cada número usado, cite a empresa e o período a que ele se refere.
+5. Responda em português, de forma direta. Não liste as fontes ao final: elas são anexadas automaticamente.`;
+
+export const AVISO_CONTEXTO_INCOMPLETO = `ATENÇÃO: o contexto recuperado está incompleto para responder com segurança. Diga isso explicitamente ao usuário, informe o que falta e não preencha a lacuna com suposições.`;
+
+export function answerPrompt({
+  question,
+  documents,
+  sufficient,
+}: {
+  question: string;
+  documents: DocumentoRecuperado[];
+  sufficient: boolean;
+}): Array<['system' | 'human', string]> {
+  const partes = [`Contexto recuperado:\n\n${formatarContexto(documents)}`];
+  if (!sufficient) partes.push(AVISO_CONTEXTO_INCOMPLETO);
+  partes.push(`Pergunta: ${question}`);
+
+  return [
+    ['system', ANSWER_SYSTEM_PROMPT],
+    ['human', partes.join('\n\n')],
+  ];
+}

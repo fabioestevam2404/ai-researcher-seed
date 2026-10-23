@@ -15,3 +15,18 @@ export function criarGradeLlm(): ChatVertexAI {
     temperature: 0,
   });
 }
+
+// O answer roda uma vez por pergunta e precisa acertar citação e guardrail: modelo mais
+// capaz que o do grade.
+export function criarAnswerLlm(): ChatVertexAI {
+  const model = process.env.MODEL_ANSWER;
+  if (!model) {
+    throw new Error('MODEL_ANSWER não definido. Configure no .env (ex.: gemini-3.6-flash).');
+  }
+
+  return new ChatVertexAI({
+    model,
+    location: process.env.GOOGLE_CLOUD_LOCATION ?? 'global',
+    temperature: 0,
+  });
+}
