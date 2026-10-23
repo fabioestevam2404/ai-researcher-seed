@@ -35,9 +35,9 @@
 
 ## Fase 3 — Nós retrieve, grade e busca web
 
-- [ ] **T030** `db/retrieve-similar.ts` + nó `retrieve` (factory, top-k 5, similaridade = 1 − distância). Teste com fakes. (RF-03, Aula 9)
-- [ ] **T031** `prompts/grade.ts` + nó `grade` com saída estruturada `{sufficient, missingAspects}`; testes do prompt e do nó. (RF-04)
-- [ ] **T032** `search/`: `SearchProvider`, Serper, Google CSE, `criarSearchProvider()`; testes com `vi.stubGlobal`. (RF-05, Aula 10)
+- [x] **T030** `db/retrieve-similar.ts` + nó `retrieve` (factory, top-k 5, similaridade = 1 − distância). Teste com fakes. (RF-03, Aula 9)
+- [x] **T031** `prompts/grade.ts` + nó `grade` com saída estruturada `{sufficient, missingAspects}`; testes do prompt e do nó. (RF-04)
+- [x] **T032** `search/`: `SearchProvider`, Serper, Google CSE, `criarSearchProvider()`; testes com `vi.stubGlobal`. (RF-05, Aula 10)
 - [ ] **T033** Tabela `documentos_web` + migration + HNSW; coluna/indicação de origem. ⚠ schema. (Aula 11)
 - [ ] **T034** Nó `webSearch`: queries por aspecto, top 3, fetch com timeout 10 s, extração de texto, chunks 1000/100, embedding, gravação com TTL; falhas de página ignoradas. `buscarPagina` injetável. (RF-05)
 - [ ] **T035** Estender a busca para combinar CVM + web não expirada por distância. Aceite: CA-03 em teste.
