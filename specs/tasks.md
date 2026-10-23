@@ -48,7 +48,7 @@
 - [x] **T041** `prompts/answer.ts` + nó `answer` + `answer/format-resposta.ts` (regex, aviso fixo, bloco Fontes deduplicado). Testes: resposta normal, CA-05 (obrigatório), prompt instrui a não recomendar, variações e pedidos disfarçados. Canal `answerText`. (RF-07, Aula 13)
 - [x] **T042** Contratos `ChatRequest` e `ChatEvent` (com `durationMs`). ⚠ contrato.
 - [x] **T043** `POST /api/chat` SSE com headers manuais, `GraphLike`, evento `error` sem derrubar o processo. Teste com grafo fake. (RF-08)
-- [ ] **T044** Teste manual local com Vertex real: CA-01, CA-02, CA-04. Tag `v2`.
+- [x] **T044** Teste manual local com Vertex real: CA-01, CA-02, CA-04. Tag `v2`. Feito via `POST /api/chat` em 2026-10-23. O CA-02 revelou dois defeitos, corrigidos antes da tag: `iterations` do evento do grade vinha como incremento (agora é o total) e o mesmo trecho web, gravado por buscas repetidas, ocupava várias vagas do top-k (agora deduplicado na leitura). A gravação ainda duplica a página a cada busca dentro do TTL — resolver junto com o CA-03 (não buscar de novo o que ainda vale).
 - [x] **T045** ⛔ **Gate de produção do `/api/chat` — bloqueia o push da `main` que leva a rota ao Cloud Run.** Desde a T012 o serviço `ai-researcher-api` está público (`allUsers` → `run.invoker`); com o `/api/chat`, qualquer pessoa geraria custo de Vertex AI. Antes desse push, cumprir **uma** das saídas:
   1. Antecipar a T093 (rate limit global + orçamento diário de tokens verificado antes do primeiro byte SSE) e incluir os testes de 429 no mesmo push; **ou**
   2. Revogar o acesso público (`gcloud run services remove-iam-policy-binding ai-researcher-api --region=us-central1 --member=allUsers --role=roles/run.invoker`) até a T093 existir.
