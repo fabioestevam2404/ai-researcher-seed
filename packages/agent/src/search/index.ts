@@ -1,5 +1,6 @@
 import { modoDemo } from '../demo/modo-demo.js';
 import { demoSearchProvider } from '../demo/web.js';
+import { comResiliencia } from './com-resiliencia.js';
 import { makeGoogleCustomSearchProvider } from './google-custom-search.js';
 import { makeSerperProvider } from './serper.js';
 import type { SearchProvider } from './types.js';
@@ -16,7 +17,8 @@ function exigir(nome: string, env: NodeJS.ProcessEnv): string {
 }
 
 // Único lugar que lê SEARCH_PROVIDER. Recebe o env por parâmetro para o teste não
-// depender do ambiente da máquina. No modo demo nenhuma chave é exigida.
+// depender do ambiente da máquina. No modo demo nenhuma chave é exigida. Os fornecedores
+// reais saem daqui já embrulhados pela resiliência; as fixtures do demo não falham.
 export function criarSearchProvider(env: NodeJS.ProcessEnv = process.env): SearchProvider {
   if (modoDemo(env)) return demoSearchProvider;
 
@@ -24,11 +26,10 @@ export function criarSearchProvider(env: NodeJS.ProcessEnv = process.env): Searc
 
   switch (provider) {
     case 'serper':
-      return makeSerperProvider(exigir('SERPER_API_KEY', env));
+      return comResiliencia(makeSerperProvider(exigir('SERPER_API_KEY', env)));
     case 'google':
-      return makeGoogleCustomSearchProvider(
-        exigir('GOOGLE_CSE_KEY', env),
-        exigir('GOOGLE_CSE_CX', env),
+      return comResiliencia(
+        makeGoogleCustomSearchProvider(exigir('GOOGLE_CSE_KEY', env), exigir('GOOGLE_CSE_CX', env)),
       );
     default:
       throw new Error(`SEARCH_PROVIDER desconhecido: "${provider}". Use "serper" ou "google".`);
