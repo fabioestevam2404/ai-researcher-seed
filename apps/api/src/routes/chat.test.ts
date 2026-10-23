@@ -77,6 +77,20 @@ describe('POST /api/chat', () => {
     }
   });
 
+  it('o evento do grade traz o total de iterações, não o incremento do nó', async () => {
+    const umaPassagem = { grade: { sufficient: false, missingAspects: ['x'], iterations: 1 } };
+    const app = build({ getGraph: async () => grafoFake([umaPassagem, umaPassagem]) });
+
+    const response = await app.inject({
+      method: 'POST',
+      url: '/api/chat',
+      payload: { question: 'Último fato relevante da Vale?' },
+    });
+
+    const iteracoes = lerEventos(response.body).map((e) => (e.node === 'grade' ? e.iterations : 0));
+    expect(iteracoes).toEqual([1, 2]);
+  });
+
   it('erro no meio do stream vira evento de erro genérico, sem detalhe interno', async () => {
     const app = build({ getGraph: async () => grafoFake(passosDoGrafo.slice(0, 1), true) });
 

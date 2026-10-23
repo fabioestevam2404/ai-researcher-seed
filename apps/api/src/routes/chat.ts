@@ -36,6 +36,9 @@ const chatRoute: FastifyPluginAsync<ChatRouteOptions> = async (app, { getGraph }
     });
 
     let inicioEtapa = Date.now();
+    // No streamMode 'updates' o grade devolve só o incremento (1), não o total que o reducer
+    // soma no estado. O painel precisa do total, então a rota acumula como o reducer faria.
+    let iteracoes = 0;
     try {
       const graph = await getGraph();
       const passos = await graph.stream(
@@ -46,7 +49,12 @@ const chatRoute: FastifyPluginAsync<ChatRouteOptions> = async (app, { getGraph }
       for await (const passo of passos) {
         const agora = Date.now();
         for (const evento of traduzirPasso(passo, agora - inicioEtapa)) {
-          escreverEvento(reply.raw, evento);
+          if (evento.node === 'grade') {
+            iteracoes += evento.iterations;
+            escreverEvento(reply.raw, { ...evento, iterations: iteracoes });
+          } else {
+            escreverEvento(reply.raw, evento);
+          }
         }
         inicioEtapa = agora;
       }
