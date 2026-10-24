@@ -84,8 +84,8 @@
 ## Fase 8 — Demo completo e E2E
 
 - [x] **T080** Estender `DEMO=true` ao grafo inteiro: embeddings zero, busca fixa Vale 3T25, grade sempre suficiente, answer fixa; seed nunca em demo. (RF-12) Cada fábrica (`criarEmbeddings`, `criarGradeLlm`, `criarAnswerLlm`, `criarPersistencia`, busca e página) consulta `modoDemo()`; o `real-graph.ts` não sabe que o demo existe. Demo não abre o Postgres nem grava nada (resolve a pendência da T050). API em demo validada com ambiente vazio: 3 etapas em 0,25 s.
-- [ ] **T081** Playwright `apps/web/e2e/chat-happy-path.spec.ts` com webServer (API demo + ng serve). Aceite: CA-12. ⚠ dependência Playwright.
-- [ ] **T082** E2E no job de testes do CI. Tag `v4`.
+- [x] **T081** Playwright `apps/web/e2e/chat-happy-path.spec.ts` com webServer (API demo + ng serve). Aceite: CA-12. ⚠ dependência Playwright. `@playwright/test` 1.64.0 aprovado em 2026-10-24; instalado direto, sem o `playwright-ng-schematics` que a skill oficial sugere (schematic da comunidade, mexeria no `angular.json`). `pnpm test:e2e` na raiz.
+- [x] **T082** E2E no job de testes do CI. Tag `v4`. Primeira execução (run `40095554571`): passou de primeira em 10,2 s, sem retry.
 
 ## Fase 9 — Observabilidade, custo e canary
 
