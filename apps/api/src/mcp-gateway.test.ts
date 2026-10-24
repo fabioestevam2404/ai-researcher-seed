@@ -14,8 +14,19 @@ function postarMcp(app: ReturnType<typeof build>, payload: object) {
 }
 
 describe('gateway /api/mcp', () => {
+  // Decisão do plan.md §9: em produção o MCP não tem rota pública.
+  it('fica desligado por padrão: sem MCP_GATEWAY=true a rota não existe', async () => {
+    const response = await postarMcp(build({ mcpGateway: false }), {
+      method: 'tools/list',
+      params: {},
+    });
+
+    expect(response.statusCode).toBe(404);
+  });
+
   it('CA-11: a tool perguntar responde pela API, com o grafo injetado no build', async () => {
     const app = build({
+      mcpGateway: true,
       getMcpGraph: async () => ({
         invoke: async () => ({ answerText: 'Resposta citada.\n\nFontes:\n- VALE · 3T25' }),
       }),
@@ -31,7 +42,7 @@ describe('gateway /api/mcp', () => {
   });
 
   it('sem grafo configurado, a tool devolve isError e a API continua de pé', async () => {
-    const app = build({ checkDatabase: async () => true });
+    const app = build({ checkDatabase: async () => true, mcpGateway: true });
 
     const response = await postarMcp(app, {
       method: 'tools/call',
@@ -44,7 +55,7 @@ describe('gateway /api/mcp', () => {
   });
 
   it('GET em /api/mcp responde 405', async () => {
-    const response = await build().inject({ method: 'GET', url: '/api/mcp' });
+    const response = await build({ mcpGateway: true }).inject({ method: 'GET', url: '/api/mcp' });
 
     expect(response.statusCode).toBe(405);
   });
