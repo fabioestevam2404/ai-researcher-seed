@@ -10,3 +10,6 @@ pnpm-lock.yaml
 
 # Gerado pelo drizzle-kit a cada migration — reformatar só criaria diff à toa
 packages/agent/drizzle/meta
+
+# Exportado do canvas de design: fica como a ferramenta gerou
+docs/design/prototype/*.html
