@@ -1,5 +1,6 @@
 import { computed, DestroyRef, inject, Injectable, signal } from '@angular/core';
 import { ChatService } from '../api/chat.service';
+import { GraphStore } from './graph.store';
 import { parseAnswer, type Citacao, type RespostaAnalisada } from './parse-answer';
 
 export const INTERVALO_REVELACAO_MS = 70;
@@ -32,6 +33,7 @@ export function tokenize(texto: string): string[] {
 @Injectable({ providedIn: 'root' })
 export class ChatStore {
   private readonly chatService = inject(ChatService);
+  private readonly graphStore = inject(GraphStore);
 
   private readonly _mensagens = signal<Mensagem[]>([]);
   readonly mensagens = this._mensagens.asReadonly();
@@ -63,9 +65,12 @@ export class ChatStore {
 
     const conexao = new AbortController();
     this.conexao = conexao;
+    this.graphStore.iniciar();
 
     try {
       for await (const evento of this.chatService.ask(texto, conexao.signal)) {
+        // Todo evento alimenta o painel do grafo; só answer e error mudam a conversa.
+        this.graphStore.registrar(evento);
         if (evento.node === 'answer') {
           this.revelar(parseAnswer(evento.answer));
           return;
@@ -78,6 +83,7 @@ export class ChatStore {
       // O stream terminou sem resposta nem erro: para o usuário, é falha do mesmo jeito.
       this.falhar();
     } catch {
+      this.graphStore.interromper();
       // Conexão abortada de propósito (store destruído) não é falha a mostrar.
       if (!conexao.signal.aborted) this.falhar();
     }

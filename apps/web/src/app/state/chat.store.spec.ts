@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import type { ChatEvent } from '@hero/contracts';
 import { ChatService } from '../api/chat.service';
+import { GraphStore } from './graph.store';
 import {
   ChatStore,
   INTERVALO_REVELACAO_MS,
@@ -122,6 +123,18 @@ describe('ChatStore', () => {
     await store.perguntar('Primeira?');
     await store.perguntar('Segunda?');
     expect(store.mensagens().filter((m) => m.autor === 'usuario')).toHaveLength(1);
+  });
+
+  it('cada evento do stream também alimenta o painel do grafo', async () => {
+    const { store } = montar(eventosNormais);
+
+    await store.perguntar('Receita da Vale?');
+
+    expect(
+      TestBed.inject(GraphStore)
+        .etapas()
+        .map((e) => e.nome),
+    ).toEqual(['retrieve', 'grade', 'answer']);
   });
 
   it('ao ser destruído, para a revelação e fecha a conexão', async () => {
