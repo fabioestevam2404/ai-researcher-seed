@@ -1,0 +1,89 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.faixa {
+  max-width: var(--largura-maxima);
+  margin: 0 auto;
+  padding-inline: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.cabecalho {
+  background: var(--cor-superficie);
+  border-bottom: 1px solid var(--cor-borda);
+
+  .faixa {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-block: 14px;
+  }
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--cor-texto);
+
+  svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+.nome {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.subtitulo {
+  font-size: 13px;
+  color: var(--cor-texto-suave);
+}
+
+nav {
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+
+  a {
+    text-decoration: none;
+    color: var(--cor-texto-suave);
+  }
+
+  a.ativo {
+    color: var(--cor-texto);
+    font-weight: 500;
+  }
+}
+
+.disclaimer {
+  background: var(--cor-superficie);
+  border-bottom: 1px solid var(--cor-borda);
+  font-size: 14px;
+  color: var(--cor-texto-2);
+
+  .faixa {
+    gap: 10px;
+    padding-block: 10px;
+  }
+
+  svg {
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}

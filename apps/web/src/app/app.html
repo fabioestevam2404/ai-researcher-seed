@@ -1,1 +1,34 @@
+<header class="cabecalho">
+  <div class="faixa">
+    <a class="marca" routerLink="/">
+      <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 20h18M6 16v-6M11 16V6M16 16v-4" />
+        <circle cx="18.5" cy="6.5" r="2.5" />
+      </svg>
+      <span class="nome">AI Researcher</span>
+      <span class="subtitulo">Indicadores de 20 empresas da B3 · dados da CVM</span>
+    </a>
+    <nav aria-label="Principal">
+      <a routerLink="/" routerLinkActive="ativo" [routerLinkActiveOptions]="{ exact: true }"
+        >Chat</a
+      >
+      <a routerLink="/health" routerLinkActive="ativo">Health</a>
+    </nav>
+  </div>
+</header>
+
+<!--
+  Exigência regulatória (a CVM regula consultoria de valores mobiliários): o aviso fica fora de
+  qualquer @if, sem botão de fechar, no layout de todas as rotas — inclusive durante o streaming.
+-->
+<div class="disclaimer" role="note">
+  <div class="faixa">
+    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v5M12 8h.01" />
+    </svg>
+    <span>Este assistente apresenta informações públicas, não recomendação de investimento.</span>
+  </div>
+</div>
+
 <router-outlet />

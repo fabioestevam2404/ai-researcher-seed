@@ -1,1 +1,58 @@
-/* You can add global styles to this file, and also import other style files */
+// Tokens do protótipo (docs/design/prototype/), definidos uma única vez. Componentes usam os
+// tokens, nunca o hexadecimal. Regra da skill frontend-design: ciano é a única cor de estado,
+// e verde/vermelho não existem neste produto.
+:root {
+  --cor-fundo: #f6f7f9;
+  --cor-superficie: #ffffff;
+  --cor-borda: #e3e6eb;
+  --cor-borda-forte: #cdd2da;
+  --cor-divisor: #eef0f3;
+  --cor-texto: #16191f;
+  --cor-texto-2: #3a404b;
+  --cor-texto-suave: #5b6270;
+  --cor-pendente: #9aa1ad;
+  --cor-desabilitado: #d5d9e0;
+
+  // Estado: em execução, busca web, banner de fallback.
+  --cor-estado: #0b5566;
+  --cor-estado-fundo: #e6f6fa;
+  --cor-estado-borda: #b9e3ee;
+
+  --cor-link: #0e6a80;
+  --cor-link-hover: #0a4f60;
+
+  --fonte-texto: 'IBM Plex Sans', system-ui, sans-serif;
+  --fonte-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --raio-bolha: 16px;
+  --raio-cartao: 14px;
+  --raio-controle: 10px;
+  --raio-item: 8px;
+
+  --largura-maxima: 1240px;
+}
+
+body {
+  margin: 0;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  font-family: var(--fonte-texto);
+}
+
+a {
+  color: var(--cor-link);
+}
+
+a:hover {
+  color: var(--cor-link-hover);
+}
+
+// Texto só para leitor de tela (rótulo do campo de pergunta, por exemplo).
+.visualmente-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
