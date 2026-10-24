@@ -147,3 +147,7 @@ vite.config.ts.timestamp-*
 
 # Angular
 .angular/
+
+# Playwright (resultados e relatórios de execução do E2E)
+test-results/
+playwright-report/
