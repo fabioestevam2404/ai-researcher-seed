@@ -89,11 +89,11 @@
 
 ## Fase 9 — Observabilidade, custo e canary
 
-- [ ] **T090** Langfuse: OTel no boot de API e dos dois transportes MCP; `CallbackHandler` por chamada; sem chaves → no-op. Teste com `DEMO=false`. (RNF-05, Aula 22)
-- [ ] **T091** `prom-client`: `llm_tokens_total`, `llm_cost_usd_total`, callback por `runId` a partir de `usage_metadata`, tabela de preços; callbacks somados no call site. (RNF-06, Aula 23)
-- [ ] **T092** `GET /api/metrics` com interface mínima do Registry.
-- [ ] **T093** Rate limit (`@fastify/rate-limit`, opções calculadas no `build()`, isenção `/health` e `/metrics`) + orçamento diário em memória antes do primeiro byte SSE; mapear 429 no error handler. Aceite: CA-10.
-- [ ] **T094** Decidir pendências §9 do plan (acesso MCP, SSE via Hosting, limites).
+- [ ] **T090** Langfuse: OTel no boot de API e dos dois transportes MCP; `CallbackHandler` por chamada; sem chaves → no-op. Teste com `DEMO=false`. (RNF-05, Aula 22) Código pronto (`@langfuse/otel` e `@langfuse/langchain` 5.13.1, `@opentelemetry/sdk-node` 0.223.0, `exportMode: 'immediate'` por causa do Cloud Run). ⏳ Falta o trace real: depende de conta e chaves do Langfuse.
+- [x] **T091** `prom-client`: `llm_tokens_total`, `llm_cost_usd_total`, callback por `runId` a partir de `usage_metadata`, tabela de preços; callbacks somados no call site. (RNF-06, Aula 23) `ContadorDeTokens` no agente (modelo por `ls_model_name`); os mesmos tokens alimentam métricas e orçamento. ⚠ Preços em `apps/api/src/metricas.ts` vêm de agregadores (página oficial ilegível em 2026-10-24): conferir no console do Google.
+- [x] **T092** `GET /api/metrics` com interface mínima do Registry.
+- [x] **T093** Rate limit (`@fastify/rate-limit`, opções calculadas no `build()`, isenção `/health` e `/metrics`) + orçamento diário em memória antes do primeiro byte SSE; mapear 429 no error handler. Aceite: CA-10. Rate limit global (um balde só): por IP seria contornável, porque atrás do Hosting o IP vem num cabeçalho forjável. 429 do orçamento com `Retry-After` até a meia-noite UTC.
+- [x] **T094** Decidir pendências §9 do plan (acesso MCP, SSE via Hosting, limites). Decidido em 2026-10-24 — ver plan.md §9.
 - [ ] **T095** `deploy.yml` canary: candidata `--no-traffic --tag`, smoke, 5/25/50/100 com gates, rollback para revisão estável explícita, frontend após backend, deploys serializados (`concurrency`). ⚠ workflow. (RNF-09)
 - [ ] **T096** Exercitar rollback com gate forçado a falhar. Aceite: CA-15.
 - [ ] **T097** `capstone:check` 11/11 em produção (CA-14). Tag `v5`.
