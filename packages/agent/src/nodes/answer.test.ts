@@ -64,6 +64,11 @@ describe('answerPrompt', () => {
     expect(ANSWER_SYSTEM_PROMPT).toContain('Nunca invente, estime ou complete um número');
   });
 
+  // A interface mostra o texto como texto: Markdown apareceria com os asteriscos crus.
+  it('pede texto simples, sem Markdown', () => {
+    expect(ANSWER_SYSTEM_PROMPT).toContain('sem Markdown');
+  });
+
   it('com contexto insuficiente, manda o modelo avisar o que falta', () => {
     const [, incompleto] = answerPrompt({
       question: 'x',
