@@ -71,15 +71,15 @@
 
 ## Fase 7 — Frontend
 
-- [ ] **T070** Protótipo (Claude Design ou Stitch) exportado em HTML standalone em `docs/design/prototype/`. (Aula 18)
-- [ ] **T071** Skill `.claude/skills/frontend-design/` a partir do protótipo; regra: só ciano como cor de estado.
-- [ ] **T072** Tokens globais em `styles.scss` + casca estática do chat (header, disclaimer, mensagens, composer).
+- [x] **T070** Protótipo (Claude Design ou Stitch) exportado em HTML standalone em `docs/design/prototype/`. (Aula 18) Feito num canvas de design do claude.ai (duas pranchetas: resposta concluída e pergunta em andamento), aprovado em 2026-10-23.
+- [x] **T071** Skill `.claude/skills/frontend-design/` a partir do protótipo; regra: só ciano como cor de estado.
+- [x] **T072** Tokens globais em `styles.scss` + casca estática do chat (header, disclaimer, mensagens, composer). Header e disclaimer no `App` (todas as rotas); mensagens e composer entraram direto ligados ao store, na T076.
 - [x] **T073** Rotas (`''` → Chat, `health` → Health) com `provideRouter`. (Aula 19) Rota curinga volta para o chat. A referência oficial usa `harness.router`, que não existe no Angular 22.1 — o teste injeta o `Router`.
 - [x] **T074** `ChatService.ask()` (fetch + ReadableStream → AsyncGenerator de `ChatEvent`). Eventos validados com `chatEventSchema`; acento dividido entre pedaços coberto por teste.
 - [x] **T075** [P] `ChatStore` (revelação 70 ms, `tokenize`, erro fixo, limpeza de timers) e `parseAnswer` com testes. Web sem data-base no rótulo: a origem é o host da URL.
-- [ ] **T076** Ligar o componente Chat (Enter/Shift+Enter, botão desabilitado também no visual, `@if`/`@for`).
-- [ ] **T077** `GraphStore` (conclui última etapa e prevê próxima; espelha `MAX_ITERATIONS` sem importar `@hero/agent`) + `GraphPanelComponent` (timeline, spinner, check, duração do servidor, banner de fallback ciano). (Aula 20) `GraphStore` pronto e ligado ao `ChatStore`; o `GraphPanelComponent` aguarda o protótipo (T070).
-- [ ] **T078** Disclaimer incondicional (sem `@if`, sem fechar). Verificação no navegador. (Aula 21)
+- [x] **T076** Ligar o componente Chat (Enter/Shift+Enter, botão desabilitado também no visual, `@if`/`@for`). Campo com signal forms (`form()` + `[formField]`), como manda a skill oficial.
+- [x] **T077** `GraphStore` (conclui última etapa e prevê próxima; espelha `MAX_ITERATIONS` sem importar `@hero/agent`) + `GraphPanelComponent` (timeline, spinner, check, duração do servidor, banner de fallback ciano). (Aula 20) O banner fica gravado em cada resposta (`buscouNaWeb`), não no estado global do painel.
+- [x] **T078** Disclaimer incondicional (sem `@if`, sem fechar). Verificação no navegador. (Aula 21) Verificado no Edge headless (DevTools Protocol, sem dependência nova) com API em `DEMO=true`: andamento, resposta concluída e largura de celular, sem erro no console. A verificação revelou Markdown cru na resposta — corrigido no prompt do answer (regra 6, texto simples). ⚠ Bundle inicial com 674 kB passa do aviso de 500 kB (erro só em 1 MB): o zod dos contratos entra no navegador para validar os eventos SSE.
 
 ## Fase 8 — Demo completo e E2E
 
