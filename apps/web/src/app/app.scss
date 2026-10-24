@@ -49,6 +49,11 @@
 .subtitulo {
   font-size: 13px;
   color: var(--cor-texto-suave);
+
+  // No celular o subtítulo espremeria a marca em duas linhas; o disclaimer já dá o contexto.
+  @media (max-width: 600px) {
+    display: none;
+  }
 }
 
 nav {
