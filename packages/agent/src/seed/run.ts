@@ -5,7 +5,7 @@ import { criarDb } from '../db/client.js';
 import { criarUpsertDocumentos } from '../db/upsert-documentos.js';
 import { criarEmbeddings } from '../llm/embeddings.js';
 import { arquivoCorpusSchema, type DocumentoCorpus } from './documento-corpus.js';
-import { seedDocumentos } from './seed.js';
+import { garantirForaDoModoDemo, seedDocumentos } from './seed.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const DOCUMENTOS_DIR = path.join(HERE, '../../../corpus/data/documentos');
@@ -25,6 +25,9 @@ async function lerCorpus(): Promise<DocumentoCorpus[]> {
 }
 
 async function main() {
+  // Primeira coisa, antes de ler corpus ou abrir o banco.
+  garantirForaDoModoDemo();
+
   const databaseUrl = process.env.DATABASE_URL;
   if (!databaseUrl) {
     throw new Error('DATABASE_URL não definido. Configure no .env da raiz.');

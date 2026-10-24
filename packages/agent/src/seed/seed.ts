@@ -1,5 +1,14 @@
 import type { EmbeddingsInterface } from '@langchain/core/embeddings';
+import { modoDemo } from '../demo/modo-demo.js';
 import type { DocumentoCorpus } from './documento-corpus.js';
+
+// No modo demo os embeddings são vetores de zeros: gravá-los sobrescreveria o índice real
+// com vetores inúteis, e toda busca passaria a devolver qualquer coisa.
+export function garantirForaDoModoDemo(env: NodeJS.ProcessEnv = process.env): void {
+  if (modoDemo(env)) {
+    throw new Error('O seed nunca roda em modo demo. Remova DEMO=true do ambiente.');
+  }
+}
 
 // Lotes de 10: uma chamada ao Vertex AI por lote, em vez de uma por documento.
 export const TAMANHO_LOTE = 10;
