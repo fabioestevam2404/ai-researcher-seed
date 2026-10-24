@@ -3,7 +3,7 @@ import { getRealGraph } from './real-graph.js';
 
 // Construir o grafo real não abre conexão nem chama o Vertex: o pool do Postgres só conecta na
 // primeira consulta, e os clientes do LangChain só autenticam na primeira chamada. Por isso
-// dá para testar a memoização sem rede. DEMO dispensa a chave do Serper.
+// dá para testar a memoização sem rede.
 const ambienteCompleto = {
   DATABASE_URL: 'postgresql://teste:teste@127.0.0.1:1/teste',
   // O ChatVertexAI confere o formato do nome no construtor: precisa parecer um Gemini.
@@ -11,7 +11,8 @@ const ambienteCompleto = {
   MODEL_ANSWER: 'gemini-3.6-flash',
   MODEL_EMBEDDING: 'gemini-embedding-001',
   GOOGLE_CLOUD_PROJECT: 'projeto-teste',
-  DEMO: 'true',
+  SERPER_API_KEY: 'chave-falsa',
+  DEMO: 'false',
 };
 
 afterEach(() => {

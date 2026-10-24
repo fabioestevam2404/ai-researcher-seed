@@ -1,10 +1,14 @@
 import type { EmbeddingsInterface } from '@langchain/core/embeddings';
 import { VertexAIEmbeddings } from '@langchain/google-vertexai';
 import { EMBEDDING_DIMENSIONS } from '../db/schema.js';
+import { demoEmbeddings } from '../demo/grafo.js';
+import { modoDemo } from '../demo/modo-demo.js';
 
 // Cliente de embeddings real (Vertex AI). Fica numa função própria porque o modo DEMO
-// vai trocá-lo por um fake sem rede — quem consome recebe só a interface do LangChain.
+// troca por um fake sem rede — quem consome recebe só a interface do LangChain.
 export function criarEmbeddings(): EmbeddingsInterface {
+  if (modoDemo()) return demoEmbeddings;
+
   const model = process.env.MODEL_EMBEDDING;
   if (!model) {
     throw new Error('MODEL_EMBEDDING não definido. Configure no .env (ex.: gemini-embedding-001).');
