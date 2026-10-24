@@ -25,6 +25,8 @@ export interface BuildOptions {
   mcpGateway?: boolean;
   // Fábrica do contador de tokens (vem do agente, no index.ts). Sem ela, nada é contado.
   criarContadorDeTokens?: (aoUsar: (uso: UsoDeTokens) => void) => object;
+  // Callbacks de observabilidade (Langfuse), também do agente. Sem chaves, devolve [].
+  criarCallbacksDeObservabilidade?: () => object[];
   metricas?: Metricas;
 }
 
@@ -48,6 +50,7 @@ export function build({
   orcamento = new OrcamentoDiario(limites.orcamentoDiarioTokens),
   mcpGateway = process.env.MCP_GATEWAY === 'true',
   criarContadorDeTokens,
+  criarCallbacksDeObservabilidade = () => [],
   metricas = criarMetricas(),
 }: BuildOptions = {}) {
   const app = Fastify({ logger: true });
@@ -58,7 +61,10 @@ export function build({
     orcamento.registrar(uso.tokensEntrada + uso.tokensSaida);
     metricas.registrarUso(uso);
   };
-  const criarCallbacks = () => (criarContadorDeTokens ? [criarContadorDeTokens(aoUsar)] : []);
+  const criarCallbacks = () => [
+    ...(criarContadorDeTokens ? [criarContadorDeTokens(aoUsar)] : []),
+    ...criarCallbacksDeObservabilidade(),
+  ];
 
   // Registrado na raiz antes das rotas: vale para todas elas, inclusive as de /api.
   registrarTratamentoDeErros(app);
@@ -83,6 +89,8 @@ export function build({
         api.register(mcpHttpPlugin, {
           getGraph: getMcpGraph,
           logErro: (error) => app.log.error(error, 'Falha na tool perguntar (MCP)'),
+          // Mesmas callbacks do chat: pergunta pelo MCP também conta no orçamento e nas métricas.
+          criarCallbacks,
         });
       }
     },

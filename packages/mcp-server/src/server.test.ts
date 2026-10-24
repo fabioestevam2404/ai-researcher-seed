@@ -73,6 +73,27 @@ describe('servidor MCP', () => {
     expect(errosLogados).toHaveLength(1);
   });
 
+  it('cada chamada leva callbacks novas ao grafo (Langfuse, contador de tokens)', async () => {
+    const recebidas: unknown[] = [];
+    const server = criarMcpServer({
+      getGraph: async () => ({
+        invoke: async (_input, options) => {
+          recebidas.push(options?.callbacks);
+          return { answerText: 'ok' };
+        },
+      }),
+      criarCallbacks: () => [{ marcador: true }],
+    });
+    const [transporteCliente, transporteServidor] = InMemoryTransport.createLinkedPair();
+    await server.connect(transporteServidor);
+    const client = new Client({ name: 'teste', version: '0.0.0' });
+    await client.connect(transporteCliente);
+
+    await client.callTool({ name: 'perguntar', arguments: { pergunta: 'x' } });
+
+    expect(recebidas).toEqual([[{ marcador: true }]]);
+  });
+
   it('pergunta vazia é recusada pela validação, sem chegar ao grafo', async () => {
     let chamadas = 0;
     const { client } = await conectar(async () => ({

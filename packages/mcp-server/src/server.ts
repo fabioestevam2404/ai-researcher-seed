@@ -4,7 +4,10 @@ import { chatRequestSchema } from '@hero/contracts';
 // O servidor não importa os tipos do LangGraph: recebe o grafo por esta interface mínima, só
 // com o método que a tool usa. No teste, um grafo fake cumpre o mesmo contrato.
 export interface GraphLike {
-  invoke(input: { question: string }): Promise<{ answerText: string }>;
+  invoke(
+    input: { question: string },
+    options?: { callbacks?: object[] },
+  ): Promise<{ answerText: string }>;
 }
 
 export type GetGraph = () => Promise<GraphLike>;
@@ -13,6 +16,8 @@ export interface McpServerOptions {
   getGraph: GetGraph;
   // Para onde vai o detalhe do erro. No stdio, stdout é o canal do protocolo — log só no stderr.
   logErro?: (error: unknown) => void;
+  // Callbacks novas a cada chamada (Langfuse; na API, também o contador de tokens).
+  criarCallbacks?: () => object[];
 }
 
 // A descrição é o que o agente cliente lê para decidir quando chamar a tool. Ela diz o que
@@ -29,7 +34,11 @@ export const DESCRICAO_PERGUNTAR = [
 export const MENSAGEM_ERRO_GENERICA =
   'Não foi possível concluir a pesquisa. Tente novamente em instantes.';
 
-export function criarMcpServer({ getGraph, logErro = console.error }: McpServerOptions) {
+export function criarMcpServer({
+  getGraph,
+  logErro = console.error,
+  criarCallbacks = () => [],
+}: McpServerOptions) {
   const server = new McpServer({ name: 'ai-researcher', version: '0.0.0' });
 
   server.registerTool(
@@ -43,7 +52,10 @@ export function criarMcpServer({ getGraph, logErro = console.error }: McpServerO
     async ({ pergunta }) => {
       try {
         const graph = await getGraph();
-        const { answerText } = await graph.invoke({ question: pergunta });
+        const { answerText } = await graph.invoke(
+          { question: pergunta },
+          { callbacks: criarCallbacks() },
+        );
         return { content: [{ type: 'text', text: answerText }] };
       } catch (error) {
         // Mesma política do /api/chat: o detalhe vai para o log, o cliente recebe só o genérico.
