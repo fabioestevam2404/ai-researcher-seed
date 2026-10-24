@@ -83,7 +83,7 @@
 
 ## Fase 8 — Demo completo e E2E
 
-- [ ] **T080** Estender `DEMO=true` ao grafo inteiro: embeddings zero, busca fixa Vale 3T25, grade sempre suficiente, answer fixa; seed nunca em demo. (RF-12)
+- [x] **T080** Estender `DEMO=true` ao grafo inteiro: embeddings zero, busca fixa Vale 3T25, grade sempre suficiente, answer fixa; seed nunca em demo. (RF-12) Cada fábrica (`criarEmbeddings`, `criarGradeLlm`, `criarAnswerLlm`, `criarPersistencia`, busca e página) consulta `modoDemo()`; o `real-graph.ts` não sabe que o demo existe. Demo não abre o Postgres nem grava nada (resolve a pendência da T050). API em demo validada com ambiente vazio: 3 etapas em 0,25 s.
 - [ ] **T081** Playwright `apps/web/e2e/chat-happy-path.spec.ts` com webServer (API demo + ng serve). Aceite: CA-12. ⚠ dependência Playwright.
 - [ ] **T082** E2E no job de testes do CI. Tag `v4`.
 
