@@ -74,11 +74,11 @@
 - [ ] **T070** Protótipo (Claude Design ou Stitch) exportado em HTML standalone em `docs/design/prototype/`. (Aula 18)
 - [ ] **T071** Skill `.claude/skills/frontend-design/` a partir do protótipo; regra: só ciano como cor de estado.
 - [ ] **T072** Tokens globais em `styles.scss` + casca estática do chat (header, disclaimer, mensagens, composer).
-- [ ] **T073** Rotas (`''` → Chat, `health` → Health) com `provideRouter`. (Aula 19)
-- [ ] **T074** `ChatService.ask()` (fetch + ReadableStream → AsyncGenerator de `ChatEvent`).
-- [ ] **T075** [P] `ChatStore` (revelação 70 ms, `tokenize`, erro fixo, limpeza de timers) e `parseAnswer` com testes.
+- [x] **T073** Rotas (`''` → Chat, `health` → Health) com `provideRouter`. (Aula 19) Rota curinga volta para o chat. A referência oficial usa `harness.router`, que não existe no Angular 22.1 — o teste injeta o `Router`.
+- [x] **T074** `ChatService.ask()` (fetch + ReadableStream → AsyncGenerator de `ChatEvent`). Eventos validados com `chatEventSchema`; acento dividido entre pedaços coberto por teste.
+- [x] **T075** [P] `ChatStore` (revelação 70 ms, `tokenize`, erro fixo, limpeza de timers) e `parseAnswer` com testes. Web sem data-base no rótulo: a origem é o host da URL.
 - [ ] **T076** Ligar o componente Chat (Enter/Shift+Enter, botão desabilitado também no visual, `@if`/`@for`).
-- [ ] **T077** `GraphStore` (conclui última etapa e prevê próxima; espelha `MAX_ITERATIONS` sem importar `@hero/agent`) + `GraphPanelComponent` (timeline, spinner, check, duração do servidor, banner de fallback ciano). (Aula 20)
+- [ ] **T077** `GraphStore` (conclui última etapa e prevê próxima; espelha `MAX_ITERATIONS` sem importar `@hero/agent`) + `GraphPanelComponent` (timeline, spinner, check, duração do servidor, banner de fallback ciano). (Aula 20) `GraphStore` pronto e ligado ao `ChatStore`; o `GraphPanelComponent` aguarda o protótipo (T070).
 - [ ] **T078** Disclaimer incondicional (sem `@if`, sem fechar). Verificação no navegador. (Aula 21)
 
 ## Fase 8 — Demo completo e E2E
