@@ -28,6 +28,11 @@ jobs:
       - run: pnpm build
       - run: pnpm test
       - run: pnpm lint
+      # E2E (CA-12): a API sobe em DEMO=true (sem banco, Vertex AI nem rede) e o Angular em
+      # ng serve; o Playwright dirige um Chromium de verdade contra os dois.
+      - name: Instala o Chromium do Playwright
+        run: pnpm --filter @hero/web exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
 
   deploy:
     needs: test
