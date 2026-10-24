@@ -1,0 +1,52 @@
+<aside class="painel" aria-label="Pipeline do agente">
+  <div class="topo">
+    <h2>Pipeline</h2>
+    @if (iteracoes() > 0) {
+    <span class="contador">{{ iteracoes() }}ª iteração</span>
+    }
+  </div>
+
+  @if (linhas().length === 0) {
+  <p class="legenda">As etapas do agente aparecem aqui quando você faz uma pergunta.</p>
+  } @else {
+  <ol>
+    @for (linha of linhas(); track $index) {
+    <li
+      [class.executando]="linha.estado === 'executando'"
+      [class.busca-web]="linha.ehBuscaWeb"
+      [class.pendente]="linha.estado === 'pendente'"
+    >
+      @switch (linha.estado) { @case ('concluida') {
+      <svg class="icone" viewBox="0 0 24 24" role="img" aria-label="Concluída">
+        <path d="M5 12.5l4.5 4.5L19 7.5" />
+      </svg>
+      } @case ('executando') {
+      <svg class="icone spinner" viewBox="0 0 24 24" role="img" aria-label="Em execução">
+        <path d="M12 3a9 9 0 1 1-9 9" />
+      </svg>
+      } @case ('pendente') {
+      <svg class="icone" viewBox="0 0 24 24" role="img" aria-label="Pendente">
+        <circle cx="12" cy="12" r="7" />
+      </svg>
+      } }
+      <span class="nome">
+        {{ linha.rotulo }} @if (linha.detalhe) {
+        <span class="detalhe">· {{ linha.detalhe }}</span>
+        }
+      </span>
+      @switch (linha.estado) { @case ('concluida') {
+      <span class="duracao">{{ linha.duracao }}</span>
+      } @case ('executando') {
+      <span class="situacao">em execução</span>
+      } @case ('pendente') {
+      <span class="situacao">pendente</span>
+      } }
+    </li>
+    }
+  </ol>
+  <p class="legenda">
+    Durações medidas no servidor. Depois da busca web o grafo volta ao retrieve; cada passagem
+    aparece numa linha.
+  </p>
+  }
+</aside>

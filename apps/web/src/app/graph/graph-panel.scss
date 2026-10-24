@@ -1,0 +1,122 @@
+.painel {
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-cartao);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.contador,
+.legenda {
+  font-size: 12px;
+  color: var(--cor-texto-suave);
+}
+
+.legenda {
+  margin: 0;
+  line-height: 1.5;
+}
+
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+  border-radius: var(--raio-item);
+  font-size: 14px;
+  color: var(--cor-texto);
+}
+
+.icone {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nome {
+  flex: 1;
+}
+
+.detalhe,
+.situacao,
+.duracao {
+  color: var(--cor-texto-suave);
+}
+
+.duracao {
+  font-family: var(--fonte-mono);
+  font-size: 13px;
+}
+
+.situacao {
+  font-size: 13px;
+}
+
+// Ciano é a única cor de estado: a etapa em execução e a busca web.
+li.executando,
+li.busca-web {
+  background: var(--cor-estado-fundo);
+  color: var(--cor-estado);
+
+  .detalhe,
+  .situacao,
+  .duracao {
+    color: var(--cor-estado);
+  }
+}
+
+li.executando .nome {
+  font-weight: 500;
+}
+
+li.pendente {
+  color: var(--cor-texto-suave);
+
+  .icone {
+    color: var(--cor-pendente);
+  }
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: girar 0.9s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}
