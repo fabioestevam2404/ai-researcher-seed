@@ -5,7 +5,8 @@ import type { ChatEvent, DocumentoResumo } from '@hero/contracts';
 export interface GraphLike {
   stream(
     input: { question: string },
-    options: { streamMode: 'updates' },
+    // callbacks: os handlers do LangChain (contador de tokens) que acompanham esta execução.
+    options: { streamMode: 'updates'; callbacks?: object[] },
   ): Promise<AsyncIterable<Record<string, unknown>>>;
 }
 

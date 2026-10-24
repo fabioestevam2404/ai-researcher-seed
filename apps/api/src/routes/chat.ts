@@ -6,13 +6,18 @@ import { traduzirPasso, type GetGraph } from './chat-event.js';
 export interface ChatRouteOptions {
   getGraph: GetGraph;
   orcamento: OrcamentoDiario;
+  // Callbacks novas a cada pergunta (contador de tokens que alimenta orçamento e métricas).
+  criarCallbacks: () => object[];
 }
 
 function escreverEvento(raw: NodeJS.WritableStream, evento: ChatEvent) {
   raw.write(`data: ${JSON.stringify(evento)}\n\n`);
 }
 
-const chatRoute: FastifyPluginAsync<ChatRouteOptions> = async (app, { getGraph, orcamento }) => {
+const chatRoute: FastifyPluginAsync<ChatRouteOptions> = async (
+  app,
+  { getGraph, orcamento, criarCallbacks },
+) => {
   app.post('/chat', async (request, reply) => {
     // Corpo inválido lança ZodError, e o tratamento central de erros responde 400. Isso só
     // funciona porque acontece antes do hijack: depois dele, erro vira evento SSE.
@@ -38,7 +43,12 @@ const chatRoute: FastifyPluginAsync<ChatRouteOptions> = async (app, { getGraph, 
     let iteracoes = 0;
     try {
       const graph = await getGraph();
-      const passos = await graph.stream({ question }, { streamMode: 'updates' });
+      // As callbacks entram aqui, no único call site do grafo: todos os nós e LLMs desta
+      // pergunta passam por elas.
+      const passos = await graph.stream(
+        { question },
+        { streamMode: 'updates', callbacks: criarCallbacks() },
+      );
 
       for await (const passo of passos) {
         const agora = Date.now();

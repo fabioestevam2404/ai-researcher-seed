@@ -7,6 +7,8 @@ import type { GetGraph as GetChatGraph } from './routes/chat-event.js';
 import { checkDatabase as defaultCheckDatabase } from './db.js';
 import { registrarTratamentoDeErros } from './erros.js';
 import { lerLimites, type Limites } from './limites.js';
+import { criarMetricas, type Metricas, type UsoDeTokens } from './metricas.js';
+import metricsRoute from './routes/metrics.js';
 import { OrcamentoDiario } from './orcamento.js';
 
 // Chat e MCP recebem o grafo por portas separadas, cada uma com a interface mínima que usa
@@ -21,6 +23,9 @@ export interface BuildOptions {
   // Gateway /api/mcp desligado por padrão (plan.md §9, item 1): em produção o MCP fica só no
   // stdio e no servidor standalone local. Liga com MCP_GATEWAY=true.
   mcpGateway?: boolean;
+  // Fábrica do contador de tokens (vem do agente, no index.ts). Sem ela, nada é contado.
+  criarContadorDeTokens?: (aoUsar: (uso: UsoDeTokens) => void) => object;
+  metricas?: Metricas;
 }
 
 // Sem grafo injetado, chat e MCP respondem com erro em vez de derrubar a API — o health
@@ -42,8 +47,18 @@ export function build({
   limites = lerLimites(),
   orcamento = new OrcamentoDiario(limites.orcamentoDiarioTokens),
   mcpGateway = process.env.MCP_GATEWAY === 'true',
+  criarContadorDeTokens,
+  metricas = criarMetricas(),
 }: BuildOptions = {}) {
   const app = Fastify({ logger: true });
+
+  // Cada chamada de LLM conta duas vezes: no teto de gasto do dia e nos contadores do
+  // Prometheus. Os dois partem do mesmo usage_metadata real.
+  const aoUsar = (uso: UsoDeTokens) => {
+    orcamento.registrar(uso.tokensEntrada + uso.tokensSaida);
+    metricas.registrarUso(uso);
+  };
+  const criarCallbacks = () => (criarContadorDeTokens ? [criarContadorDeTokens(aoUsar)] : []);
 
   // Registrado na raiz antes das rotas: vale para todas elas, inclusive as de /api.
   registrarTratamentoDeErros(app);
@@ -61,7 +76,8 @@ export function build({
   app.register(
     async (api) => {
       api.register(healthRoute, { checkDatabase });
-      api.register(chatRoute, { getGraph: getChatGraph, orcamento });
+      api.register(chatRoute, { getGraph: getChatGraph, orcamento, criarCallbacks });
+      api.register(metricsRoute, { registry: metricas.registry });
       // Gateway MCP: o mesmo plugin do servidor standalone, aqui em /api/mcp.
       if (mcpGateway) {
         api.register(mcpHttpPlugin, {
