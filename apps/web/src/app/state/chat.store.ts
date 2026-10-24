@@ -20,6 +20,9 @@ export interface MensagemAssistente {
   texto: string;
   citacoes: Citacao[];
   estado: 'aguardando' | 'revelando' | 'concluida' | 'erro';
+  // Gravado na própria mensagem: o painel do grafo mostra só a pergunta atual, mas cada
+  // resposta antiga continua dizendo se precisou da web.
+  buscouNaWeb: boolean;
 }
 
 export type Mensagem = MensagemUsuario | MensagemAssistente;
@@ -60,7 +63,7 @@ export class ChatStore {
     this._mensagens.update((atuais) => [
       ...atuais,
       { autor: 'usuario', texto },
-      { autor: 'assistente', texto: '', citacoes: [], estado: 'aguardando' },
+      { autor: 'assistente', texto: '', citacoes: [], estado: 'aguardando', buscouNaWeb: false },
     ]);
 
     const conexao = new AbortController();
@@ -94,6 +97,7 @@ export class ChatStore {
   private revelar({ texto, citacoes }: RespostaAnalisada) {
     const palavras = tokenize(texto);
     let reveladas = 0;
+    this.atualizarResposta({ buscouNaWeb: this.graphStore.usouBuscaWeb() });
 
     const avancar = () => {
       if (reveladas >= palavras.length) {

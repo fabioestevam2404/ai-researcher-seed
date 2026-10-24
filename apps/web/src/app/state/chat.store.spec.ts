@@ -135,6 +135,20 @@ describe('ChatStore', () => {
         .etapas()
         .map((e) => e.nome),
     ).toEqual(['retrieve', 'grade', 'answer']);
+    expect(resposta(store).buscouNaWeb).toBe(false);
+  });
+
+  it('resposta que passou pela busca web guarda isso na própria mensagem', async () => {
+    const { store } = montar([
+      { node: 'retrieve', durationMs: 1, documents: [] },
+      { node: 'grade', durationMs: 1, sufficient: false, missingAspects: ['x'], iterations: 1 },
+      { node: 'webSearch', durationMs: 1 },
+      { node: 'answer', durationMs: 1, answer: RESPOSTA },
+    ]);
+
+    await store.perguntar('Motivo do prejuízo da Klabin?');
+
+    expect(resposta(store).buscouNaWeb).toBe(true);
   });
 
   it('ao ser destruído, para a revelação e fecha a conexão', async () => {

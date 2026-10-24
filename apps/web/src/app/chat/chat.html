@@ -1,4 +1,67 @@
-<!-- Casca provisória: o layout do chat entra com o protótipo (T072 e T076). -->
-<main>
-  <h1>AI Researcher</h1>
+<main class="conteudo">
+  <section class="conversa" aria-label="Conversa">
+    @if (store.vazio()) {
+    <p class="boas-vindas">
+      Pergunte sobre receita líquida, lucro bruto, lucro líquido, ativo total, patrimônio líquido ou
+      caixa operacional das 20 empresas da B3 nos últimos 4 trimestres.
+    </p>
+    } @for (mensagem of store.mensagens(); track $index) { @if (mensagem.autor === 'usuario') {
+    <div class="linha-usuario">
+      <p class="bolha-usuario">{{ mensagem.texto }}</p>
+    </div>
+    } @else if (mensagem.estado === 'aguardando') {
+    <article class="aguardando" aria-live="polite">
+      <span class="pontos" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>Pesquisando…</span>
+    </article>
+    } @else {
+    <article class="resposta" aria-live="polite">
+      @if (mensagem.buscouNaWeb) {
+      <div class="banner-web">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+        </svg>
+        <span>A base da CVM não tinha tudo: a resposta foi complementada com busca na web.</span>
+      </div>
+      }
+
+      <p class="texto">{{ mensagem.texto }}</p>
+
+      @if (mensagem.citacoes.length > 0) {
+      <div class="fontes">
+        <span class="rotulo-fontes">Fontes</span>
+        @for (citacao of mensagem.citacoes; track citacao.url + citacao.rotulo) {
+        <a class="citacao" [href]="citacao.url" target="_blank" rel="noopener noreferrer">
+          <span class="citacao-rotulo">{{ citacao.rotulo }}</span>
+          <span class="citacao-origem">{{ citacao.origem }}</span>
+          @if (citacao.dataBase) {
+          <span class="citacao-data">data-base {{ citacao.dataBase }}</span>
+          }
+          <span class="citacao-abrir">abrir fonte ↗</span>
+        </a>
+        }
+      </div>
+      }
+    </article>
+    } }
+
+    <form class="composer" (submit)="enviar($event)">
+      <label for="pergunta" class="visualmente-oculto">Pergunta</label>
+      <textarea
+        id="pergunta"
+        rows="2"
+        placeholder="Pergunte sobre receita, lucro, caixa… das 20 empresas"
+        [formField]="formulario.pergunta"
+        (keydown)="aoTeclar($event)"
+      ></textarea>
+      <button type="submit" [disabled]="!podeEnviar()">Enviar</button>
+    </form>
+    <p class="dica">
+      @if (store.emAndamento()) { Aguarde a resposta atual para enviar outra pergunta. } @else {
+      Enter envia · Shift+Enter quebra a linha }
+    </p>
+  </section>
+
+  <app-graph-panel class="lateral" />
 </main>
