@@ -1,20 +1,26 @@
 import type { FastifyPluginAsync } from 'fastify';
 import { chatRequestSchema, type ChatEvent } from '@hero/contracts';
+import type { OrcamentoDiario } from '../orcamento.js';
 import { traduzirPasso, type GetGraph } from './chat-event.js';
 
 export interface ChatRouteOptions {
   getGraph: GetGraph;
+  orcamento: OrcamentoDiario;
 }
 
 function escreverEvento(raw: NodeJS.WritableStream, evento: ChatEvent) {
   raw.write(`data: ${JSON.stringify(evento)}\n\n`);
 }
 
-const chatRoute: FastifyPluginAsync<ChatRouteOptions> = async (app, { getGraph }) => {
+const chatRoute: FastifyPluginAsync<ChatRouteOptions> = async (app, { getGraph, orcamento }) => {
   app.post('/chat', async (request, reply) => {
     // Corpo inválido lança ZodError, e o tratamento central de erros responde 400. Isso só
     // funciona porque acontece antes do hijack: depois dele, erro vira evento SSE.
     const { question } = chatRequestSchema.parse(request.body);
+
+    // Orçamento do dia esgotado: 429 em problem+json antes do primeiro byte do stream —
+    // nenhum token de LLM é gasto e o cliente recebe um status HTTP de verdade.
+    orcamento.garantirDisponivel();
 
     // A partir daqui a resposta é um stream: o Fastify não escreve mais nada por nós.
     reply.hijack();

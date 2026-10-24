@@ -1,10 +1,13 @@
 import Fastify from 'fastify';
+import rateLimit from '@fastify/rate-limit';
 import { mcpHttpPlugin, type GetGraph as GetMcpGraph } from '@hero/mcp-server';
 import healthRoute from './routes/health.js';
 import chatRoute from './routes/chat.js';
 import type { GetGraph as GetChatGraph } from './routes/chat-event.js';
 import { checkDatabase as defaultCheckDatabase } from './db.js';
 import { registrarTratamentoDeErros } from './erros.js';
+import { lerLimites, type Limites } from './limites.js';
+import { OrcamentoDiario } from './orcamento.js';
 
 // Chat e MCP recebem o grafo por portas separadas, cada uma com a interface mínima que usa
 // (stream no chat, invoke no MCP). Em produção as duas apontam para o mesmo getRealGraph.
@@ -12,6 +15,9 @@ export interface BuildOptions {
   checkDatabase?: () => Promise<boolean>;
   getChatGraph?: GetChatGraph;
   getMcpGraph?: GetMcpGraph;
+  limites?: Limites;
+  // Injetável para o teste começar com o orçamento já gasto.
+  orcamento?: OrcamentoDiario;
 }
 
 // Sem grafo injetado, chat e MCP respondem com erro em vez de derrubar a API — o health
@@ -20,20 +26,38 @@ async function grafoNaoConfigurado(): Promise<never> {
   throw new Error('Grafo do agente não configurado (não foi passado para build()).');
 }
 
+// Health e métricas ficam fora do rate limit: são consultados por máquina (Cloud Run,
+// capstone:check, Prometheus) e não custam nada de LLM.
+function isentoDoRateLimit(url: string): boolean {
+  return url.startsWith('/api/health') || url.startsWith('/api/metrics');
+}
+
 export function build({
   checkDatabase = defaultCheckDatabase,
   getChatGraph = grafoNaoConfigurado,
   getMcpGraph = grafoNaoConfigurado,
+  limites = lerLimites(),
+  orcamento = new OrcamentoDiario(limites.orcamentoDiarioTokens),
 }: BuildOptions = {}) {
   const app = Fastify({ logger: true });
 
   // Registrado na raiz antes das rotas: vale para todas elas, inclusive as de /api.
   registrarTratamentoDeErros(app);
 
+  // Um balde só para todos os clientes. Atrás do Firebase Hosting e do Cloud Run, o IP de
+  // quem pergunta chega num cabeçalho que o próprio cliente consegue forjar — limitar por IP
+  // seria contornável. O teto de custo de verdade é o orçamento diário, também global.
+  app.register(rateLimit, {
+    max: limites.rateLimitMax,
+    timeWindow: limites.rateLimitJanela,
+    keyGenerator: () => 'global',
+    allowList: (request) => isentoDoRateLimit(request.url),
+  });
+
   app.register(
     async (api) => {
       api.register(healthRoute, { checkDatabase });
-      api.register(chatRoute, { getGraph: getChatGraph });
+      api.register(chatRoute, { getGraph: getChatGraph, orcamento });
       // Gateway MCP: o mesmo plugin do servidor standalone, aqui em /api/mcp.
       api.register(mcpHttpPlugin, {
         getGraph: getMcpGraph,

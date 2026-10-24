@@ -29,6 +29,15 @@ function paraProblema(error: unknown): Problem {
     };
   }
 
+  if (nome === 'OrcamentoEsgotadoError') {
+    return {
+      type: 'about:blank',
+      title: 'Orçamento diário esgotado',
+      status: 429,
+      detail: 'O limite de uso de hoje foi atingido. Tente novamente amanhã.',
+    };
+  }
+
   if (nome === 'CircuitoAbertoError') {
     return {
       type: 'about:blank',
@@ -41,6 +50,17 @@ function paraProblema(error: unknown): Problem {
   // Erros 4xx do próprio Fastify (JSON malformado, corpo vazio, tipo de conteúdo não aceito)
   // já vêm com status e mensagem segura para o cliente.
   const status = campo(error, 'statusCode');
+
+  // Lançado pelo @fastify/rate-limit, que já pôs os cabeçalhos Retry-After e x-ratelimit-*.
+  if (status === 429) {
+    return {
+      type: 'about:blank',
+      title: 'Muitas requisições',
+      status: 429,
+      detail: 'Limite de requisições atingido. Aguarde um pouco e tente de novo.',
+    };
+  }
+
   if (typeof status === 'number' && status >= 400 && status < 500) {
     return {
       type: 'about:blank',
@@ -58,6 +78,11 @@ function paraProblema(error: unknown): Problem {
 export function registrarTratamentoDeErros(app: FastifyInstance) {
   app.setErrorHandler((error, request, reply) => {
     const problema = paraProblema(error);
+    // Orçamento esgotado diz quando renova (meia-noite UTC); o rate limit põe o próprio header.
+    const segundosAteRenovar = campo(error, 'segundosAteRenovar');
+    if (typeof segundosAteRenovar === 'number') {
+      reply.header('Retry-After', String(segundosAteRenovar));
+    }
     if (problema.status >= 500) {
       request.log.error(error, 'Erro não tratado na requisição');
     }
