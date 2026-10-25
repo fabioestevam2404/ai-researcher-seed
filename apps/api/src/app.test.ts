@@ -11,6 +11,15 @@ describe('GET /api/health', () => {
     expect(response.json()).toEqual({ status: 'ok', database: 'ok' });
   });
 
+  it('diz qual revisão respondeu, no cabeçalho x-revisao (usado pelo gate do canary)', async () => {
+    const app = build({ checkDatabase: async () => true });
+
+    const response = await app.inject({ method: 'GET', url: '/api/health' });
+
+    // Fora do Cloud Run não há K_REVISION.
+    expect(response.headers['x-revisao']).toBe('local');
+  });
+
   it('responde degraded (mas HTTP 200) quando o banco falha — falha de banco não derruba o serviço', async () => {
     const app = build({ checkDatabase: async () => false });
 
