@@ -25,6 +25,7 @@ Um assistente de pesquisa que:
 - Dados além dos seis indicadores e das 20 empresas do corpus do Seed.
 - Geração de parágrafos do corpus por LLM.
 - Treinamento ou ajuste fino de modelos.
+- Perguntas agregadas sobre muitas empresas ou trimestres de uma vez ("caixa operacional das 20 empresas nos últimos 4 trimestres", rankings, somas). O retrieve traz os 5 parágrafos mais próximos (`TOP_K = 5`); a resposta cobre só o que veio e diz que o contexto está incompleto. Aumentar o `TOP_K` não resolve (80 parágrafos não cabem, a similaridade não garante um por empresa, o bloco de fontes e o custo crescem) — avaliado em 2026-10-25 e mantido em 5. O caminho certo é uma consulta estruturada aos indicadores, registrada como evolução futura (T103).
 
 ## 4. Atores
 

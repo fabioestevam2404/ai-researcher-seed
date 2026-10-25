@@ -105,6 +105,10 @@
 - [ ] **T101** Rodar `evals/dataset.json` e registrar resultado.
 - [ ] **T102** Encerrar o projeto GCP pelo console ao fim do laboratório (janela de 30 dias) após preservar o necessário.
 
+## Evolução futura (fora do plano atual)
+
+- [ ] **T103** Caminho estruturado para perguntas agregadas: detectar pedido sobre várias empresas/trimestres (ex.: "caixa operacional das 20 empresas nos últimos 4 trimestres") e consultar as colunas de indicadores direto no Postgres, sem passar os 80 parágrafos pelo LLM. Exige nó novo, prompt, testes com LLM fake e casos novos no `evals/dataset.json`. Motivo: limitação de top-k documentada em spec.md §3 (2026-10-25).
+
 ## Rastreabilidade
 
 | Requisito | Tarefas |
