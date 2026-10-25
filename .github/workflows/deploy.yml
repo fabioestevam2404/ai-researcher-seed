@@ -4,6 +4,13 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Disparo manual, para exercitar o rollback do canary (T096) sem precisar de código ruim.
+  workflow_dispatch:
+    inputs:
+      forcar_falha_gate:
+        description: Reprovar o primeiro gate do canary (testa o rollback)
+        type: boolean
+        default: false
 
 env:
   # Variáveis de repositório (Settings → Secrets and variables → Actions → Variables),
@@ -36,8 +43,13 @@ jobs:
 
   deploy:
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
+    # Um deploy de produção por vez: o segundo espera o primeiro terminar (nunca cancela no meio
+    # de um canary, que deixaria o tráfego dividido entre duas revisões).
+    concurrency:
+      group: deploy-producao
+      cancel-in-progress: false
     permissions:
       id-token: write
       contents: read
@@ -67,9 +79,20 @@ jobs:
             .
           docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/api:${{ github.sha }}
 
-      - name: Deploy no Cloud Run
+      # Anotada antes do deploy: é para esta revisão que o rollback devolve o tráfego.
+      - name: Revisão estável
+        id: estavel
+        env:
+          SERVICE: ${{ env.CLOUD_RUN_SERVICE }}
+        run: echo "revisao=$(bash scripts/canary.sh estavel)" >> "$GITHUB_OUTPUT"
+
+      # A candidata nasce sem tráfego e com a tag "candidata", que lhe dá uma URL própria
+      # para o smoke antes de qualquer usuário chegar nela.
+      - name: Deploy da candidata no Cloud Run (sem tráfego)
         uses: google-github-actions/deploy-cloudrun@v3
         with:
+          no_traffic: true
+          tag: candidata
           service: ${{ env.CLOUD_RUN_SERVICE }}
           region: ${{ env.REGION }}
           project_id: ${{ env.PROJECT_ID }}
@@ -89,6 +112,15 @@ jobs:
             SERPER_API_KEY=serper-api-key:latest
           flags: --add-cloudsql-instances=${{ env.PROJECT_ID }}:${{ env.REGION }}:ai-researcher-db
 
+      # Smoke na URL da candidata e promoção 5 → 25 → 50 → 100%, com gate em cada degrau.
+      # Reprovou: 100% volta para a revisão estável e o job falha antes do frontend.
+      - name: Canary da API
+        env:
+          SERVICE: ${{ env.CLOUD_RUN_SERVICE }}
+          FORCAR_FALHA_GATE: ${{ inputs.forcar_falha_gate || false }}
+        run: bash scripts/canary.sh promover "${{ steps.estavel.outputs.revisao }}"
+
+      # O frontend só sai depois que o backend novo está com 100% do tráfego.
       - name: Build do Angular
         run: pnpm turbo run build --filter=@hero/web
 
