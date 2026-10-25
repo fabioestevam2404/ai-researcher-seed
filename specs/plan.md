@@ -135,7 +135,7 @@ Regra (Aula 15): teste que falha é corrigido no código, nunca ajustado para pa
 ## 9. Pendências de decisão (do responsável pelo projeto)
 
 1. **Acesso ao `/api/mcp` público** — ✅ decidido (2026-10-24): fechado em produção. O gateway só é registrado com `MCP_GATEWAY=true`; o MCP fica no stdio e no standalone local.
-2. **SSE via Hosting (60 s) ou Cloud Run direto com CORS restrito.** — ✅ decidido (2026-10-24): Hosting, medindo o pior caso (2 iterações) em produção; mudar só se passar de ~45 s.
+2. **SSE via Hosting (60 s) ou Cloud Run direto com CORS restrito.** — ✅ decidido (2026-10-24): Hosting, medindo o pior caso (2 iterações) em produção; mudar só se passar de ~45 s. Medido em 2026-10-25: ~9,2 s no servidor. Fica no Hosting.
 3. **Limites numéricos** — ✅ rate limit e orçamento decididos (2026-10-24): `RATE_LIMIT_MAX=10` por `1 minute` (global) e `DAILY_TOKEN_BUDGET=300000`. Gates do canary: definir na T095, após baseline.
 4. **Licença** do repositório (README §Autor).
 5. **Repositório remoto**: fork do Seed ou repositório novo — define o `attribute.repository` da WIF.
