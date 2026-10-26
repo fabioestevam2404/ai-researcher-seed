@@ -4,8 +4,8 @@ import { fileURLToPath } from 'node:url';
 import { lerEmpresas } from '../empresas.js';
 import { coletarUltimosTrimestres } from './select-quarters.js';
 import { paraCanonico } from '../normalize/to-canonical.js';
-import { gerarParagrafo } from '../paragraphs/template.js';
-import type { DocumentoFinal, IndicadorTrimestral, PeriodoColetado } from '../types.js';
+import { montarDocumentos } from '../paragraphs/montar-documentos.js';
+import type { PeriodoColetado } from '../types.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const DOCUMENTOS_DIR = path.join(HERE, '../../data/documentos');
@@ -18,19 +18,6 @@ function agruparPorTicker(periodos: PeriodoColetado[]): Map<string, PeriodoColet
     else porTicker.set(periodo.empresa.ticker, [periodo]);
   }
   return porTicker;
-}
-
-/** Liga cada trimestre ao imediatamente anterior da mesma janela (para a comparação QoQ) e gera o parágrafo. */
-function montarDocumentos(indicadores: IndicadorTrimestral[]): DocumentoFinal[] {
-  const ordenados = [...indicadores].sort((a, b) => a.periodEnd.localeCompare(b.periodEnd));
-
-  return ordenados.map((indicador, i) => {
-    const anterior = ordenados[i - 1];
-    const comparacoes = anterior
-      ? { trimestreAnterior: { valor: anterior.receitaLiquida, period: anterior.period } }
-      : {};
-    return { ...indicador, paragraph: gerarParagrafo(indicador, comparacoes) };
-  });
 }
 
 export async function coletar(): Promise<void> {
