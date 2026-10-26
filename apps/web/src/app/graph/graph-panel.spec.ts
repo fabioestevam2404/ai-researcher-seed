@@ -49,6 +49,28 @@ describe('GraphPanel', () => {
     expect(el.querySelector('li.executando [aria-label="Em execução"]')).not.toBeNull();
   });
 
+  it('consulta estruturada aparece como "consulta · indicadores", sem busca web', async () => {
+    const el = await renderizar((store) => {
+      store.iniciar();
+      for (const evento of [
+        { node: 'retrieve', durationMs: 600, documents: [] },
+        { ...grade(false, 1), consultaEstruturada: true },
+        { node: 'queryIndicators', durationMs: 40, documents: [] },
+        { node: 'answer', durationMs: 5000, answer: 'ok' },
+      ] as ChatEvent[]) {
+        store.registrar(evento);
+      }
+    });
+
+    expect(linhas(el)).toEqual([
+      'retrieve 0,6 s',
+      'grade · insuficiente 2,0 s',
+      'consulta · indicadores 0,0 s',
+      'answer 5,0 s',
+    ]);
+    expect(el.querySelectorAll('li.busca-web')).toHaveLength(0);
+  });
+
   it('o loop aparece inteiro, com a busca web em ciano e a 2ª passagem indicada', async () => {
     const el = await renderizar((store) => {
       store.iniciar();

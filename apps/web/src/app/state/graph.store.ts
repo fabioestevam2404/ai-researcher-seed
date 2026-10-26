@@ -6,7 +6,7 @@ import type { ChatEvent } from '@hero/contracts';
 // Se mudar lá, a previsão do painel erra o caminho até alguém mudar aqui também.
 export const MAX_ITERATIONS = 2;
 
-export type NomeEtapa = 'retrieve' | 'grade' | 'webSearch' | 'answer';
+export type NomeEtapa = 'retrieve' | 'grade' | 'webSearch' | 'queryIndicators' | 'answer';
 
 export interface Etapa {
   nome: NomeEtapa;
@@ -16,8 +16,9 @@ export interface Etapa {
 }
 
 // O caminho que o grafo ainda vai percorrer, dado o último nó concluído. Repete as regras das
-// arestas do grafo: grade suficiente (ou no limite de iterações) vai para answer; insuficiente
-// vai para webSearch, que volta para retrieve.
+// arestas do grafo: grade suficiente (ou no limite de iterações) vai para answer; com consulta
+// estruturada vai para queryIndicators e daí para answer; insuficiente vai para webSearch, que
+// volta para retrieve.
 export function caminhoRestante(ultimo: ChatEvent | undefined): NomeEtapa[] {
   switch (ultimo?.node) {
     case undefined:
@@ -25,11 +26,15 @@ export function caminhoRestante(ultimo: ChatEvent | undefined): NomeEtapa[] {
     case 'retrieve':
       return ['grade', 'answer'];
     case 'grade':
-      return ultimo.sufficient || ultimo.iterations >= MAX_ITERATIONS
+      if (ultimo.sufficient) return ['answer'];
+      if (ultimo.consultaEstruturada) return ['queryIndicators', 'answer'];
+      return ultimo.iterations >= MAX_ITERATIONS
         ? ['answer']
         : ['webSearch', 'retrieve', 'grade', 'answer'];
     case 'webSearch':
       return ['retrieve', 'grade', 'answer'];
+    case 'queryIndicators':
+      return ['answer'];
     case 'answer':
     case 'error':
       return [];

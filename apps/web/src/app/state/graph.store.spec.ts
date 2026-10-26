@@ -24,6 +24,22 @@ describe('caminhoRestante', () => {
     expect(caminhoRestante(grade(false, MAX_ITERATIONS))).toEqual(['answer']);
   });
 
+  it('grade com consulta estruturada prevê queryIndicators e answer, sem busca web', () => {
+    const comConsulta: ChatEvent = {
+      node: 'grade',
+      durationMs: 50,
+      sufficient: false,
+      missingAspects: [],
+      iterations: 1,
+      consultaEstruturada: true,
+    };
+
+    expect(caminhoRestante(comConsulta)).toEqual(['queryIndicators', 'answer']);
+    expect(caminhoRestante({ node: 'queryIndicators', durationMs: 30, documents: [] })).toEqual([
+      'answer',
+    ]);
+  });
+
   it('depois do answer não há mais nada', () => {
     expect(caminhoRestante(answer)).toEqual([]);
   });

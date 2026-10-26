@@ -5,6 +5,7 @@ const ROTULOS: Record<NomeEtapa, string> = {
   retrieve: 'retrieve',
   grade: 'grade',
   webSearch: 'search',
+  queryIndicators: 'consulta',
   answer: 'answer',
 };
 
@@ -31,6 +32,7 @@ function detalhe(etapa: Etapa, passagem: number): string {
   const evento = etapa.evento;
   if (evento?.node === 'grade') return evento.sufficient ? 'suficiente' : 'insuficiente';
   if (etapa.nome === 'webSearch') return 'busca web';
+  if (etapa.nome === 'queryIndicators') return 'indicadores';
   if (etapa.nome === 'retrieve' && passagem > 1) return `${passagem}ª passagem`;
   return '';
 }
