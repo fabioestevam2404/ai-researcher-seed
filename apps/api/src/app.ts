@@ -82,7 +82,12 @@ export function build({
   app.register(
     async (api) => {
       api.register(healthRoute, { checkDatabase });
-      api.register(chatRoute, { getGraph: getChatGraph, orcamento, criarCallbacks });
+      api.register(chatRoute, {
+        getGraph: getChatGraph,
+        orcamento,
+        criarCallbacks,
+        registrarPergunta: () => metricas.registrarPergunta(),
+      });
       api.register(metricsRoute, { registry: metricas.registry });
       // Gateway MCP: o mesmo plugin do servidor standalone, aqui em /api/mcp.
       if (mcpGateway) {

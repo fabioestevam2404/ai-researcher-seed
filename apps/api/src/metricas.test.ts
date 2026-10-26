@@ -62,6 +62,17 @@ describe('GET /api/metrics', () => {
     );
     expect(resposta.body).toContain('llm_tokens_total{modelo="gemini-3.6-flash",tipo="saida"} 80');
     expect(resposta.body).toMatch(/llm_cost_usd_total\{modelo="gemini-3.6-flash"\} 0\.001/);
+    // Denominador do custo por pergunta (item 9 do capstone:check).
+    expect(resposta.body).toContain('chat_perguntas_total 1');
+  });
+
+  it('pergunta recusada (corpo inválido) não conta como pergunta', async () => {
+    const app = montar(300_000);
+    await app.inject({ method: 'POST', url: '/api/chat', payload: {} });
+
+    const resposta = await app.inject({ method: 'GET', url: '/api/metrics' });
+
+    expect(resposta.body).toContain('chat_perguntas_total 0');
   });
 
   it('os mesmos tokens alimentam o orçamento: estourado, a próxima pergunta recebe 429', async () => {

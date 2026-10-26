@@ -27,6 +27,7 @@ export function custoUsd({ modelo, tokensEntrada, tokensSaida }: UsoDeTokens): n
 export interface Metricas {
   registry: Registry;
   registrarUso(uso: UsoDeTokens): void;
+  registrarPergunta(): void;
 }
 
 // Registry próprio (não o global do prom-client): cada build() tem o seu, e os testes não
@@ -48,12 +49,22 @@ export function criarMetricas(): Metricas {
     registers: [registry],
   });
 
+  // Denominador do custo médio: llm_cost_usd_total / chat_perguntas_total = custo por pergunta.
+  const perguntas = new Counter({
+    name: 'chat_perguntas_total',
+    help: 'Perguntas aceitas pelo /api/chat (passaram da validação e do orçamento).',
+    registers: [registry],
+  });
+
   return {
     registry,
     registrarUso(uso) {
       tokens.inc({ modelo: uso.modelo, tipo: 'entrada' }, uso.tokensEntrada);
       tokens.inc({ modelo: uso.modelo, tipo: 'saida' }, uso.tokensSaida);
       custo.inc({ modelo: uso.modelo }, custoUsd(uso));
+    },
+    registrarPergunta() {
+      perguntas.inc();
     },
   };
 }

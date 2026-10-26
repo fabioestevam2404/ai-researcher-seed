@@ -8,6 +8,8 @@ export interface ChatRouteOptions {
   orcamento: OrcamentoDiario;
   // Callbacks novas a cada pergunta (contador de tokens que alimenta orçamento e métricas).
   criarCallbacks: () => object[];
+  // Conta a pergunta aceita, para o custo médio por pergunta nas métricas.
+  registrarPergunta: () => void;
 }
 
 function escreverEvento(raw: NodeJS.WritableStream, evento: ChatEvent) {
@@ -16,7 +18,7 @@ function escreverEvento(raw: NodeJS.WritableStream, evento: ChatEvent) {
 
 const chatRoute: FastifyPluginAsync<ChatRouteOptions> = async (
   app,
-  { getGraph, orcamento, criarCallbacks },
+  { getGraph, orcamento, criarCallbacks, registrarPergunta },
 ) => {
   app.post('/chat', async (request, reply) => {
     // Corpo inválido lança ZodError, e o tratamento central de erros responde 400. Isso só
@@ -26,6 +28,7 @@ const chatRoute: FastifyPluginAsync<ChatRouteOptions> = async (
     // Orçamento do dia esgotado: 429 em problem+json antes do primeiro byte do stream —
     // nenhum token de LLM é gasto e o cliente recebe um status HTTP de verdade.
     orcamento.garantirDisponivel();
+    registrarPergunta();
 
     // A partir daqui a resposta é um stream: o Fastify não escreve mais nada por nós.
     reply.hijack();
