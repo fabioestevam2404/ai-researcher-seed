@@ -56,4 +56,18 @@ describe('gradePrompt', () => {
       'Nunca coloque em missingAspects recomendações, opiniões de analistas',
     );
   });
+
+  // Avaliação de 2026-10-26 (D01): com 5 empresas no contexto, o grade julgou suficiente um
+  // ranking e a resposta apontou a empresa errada como "a de maior caixa".
+  it('a regra: ranking entre empresas nunca é suficiente com um subconjunto', () => {
+    expect(GRADE_SYSTEM_PROMPT).toContain('Ranking entre empresas');
+    expect(GRADE_SYSTEM_PROMPT).toContain(
+      'é sempre INSUFICIENTE e precisa de consulta estruturada',
+    );
+  });
+
+  it('a regra: consulta estruturada lista os indicadores e os tickers do corpus', () => {
+    expect(GRADE_SYSTEM_PROMPT).toContain('caixa_operacional');
+    expect(GRADE_SYSTEM_PROMPT).toContain('Petrobras (PETR)');
+  });
 });
