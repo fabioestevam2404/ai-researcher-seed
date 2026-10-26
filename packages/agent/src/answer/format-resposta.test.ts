@@ -5,6 +5,7 @@ import {
   contemLinguagemRecomendatoria,
   formatarFontes,
   formatarResposta,
+  separarFontesUsadas,
 } from './format-resposta.js';
 
 const cvm = (ticker: string, period: string, periodEnd: string): DocumentoRecuperado => ({
@@ -97,5 +98,49 @@ describe('formatarResposta', () => {
     expect(resultado.startsWith(AVISO_GUARDRAIL)).toBe(true);
     expect(resultado).not.toContain('recomendo comprar');
     expect(resultado).toContain('VALE · 3T25 (data-base 2025-09-30)');
+  });
+
+  const tres = [cvm('VALE', '3T25', '2025-09-30'), web, cvm('PETR', '3T25', '2025-09-30')];
+
+  it('com "Fontes usadas", só as fontes citadas aparecem e a linha some do texto', () => {
+    const resultado = formatarResposta(
+      'A Vale teve receita de R$ 56,7 bilhões.\n\nFontes usadas: 1',
+      tres,
+    );
+
+    expect(resultado).not.toContain('Fontes usadas');
+    expect(resultado).toContain('VALE · 3T25');
+    expect(resultado).not.toContain('PETR · 3T25');
+    expect(resultado).not.toContain('vale.com/fato');
+  });
+
+  it('sem a linha, ou só com números inválidos, mostra todas as fontes (na dúvida, cita)', () => {
+    for (const texto of [
+      'Resposta sem a linha.',
+      'Resposta.\nFontes usadas: 9',
+      'Resposta.\nFontes usadas: nenhuma',
+    ]) {
+      const resultado = formatarResposta(texto, tres);
+
+      expect(resultado).not.toContain('Fontes usadas');
+      expect(resultado).toContain('VALE · 3T25');
+      expect(resultado).toContain('PETR · 3T25');
+    }
+  });
+
+  it('recomendação escondida antes da linha de fontes continua barrada pelo filtro', () => {
+    const resultado = formatarResposta('Eu recomendo comprar VALE3.\nFontes usadas: 1', tres);
+
+    expect(resultado.startsWith(AVISO_GUARDRAIL)).toBe(true);
+    expect(resultado).toContain('PETR · 3T25');
+  });
+});
+
+describe('separarFontesUsadas', () => {
+  it('lê os números com vírgula ou "e", ignorando os fora do intervalo', () => {
+    expect(separarFontesUsadas('Texto.\nFontes usadas: 1, 3 e 7', 3)).toEqual({
+      corpo: 'Texto.',
+      indices: [0, 2],
+    });
   });
 });

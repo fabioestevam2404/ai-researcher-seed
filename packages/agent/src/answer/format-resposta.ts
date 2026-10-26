@@ -41,7 +41,37 @@ export function formatarFontes(documentos: DocumentoRecuperado[]): string {
   return linhas.length === 0 ? '' : `\n\nFontes:\n${linhas.join('\n')}`;
 }
 
+// O prompt pede ao modelo uma última linha "Fontes usadas: 1, 3" com os números dos documentos
+// do contexto que ele usou. Esta função tira a linha do texto e devolve os números válidos.
+// Sem a linha, ou só com números inválidos, devolve null: na dúvida, todas as fontes ficam.
+const LINHA_FONTES_USADAS = /\n*\s*Fontes usadas:\s*([^\n]*)\s*$/i;
+
+export function separarFontesUsadas(
+  texto: string,
+  totalDocumentos: number,
+): { corpo: string; indices: number[] | null } {
+  const encontrada = LINHA_FONTES_USADAS.exec(texto);
+  if (!encontrada) return { corpo: texto.trim(), indices: null };
+
+  const corpo = texto.slice(0, encontrada.index).trim();
+  const indices = (encontrada[1].match(/\d+/g) ?? [])
+    .map(Number)
+    .filter((n) => n >= 1 && n <= totalDocumentos)
+    .map((n) => n - 1);
+
+  return { corpo, indices: indices.length > 0 ? indices : null };
+}
+
 export function formatarResposta(texto: string, documentos: DocumentoRecuperado[]): string {
-  const corpo = contemLinguagemRecomendatoria(texto) ? AVISO_GUARDRAIL : texto.trim();
-  return `${corpo}${formatarFontes(documentos)}`;
+  const { corpo, indices } = separarFontesUsadas(texto, documentos.length);
+
+  // Recomendação detectada: a resposta inteira vira o aviso, e as fontes são todas as
+  // recuperadas — o usuário pode consultar os dados por conta própria.
+  if (contemLinguagemRecomendatoria(corpo)) {
+    return `${AVISO_GUARDRAIL}${formatarFontes(documentos)}`;
+  }
+
+  // Só as fontes que o modelo disse ter usado; sem essa informação, todas.
+  const usadas = indices ? documentos.filter((_, i) => indices.includes(i)) : documentos;
+  return `${corpo}${formatarFontes(usadas)}`;
 }
