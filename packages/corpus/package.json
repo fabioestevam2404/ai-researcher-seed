@@ -6,6 +6,7 @@
   "scripts": {
     "collect": "tsx src/collect/run.ts",
     "report": "tsx src/collect/report.ts",
+    "regerar": "tsx src/paragraphs/regerar.ts",
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
     "lint": "eslint src"
