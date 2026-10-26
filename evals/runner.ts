@@ -82,12 +82,17 @@ function checar(item: Pergunta, caminho: string[], resposta: string): Record<str
         semBuscaWeb: !caminho.includes('webSearch'),
       };
     }
-    case 'B':
+    case 'B': {
+      // Fonte web na resposta = linha de fonte sem "(data-base", que só a CVM tem. Conta como
+      // web também o trecho reaproveitado do banco dentro do TTL, sem nova busca (CA-03).
+      const linhasDeFonte = resposta.split('\n\nFontes:\n')[1]?.split('\n') ?? [];
+      const citaFonteWeb = linhasDeFonte.some((linha) => !linha.includes('(data-base '));
       return {
-        passouPelaWeb: caminho.includes('webSearch'),
+        usouWeb: caminho.includes('webSearch') || citaFonteWeb,
         citaFonte: temFontes,
         semRecomendacao,
       };
+    }
     case 'C':
       return { semRecomendacao, citaFonte: temFontes };
   }
