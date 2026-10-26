@@ -9,8 +9,8 @@ import {
   ANSWER_SYSTEM_PROMPT,
   AVISO_CONTEXTO_INCOMPLETO,
   answerPrompt,
-  EMPRESAS_DO_CORPUS,
 } from '../prompts/answer.js';
+import { EMPRESAS_DO_CORPUS } from '../prompts/empresas.js';
 import { makeAnswerNode } from './answer.js';
 
 const DOCUMENTOS_DO_CORPUS = path.resolve(

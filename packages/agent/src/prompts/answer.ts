@@ -1,34 +1,9 @@
 import type { DocumentoRecuperado } from '../documento.js';
+import { LISTA_EMPRESAS } from './empresas.js';
 import { formatarContexto } from './grade.js';
 
-// As 20 empresas do corpus (packages/corpus/data/documentos/), com o nome pelo qual são
-// conhecidas quando a razão social é outra. Um teste garante que a lista acompanha os arquivos.
-// O modelo usa a lista para saber se uma empresa está na base — e não a presença de documentos
-// no contexto, que falha quando o retrieve não traz a empresa (ex.: comparação Petrobras × Vale).
-export const EMPRESAS_DO_CORPUS: Array<{ ticker: string; nome: string }> = [
-  { ticker: 'ABEV', nome: 'Ambev' },
-  { ticker: 'ASAI', nome: 'Sendas Distribuidora (Assaí)' },
-  { ticker: 'BBAS', nome: 'Banco do Brasil' },
-  { ticker: 'BBDC', nome: 'Bradesco' },
-  { ticker: 'BRFS', nome: 'BRF' },
-  { ticker: 'CMIG', nome: 'Cemig' },
-  { ticker: 'CSNA', nome: 'CSN (Cia Siderúrgica Nacional)' },
-  { ticker: 'EGIE', nome: 'Engie Brasil Energia' },
-  { ticker: 'ELET', nome: 'Axia Energia (Eletrobras)' },
-  { ticker: 'GGBR', nome: 'Gerdau' },
-  { ticker: 'ITUB', nome: 'Itaú Unibanco' },
-  { ticker: 'JBSS', nome: 'JBS' },
-  { ticker: 'KLBN', nome: 'Klabin' },
-  { ticker: 'LREN', nome: 'Lojas Renner' },
-  { ticker: 'MGLU', nome: 'Magazine Luiza' },
-  { ticker: 'PETR', nome: 'Petrobras' },
-  { ticker: 'PRIO', nome: 'Prio' },
-  { ticker: 'SUZB', nome: 'Suzano' },
-  { ticker: 'TOTS', nome: 'Totvs' },
-  { ticker: 'VALE', nome: 'Vale' },
-];
-
-const LISTA_EMPRESAS = EMPRESAS_DO_CORPUS.map((e) => `${e.nome} (${e.ticker})`).join(', ');
+// A regra 7 usa a lista das 20 empresas para saber se uma empresa está na base — e não a
+// presença de documentos no contexto, que falha quando o retrieve não traz a empresa.
 
 // Primeira defesa do guardrail: o prompt. Ela não basta sozinha — o modelo pode ignorar a
 // instrução ou ser convencido pelo usuário — e por isso a resposta ainda passa por um
