@@ -14,7 +14,7 @@
     "sourceUrl": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip",
     "fetchedAt": "2026-08-08T02:19:40.760Z",
     "receitaMesmoTrimestreAnoAnterior": 122258000000,
-    "paragraph": "No 2T25, a Petróleo Brasileiro S.A. - Petrobras reportou receita líquida de R$ 119,1 bilhões, queda de 2,6% frente ao 2T24. O lucro líquido foi de R$ 26,8 bilhões, com margem líquida de 22,5%. O caixa gerado nas operações somou R$ 42,4 bilhões."
+    "paragraph": "No 2T25, a Petróleo Brasileiro S.A. - Petrobras reportou receita líquida de R$ 119,1 bilhões, queda de 2,6% frente ao 2T24. O lucro líquido foi de R$ 26,8 bilhões, com margem líquida de 22,5%. O caixa gerado nas operações somou R$ 42,4 bilhões. Ao fim do trimestre, o ativo total era de R$ 1.174,9 bilhões e o patrimônio líquido, de R$ 401,8 bilhões."
   },
   {
     "ticker": "PETR",
@@ -31,7 +31,7 @@
     "sourceUrl": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip",
     "fetchedAt": "2026-08-08T02:19:40.760Z",
     "receitaMesmoTrimestreAnoAnterior": 129582000000,
-    "paragraph": "No 3T25, a Petróleo Brasileiro S.A. - Petrobras reportou receita líquida de R$ 127,9 bilhões, queda de 1,3% frente ao 3T24 e alta de 7,4% frente ao 2T25. O lucro líquido foi de R$ 32,8 bilhões, com margem líquida de 25,7%. O caixa gerado nas operações somou R$ 53,7 bilhões."
+    "paragraph": "No 3T25, a Petróleo Brasileiro S.A. - Petrobras reportou receita líquida de R$ 127,9 bilhões, queda de 1,3% frente ao 3T24 e alta de 7,4% frente ao 2T25. O lucro líquido foi de R$ 32,8 bilhões, com margem líquida de 25,7%. O caixa gerado nas operações somou R$ 53,7 bilhões. Ao fim do trimestre, o ativo total era de R$ 1.212,0 bilhões e o patrimônio líquido, de R$ 425,0 bilhões."
   },
   {
     "ticker": "PETR",
@@ -47,7 +47,7 @@
     "caixaOperacional": 54916000000,
     "sourceUrl": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2025.zip",
     "fetchedAt": "2026-08-08T02:19:40.760Z",
-    "paragraph": "No 4T25, a Petróleo Brasileiro S.A. - Petrobras reportou receita líquida de R$ 127,4 bilhões, queda de 0,4% frente ao 3T25. O lucro líquido foi de R$ 15,7 bilhões, com margem líquida de 12,3%. O caixa gerado nas operações somou R$ 54,9 bilhões."
+    "paragraph": "No 4T25, a Petróleo Brasileiro S.A. - Petrobras reportou receita líquida de R$ 127,4 bilhões, queda de 0,4% frente ao 3T25. O lucro líquido foi de R$ 15,7 bilhões, com margem líquida de 12,3%. O caixa gerado nas operações somou R$ 54,9 bilhões. Ao fim do trimestre, o ativo total era de R$ 1.223,4 bilhões e o patrimônio líquido, de R$ 417,6 bilhões."
   },
   {
     "ticker": "PETR",
@@ -64,6 +64,6 @@
     "sourceUrl": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
     "fetchedAt": "2026-08-08T02:19:40.760Z",
     "receitaMesmoTrimestreAnoAnterior": 123144000000,
-    "paragraph": "No 1T26, a Petróleo Brasileiro S.A. - Petrobras reportou receita líquida de R$ 123,7 bilhões, alta de 0,4% frente ao 1T25 e queda de 2,9% frente ao 4T25. O lucro líquido foi de R$ 32,8 bilhões, com margem líquida de 26,5%. O caixa gerado nas operações somou R$ 44,0 bilhões."
+    "paragraph": "No 1T26, a Petróleo Brasileiro S.A. - Petrobras reportou receita líquida de R$ 123,7 bilhões, alta de 0,4% frente ao 1T25 e queda de 2,9% frente ao 4T25. O lucro líquido foi de R$ 32,8 bilhões, com margem líquida de 26,5%. O caixa gerado nas operações somou R$ 44,0 bilhões. Ao fim do trimestre, o ativo total era de R$ 1.246,1 bilhões e o patrimônio líquido, de R$ 446,4 bilhões."
   }
 ]
