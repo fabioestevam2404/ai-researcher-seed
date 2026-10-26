@@ -101,7 +101,7 @@
 
 ## Fase 10 — Documentação e encerramento
 
-- [x] **T100** Atualizar README: comandos reais, status, roadmap marcado; diagramas Mermaid (nó `agentGraph`, não `graph`) renderizados. Diagramas mantidos como estavam (já validados, idênticos aos `.mmd`).
+- [x] **T100** Atualizar README: comandos reais, status, roadmap marcado; diagramas Mermaid (nó `agentGraph`, não `graph`) renderizados. Diagramas: a pasta `docs/diagrams/` nunca foi versionada; decidido em 2026-10-26 manter os blocos Mermaid só no README (fonte única), sem `.mmd`/SVG versionados, e remover os links quebrados. O diagrama do agente ganhou o `queryIndicators`.
 - [x] **T101** Rodar `evals/dataset.json` e registrar resultado. Runner em `evals/runner.ts` (`pnpm eval`). Resultado em `evals/resultados/2026-10-26.md`: A 9/12 (+1 parcial), B 5/8 (+3 parciais), C 7/7. A primeira rodada revelou uma regressão da regra "empresa fora da base" (corrigida antes do registro). A lacuna do template (sem ativo total e patrimônio líquido, A05 e A10) foi corrigida com aprovação em 2026-10-26: frase de balanço no template, 80 parágrafos regerados sem nova coleta (`regerar`), seed refeito local e no Cloud SQL; A05 e A10 passaram.
 - [ ] **T102** Encerrar o projeto GCP pelo console ao fim do laboratório (janela de 30 dias) após preservar o necessário.
 

@@ -115,7 +115,6 @@ flowchart TB
     instrumentacao --> grafana
 ```
 
-[Versão renderizada em SVG](docs/diagrams/infraestrutura.svg) · [Fonte Mermaid](docs/diagrams/infraestrutura.mmd)
 
 ### Responsabilidades e conexões
 
@@ -166,7 +165,6 @@ flowchart TB
     guardrail --> resposta
 ```
 
-[Versão renderizada em SVG](docs/diagrams/agente-rag-corretivo.svg) · [Fonte Mermaid](docs/diagrams/agente-rag-corretivo.mmd)
 
 ### Contrato de execução
 
@@ -252,7 +250,6 @@ flowchart TB
     finalCheck -->|"Sim"| concluido
 ```
 
-[Versão renderizada em SVG](docs/diagrams/deploy-canary.svg) · [Fonte Mermaid](docs/diagrams/deploy-canary.mmd)
 
 ### Política de promoção
 
@@ -338,7 +335,7 @@ Perguntas que pedem um indicador de várias empresas ou trimestres (ranking, "to
 | `evals/` | Dataset de 27 perguntas, runner e resultados. |
 | `scripts/` | `capstone-check.ts` e `canary.sh`. |
 | `specs/` | Especificação, plano e tarefas (Spec Driven Development). |
-| `docs/` | Plano do curso, protótipo da interface e diagramas. |
+| `docs/` | Plano do curso e protótipo da interface. |
 | `.github/workflows/` | Testes, lint e E2E; deploy canary da API e do frontend. |
 
 ## Como rodar
@@ -369,31 +366,17 @@ claude mcp add ai-researcher -- node --env-file=<repo>/.env <repo>/packages/mcp-
 
 O deploy é automático: push na `main` roda testes, lint e E2E e publica a API por canary (5 → 25 → 50 → 100%, com rollback automático) e depois o frontend. A `main` exige o job `test`.
 
-## Renderização e validação dos diagramas
+## Diagramas
 
-Os blocos Mermaid deste README e os arquivos `.mmd` correspondentes devem permanecer idênticos.
+Os três diagramas (infraestrutura, agente e deploy canary) existem só neste README, em blocos Mermaid que o GitHub renderiza. Uma fonte única: quando o grafo ou a esteira mudam, o bloco daqui é o único a atualizar. O nó de entrada do agente é `agentGraph`.
 
-A ferramenta de referência é **`@mermaid-js/mermaid-cli@12.0.0`**. Com Node.js e npm disponíveis, execute na raiz do projeto, em PowerShell:
+Para gerar uma imagem (slides, vídeo), copie o bloco para um arquivo `.mmd` e renderize com a [Mermaid CLI](https://github.com/mermaid-js/mermaid-cli):
 
-```powershell
-$diagramas = @("infraestrutura", "agente-rag-corretivo", "deploy-canary")
-
-foreach ($diagrama in $diagramas) {
-    npx --yes --package=@mermaid-js/mermaid-cli@12.0.0 mmdc -i "docs/diagrams/$diagrama.mmd" -o "docs/diagrams/$diagrama.svg" -c docs/diagrams/mermaid-config.json -b white
-    if ($LASTEXITCODE -ne 0) {
-        throw "Falha ao renderizar $diagrama"
-    }
-}
+```bash
+npx --yes --package=@mermaid-js/mermaid-cli@12.0.0 mmdc -i agente.mmd -o agente.svg -b white
 ```
 
-O primeiro uso poderá baixar a CLI e o navegador necessário à renderização. Em ambientes que já possuem Chromium, a opção `--puppeteerConfigFile` permite informar a configuração local; caminhos específicos da máquina não devem ser versionados.
-
-Validação desta entrega:
-
-- [x] Três blocos Mermaid correspondentes às três fontes `.mmd`.
-- [x] Três arquivos SVG produzidos com sucesso pela CLI.
-- [x] Imagens inspecionadas visualmente.
-- [x] Nó de entrada do agente identificado como `agentGraph`.
+O primeiro uso baixa a CLI e o navegador que ela usa para renderizar. A imagem gerada não é versionada.
 
 ## Roadmap
 
