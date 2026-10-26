@@ -1,8 +1,9 @@
+
 # AI Researcher — Capstone de Engenharia de Software com IA
 
 > **Aviso regulatório:** este assistente apresenta informações públicas para fins educacionais e informativos. Não constitui recomendação de investimento nem orientação para comprar, vender ou manter ativos. As respostas devem identificar suas fontes e datas-base e indicar quando as evidências forem insuficientes.
 
-**Status:** documentação inicial e arquitetura planejada. Este pacote contém o README, as fontes Mermaid e as imagens dos três diagramas. A aplicação, a infraestrutura e a esteira de deploy ainda precisam ser implementadas e verificadas no repositório de código.
+**Status:** em produção em <https://ai-researcher-fabio.web.app> (Cloud Run + Firebase Hosting + Cloud SQL), com deploy canary e rollback exercitado. O `capstone:check` passa em 10 de 12 itens; faltam os traces no Langfuse (conta e chaves) e o vídeo do showcase. O andamento detalhado está em [`specs/tasks.md`](specs/tasks.md).
 
 ## Visão geral
 
@@ -289,58 +290,77 @@ No primeiro deploy ainda não existe uma revisão estável anterior. Nesse caso,
 
 ## Qualidade, resiliência e operação
 
-### Testes previstos
+### Testes
 
-- **Unitários:** parsing da CVM, normalização, templates, filtros e transições do agente com fakes.
-- **Integração:** migrations, upsert idempotente e recuperação no PostgreSQL com pgvector de teste.
-- **Contratos:** formatos HTTP, eventos SSE e ferramenta MCP.
-- **E2E:** pergunta, resposta, fonte clicável, painel de execução e aviso regulatório, usando modo demo.
-- **Smoke:** saúde e contratos da revisão candidata.
-- **Avaliação do agente:** conjunto de perguntas com fontes esperadas e casos de contexto insuficiente.
+- **Unitários (Vitest, sem rede):** normalização da CVM, templates, filtros do guardrail, chunker, parser SSE, nós e grafo com LLM fake, rotas com `app.inject()`, servidor MCP com `InMemoryTransport`, stores e componentes Angular. Um teste de guardrail é obrigatório e não pode ser removido.
+- **E2E (Playwright):** pergunta, resposta com "R$ 56,7 bilhões", citação com data-base, painel em 3 etapas e aviso regulatório, com a API em `DEMO=true`. Roda no CI a cada push.
+- **Smoke e gates:** health e contratos da revisão candidata, a cada deploy canary.
+- **Avaliação do agente:** `pnpm eval` faz as 27 perguntas de `evals/dataset.json` contra a API e grava o resultado em `evals/resultados/`.
 
-### Controles previstos
+### Controles
 
-Timeout, retry com backoff e circuit breaker protegerão chamadas externas. Falhas na busca poderão produzir uma resposta com contexto parcial explicitamente sinalizado.
+- Timeout de 10 s, retry com backoff exponencial e circuit breaker na busca web; se ela falhar, a resposta sai com contexto parcial sinalizado.
+- Rate limit global (`RATE_LIMIT_MAX` por `RATE_LIMIT_WINDOW`, padrão 10 por minuto) e orçamento diário de tokens (`DAILY_TOKEN_BUDGET`, padrão 300 mil), ambos com 429 em `application/problem+json` antes do primeiro byte SSE. Os contadores ficam em memória: valem por instância do Cloud Run.
+- Alerta no Cloud Monitoring quando há mais de 20 respostas 429 em 5 minutos.
+- `GET /api/metrics` expõe `llm_tokens_total`, `llm_cost_usd_total` e `chat_perguntas_total` (custo médio por pergunta). A tabela de preços está em `apps/api/src/metricas.ts` e deve ser conferida na página oficial do Vertex AI.
+- Langfuse opcional: com `LANGFUSE_PUBLIC_KEY` e `LANGFUSE_SECRET_KEY`, cada pergunta vira um trace com modelo, tokens e custo; sem as chaves, nada é enviado.
+- O gateway MCP em `/api/mcp` fica desligado em produção (`MCP_GATEWAY=true` liga); o MCP fica no stdio e no servidor standalone local.
 
-Rate limiting e orçamento de tokens serão verificados antes de iniciar a resposta SSE. Um contador em memória atende ao laboratório de uma instância; um limite global em múltiplas instâncias e revisões precisará de estado compartilhado.
+### Avaliação mais recente
 
-Prompts, respostas e telemetria terão política de minimização e retenção. As métricas de operação incluirão latência, erros, uso de web search, tokens e estimativa de custo, segmentadas por revisão para apoiar o canary.
+Em 2026-10-26, com as 27 perguntas do dataset ([detalhes](evals/resultados/2026-10-26.md)): grupo A (dados do corpus) 9 corretas, 1 parcial e 2 erradas; grupo B (fallback web) 5 corretas e 3 parciais; grupo C (pedidos de recomendação) 7 de 7 recusadas. Nenhuma resposta recomendou nem inventou número. As duas erradas vêm de uma lacuna do corpus: o parágrafo não cita ativo total nem patrimônio líquido.
+
+### Limitações conhecidas
+
+- Perguntas agregadas ("caixa operacional das 20 empresas nos últimos 4 trimestres") recebem resposta parcial: o retrieve traz 5 parágrafos. A evolução prevista é uma consulta estruturada aos indicadores (`specs/tasks.md`, T103).
+- Para empresas fora do corpus, a resposta avisa e usa só páginas da web; a página mais recente nem sempre é a que a busca traz.
+- Perguntas comparativas podem trazer só uma das empresas, pelo mesmo limite de top-k.
+- O parágrafo do corpus não cita ativo total nem patrimônio líquido; perguntas sobre eles recebem "contexto incompleto".
+- Com busca web, a resposta pode passar de 45 s; o Firebase Hosting corta em 60 s.
 
 ## Organização do repositório
 
-Os arquivos entregues nesta etapa são:
-
-| Caminho | Conteúdo |
+| Caminho | Responsabilidade |
 | --- | --- |
-| `README.md` | Visão geral e os três diagramas em Mermaid. |
-| `docs/diagrams/infraestrutura.mmd` e `.svg` | Fonte e imagem da infraestrutura. |
-| `docs/diagrams/agente-rag-corretivo.mmd` e `.svg` | Fonte e imagem do agente. |
-| `docs/diagrams/deploy-canary.mmd` e `.svg` | Fonte e imagem da esteira. |
-| `docs/diagrams/mermaid-config.json` | Aparência usada na renderização. |
+| `apps/api/` | Fastify: `/api/health`, `/api/chat` (SSE), `/api/metrics`, gateway `/api/mcp`, erros em problem+json, rate limit e orçamento. |
+| `apps/web/` | Angular 22: chat, citações, painel do pipeline, disclaimer; E2E em `e2e/`. |
+| `packages/agent/` | Grafo LangGraph, nós, prompts, guardrail, banco (Drizzle + pgvector), busca web, modo demo e telemetria. |
+| `packages/mcp-server/` | Tool `perguntar` via stdio e Streamable HTTP. |
+| `packages/contracts/` | Schemas zod compartilhados (chat, eventos SSE, health, problem). |
+| `packages/corpus/` | Coleta e normalização da CVM; os 80 documentos versionados. |
+| `evals/` | Dataset de 27 perguntas, runner e resultados. |
+| `scripts/` | `capstone-check.ts` e `canary.sh`. |
+| `specs/` | Especificação, plano e tarefas (Spec Driven Development). |
+| `docs/` | Plano do curso, protótipo da interface e diagramas. |
+| `.github/workflows/` | Testes, lint e E2E; deploy canary da API e do frontend. |
 
-A estrutura da aplicação a implementar seguirá o projeto-base:
+## Como rodar
 
-| Caminho planejado | Responsabilidade |
-| --- | --- |
-| `apps/api/` | API, SSE e exposição MCP. |
-| `apps/web/` | Interface Angular. |
-| `packages/agent/` | Grafo, prompts, acesso ao banco e provedores. |
-| `packages/corpus/` | Coleta e preparação dos dados da CVM. |
-| `packages/contracts/` | Contratos compartilhados e validação. |
-| `specs/` | Especificação, plano e tarefas do desenvolvimento. |
-| `.github/workflows/` | Verificações e publicação canary. |
+Pré-requisitos: Node.js 24, pnpm 11, Docker e, para usar o Vertex AI localmente, `gcloud auth application-default login`. Copie `.env.example` para `.env` e preencha.
 
-## Como começar a implementação
+```bash
+pnpm install
+docker compose up -d postgres   # Postgres + pgvector local
+pnpm db:migrate                 # cria as tabelas
+pnpm seed                       # gera embeddings e grava os 80 documentos (idempotente)
+pnpm dev                        # API em :3000 e web em :4200 (proxy /api)
 
-1. Usar o [AI Researcher Seed](https://github.com/unipds-engenharia-de-ia-aplicada/ai-researcher-seed) como ponto de partida e revisar o manifesto, o lockfile e as instruções do repositório.
-2. Registrar escopo e critérios de aceite em `specs/spec.md`, decisões em `specs/plan.md` e tarefas em `specs/tasks.md`.
-3. Preparar Git, Node.js/pnpm nas versões do projeto-base, Docker e o editor.
-4. Subir o PostgreSQL com pgvector e implementar um health check que consulte o banco de verdade.
-5. Implementar a carga piloto e seus testes de qualidade.
-6. Conectar a recuperação vetorial, depois a avaliação, o fallback web e a resposta com fontes.
-7. Acrescentar interface, MCP, observabilidade, orçamento e deploy gradual.
+pnpm test                       # unitários (sem rede)
+pnpm test:e2e                   # Playwright com a API em DEMO=true
+pnpm lint                       # ESLint + Prettier
+pnpm eval --url http://127.0.0.1:3000             # avaliação com as 27 perguntas
+pnpm capstone:check --url https://ai-researcher-fabio.web.app --project ai-researcher-fabio
+```
 
-Os comandos de execução da aplicação serão documentados quando os pacotes e scripts correspondentes existirem. Este pacote de documentação não provisiona serviços nem publica a aplicação.
+`DEMO=true` troca o grafo inteiro por peças sem rede (sem banco, Vertex AI nem Serper): útil para gravar aula e para o E2E. O seed nunca roda em modo demo.
+
+Para usar como ferramenta MCP no Claude Code, depois de `pnpm build`:
+
+```bash
+claude mcp add ai-researcher -- node --env-file=<repo>/.env <repo>/packages/mcp-server/dist/stdio.js
+```
+
+O deploy é automático: push na `main` roda testes, lint e E2E e publica a API por canary (5 → 25 → 50 → 100%, com rollback automático) e depois o frontend. A `main` exige o job `test`.
 
 ## Renderização e validação dos diagramas
 
@@ -371,15 +391,18 @@ Validação desta entrega:
 ## Roadmap
 
 - [x] Definição da arquitetura de referência e documentação inicial.
-- [ ] Importação e revisão do projeto-base.
-- [ ] Especificação e critérios de aceite.
-- [ ] Aplicação local conectada ao PostgreSQL.
-- [ ] Carga CVM validada.
-- [ ] RAG corretivo e busca complementar.
-- [ ] Interface, fontes e MCP.
-- [ ] Testes automatizados e avaliação do agente.
-- [ ] Observabilidade e limites de consumo.
-- [ ] Deploy canary e rollback exercitados.
+- [x] Importação e revisão do projeto-base.
+- [x] Especificação e critérios de aceite (`specs/`).
+- [x] Aplicação local conectada ao PostgreSQL.
+- [x] Carga CVM validada (80 documentos, seed idempotente).
+- [x] RAG corretivo e busca complementar.
+- [x] Interface, fontes e MCP.
+- [x] Testes automatizados e avaliação do agente.
+- [x] Limites de consumo e métricas de custo.
+- [ ] Traces no Langfuse (aguarda conta e chaves).
+- [x] Deploy canary e rollback exercitados.
+- [ ] Vídeo do showcase.
+- [ ] Consulta estruturada para perguntas agregadas (T103).
 
 ## Custos e encerramento do laboratório
 
