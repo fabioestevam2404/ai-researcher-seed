@@ -29,13 +29,26 @@ describe('gerarParagrafo', () => {
     });
 
     expect(paragrafo).toBe(
-      'No 3T25, a Vale S.A. reportou receita líquida de R$ 56,7 bilhões, alta de 13,4% frente ao 3T24 e queda de 5,5% frente ao 2T25. O lucro líquido foi de R$ 14,7 bilhões, com margem líquida de 25,9%. O caixa gerado nas operações somou R$ 8,5 bilhões.',
+      'No 3T25, a Vale S.A. reportou receita líquida de R$ 56,7 bilhões, alta de 13,4% frente ao 3T24 e queda de 5,5% frente ao 2T25. O lucro líquido foi de R$ 14,7 bilhões, com margem líquida de 25,9%. O caixa gerado nas operações somou R$ 8,5 bilhões. Ao fim do trimestre, o ativo total era de R$ 485,0 bilhões e o patrimônio líquido, de R$ 224,7 bilhões.',
     );
 
     // determinismo: rodar de novo com a mesma entrada dá exatamente a mesma string
     expect(
       gerarParagrafo(indicador, { trimestreAnterior: { valor: 60_000_000_000, period: '2T25' } }),
     ).toBe(paragrafo);
+  });
+
+  // Banco grande tem ativo na casa do trilhão: o valor fica em bilhões, com separador de milhar.
+  it('ativo e patrimônio de banco grande saem em bilhões com separador de milhar', () => {
+    const indicador = {
+      ...indicadorBase(),
+      ativoTotal: 3_171_201_000_000,
+      patrimonioLiquido: 220_017_000_000,
+    };
+
+    expect(gerarParagrafo(indicador)).toContain(
+      'o ativo total era de R$ 3.171,2 bilhões e o patrimônio líquido, de R$ 220,0 bilhões.',
+    );
   });
 
   it('omite a cláusula YoY quando a CVM não oferece o comparativo (caso do 4º trimestre)', () => {

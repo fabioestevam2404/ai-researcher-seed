@@ -76,6 +76,9 @@ export function gerarParagrafo(
     `${formatarMoeda(indicador.receitaLiquida)}${sufixoReceita}. ` +
     `O lucro líquido foi de ${formatarMoeda(indicador.lucroLiquido)}, com margem líquida de ` +
     `${FORMATADOR_UMA_CASA.format(margemLiquida)}%. ` +
-    `O caixa gerado nas operações somou ${formatarMoeda(indicador.caixaOperacional)}.`
+    `O caixa gerado nas operações somou ${formatarMoeda(indicador.caixaOperacional)}. ` +
+    // Ativo e patrimônio são posições do balanço na data-base, não fluxos do trimestre.
+    `Ao fim do trimestre, o ativo total era de ${formatarMoeda(indicador.ativoTotal)} e o ` +
+    `patrimônio líquido, de ${formatarMoeda(indicador.patrimonioLiquido)}.`
   );
 }
