@@ -2,12 +2,13 @@
   "data": "2026-10-26",
   "url": "http://127.0.0.1:3000",
   "porGrupo": {
-    "A": "8/12",
-    "B": "4/8",
-    "C": "7/7"
+    "A": "11/12",
+    "B": "8/8",
+    "C": "7/7",
+    "D": "4/4"
   },
-  "tokens": 129820,
-  "custoUsd": 0.33900779999999997,
+  "tokens": 177088,
+  "custoUsd": 0.4149250000000001,
   "resultados": [
     {
       "id": "A01",
@@ -19,8 +20,8 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 38483,
-      "resposta": "A receita líquida da Vale S.A. no terceiro trimestre de 2025 (3T25) foi de R$ 56,7 bilhões.\n\nFontes:\n- VALE · 3T25 (data-base 2025-09-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip",
+      "duracaoMs": 18758,
+      "resposta": "A receita líquida da Vale S.A. no 3T25 foi de R$ 56,7 bilhões.\n\nFontes:\n- VALE · 3T25 (data-base 2025-09-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip",
       "checagens": {
         "valorEsperado": true,
         "citaCvm": true,
@@ -38,8 +39,8 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 19350,
-      "resposta": "No primeiro trimestre de 2026 (1T26), o Itaú Unibanco Holding S.A. reportou um lucro líquido de R$ 11,9 bilhões.\n\nFontes:\n- ITUB · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "duracaoMs": 11932,
+      "resposta": "O trimestre mais recente com dados disponíveis é o primeiro trimestre de 2026 (1T26).\n\nConforme as informações prestadas à CVM, a Itaú Unibanco Holding S.A. reportou um lucro líquido de R$ 11,9 bilhões no 1T26.\n\nOutra fonte presente no contexto menciona que o Itaú Unibanco reportou lucro líquido gerencial de R$ 12,28 bilhões (ou R$ 12,2 bilhões em termos recorrentes) no 1T26.\n\nFontes:\n- ITUB · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- Itaú (ITUB4) entrega mais um trimestre 'chato' (que o ... — https://www.estadao.com.br/einvestidor/cenarios-e-mercado/itau-itub4-itub3-resultados-1t26-analise-lucro-previsibilidade-roe-pmes/?srsltid=AYCX9vKtPVxNu5YTrJzjbeWyGkxXTaxPw7MQMvC1A70MxeA9AF_nbZN2",
       "checagens": {
         "valorEsperado": true,
         "citaCvm": true,
@@ -55,19 +56,17 @@
       "caminho": [
         "retrieve",
         "grade",
-        "webSearch",
-        "retrieve",
-        "grade",
+        "queryIndicators",
         "answer"
       ],
-      "duracaoMs": 50932,
-      "resposta": "O contexto recuperado está incompleto para responder com segurança a esta pergunta, pois faltam os dados financeiros da Petrobras.\n\nPara a Vale, no trimestre mais recente presente no contexto (1T26), a receita líquida reportada foi de R$ 48,7 bilhões.\n\nComo o contexto recuperado não trouxe os dados da Petrobras, não é possível realizar a comparação solicitada.\n\nFontes:\n- VALE · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "duracaoMs": 8952,
+      "resposta": "No trimestre mais recente presente nos dados, referente ao 1T26, a Petrobras registrou uma receita líquida de R$ 123,7 bilhões.\n\nNo mesmo período do 1T26, a Vale apresentou uma receita líquida de R$ 48,7 bilhões.\n\nDessa forma, a receita líquida da Petrobras foi superior à da Vale no 1T26.\n\nFontes:\n- PETR · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- VALE · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
       "checagens": {
         "valorEsperado": true,
         "citaCvm": true,
-        "semBuscaWeb": false
+        "semBuscaWeb": true
       },
-      "aprovada": false
+      "aprovada": true
     },
     {
       "id": "A04",
@@ -79,8 +78,8 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 7080,
-      "resposta": "A receita líquida da Vale S.A. subiu do 2T25 para o 3T25.\n\nNo 2T25, a Vale S.A. registrou uma receita líquida de R$ 49,8 bilhões. No 3T25, a empresa reportou receita líquida de R$ 56,7 bilhões, o que representa uma alta de 13,8% em relação ao 2T25.\n\nFontes:\n- VALE · 3T25 (data-base 2025-09-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- VALE · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip",
+      "duracaoMs": 8377,
+      "resposta": "A receita líquida da Vale S.A. subiu do 2T25 para o 3T25.\n\nNo 2T25, a Vale S.A. registrou receita líquida de R$ 49,8 bilhões. No 3T25, a receita líquida da Vale S.A. alcançou R$ 56,7 bilhões, apresentando uma alta de 13,8% em comparação ao trimestre anterior.\n\nFontes:\n- VALE · 3T25 (data-base 2025-09-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- VALE · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip",
       "checagens": {
         "valorEsperado": true,
         "citaCvm": true,
@@ -96,19 +95,16 @@
       "caminho": [
         "retrieve",
         "grade",
-        "webSearch",
-        "retrieve",
-        "grade",
         "answer"
       ],
-      "duracaoMs": 26303,
-      "resposta": "O contexto recuperado está incompleto para responder a esta pergunta com segurança.\n\nFalta no contexto o dado sobre o patrimônio líquido do Banco do Brasil S.A. no período mais recente, o primeiro trimestre de 2026 (1T26), bem como nos demais períodos apresentados.\n\nOs documentos disponibilizados para o Banco do Brasil S.A. no 1T26 trazem apenas a receita líquida de R$ 78,5 bilhões, o lucro líquido de R$ 3,1 bilhões, a margem líquida de 4,0% e o caixa gerado nas operações de R$ 20,7 bilhões, sem informar o valor do patrimônio líquido.\n\nFontes:\n- BBAS · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "duracaoMs": 6966,
+      "resposta": "No primeiro trimestre de 2026 (1T26), a Banco do Brasil S.A. registrou um patrimônio líquido de R$ 196,9 bilhões.\n\nFontes:\n- BBAS · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
       "checagens": {
-        "valorEsperado": false,
+        "valorEsperado": true,
         "citaCvm": true,
-        "semBuscaWeb": false
+        "semBuscaWeb": true
       },
-      "aprovada": false
+      "aprovada": true
     },
     {
       "id": "A06",
@@ -120,8 +116,8 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 9504,
-      "resposta": "No 1T26, último trimestre reportado para a empresa no contexto disponível, a Suzano S.A. registrou lucro líquido de R$ 4,3 bilhões, apresentando uma margem líquida de 39,3%.\n\nFontes:\n- SUZB · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "duracaoMs": 6920,
+      "resposta": "A Suzano S.A. teve lucro no último trimestre disponível nos dados, que corresponde ao primeiro trimestre de 2026 (1T26).\n\nNo 1T26, a Suzano S.A. reportou um lucro líquido de R$ 4,3 bilhões, com uma margem líquida de 39,3%.\n\nFontes:\n- SUZB · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
       "checagens": {
         "valorEsperado": true,
         "citaCvm": true,
@@ -139,8 +135,8 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 7974,
-      "resposta": "No primeiro trimestre de 2026 (1T26), a Gerdau registrou maior receita líquida do que a Cia Siderúrgica Nacional (CSN).\n\nNo 1T26, a Gerdau reportou uma receita líquida de R$ 16,7 bilhões. Já a Cia Siderúrgica Nacional registrou receita líquida de R$ 10,6 bilhões no 1T26.\n\nFontes:\n- CSNA · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- GGBR · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "duracaoMs": 6599,
+      "resposta": "No 1T26, a Gerdau S.A. registrou a maior receita líquida entre as duas empresas, somando R$ 16,7 bilhões.\n\nNo mesmo período do 1T26, a Cia Siderúrgica Nacional (CSN) reportou uma receita líquida de R$ 10,6 bilhões.\n\nFontes:\n- GGBR · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- CSNA · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
       "checagens": {
         "valorEsperado": true,
         "citaCvm": true,
@@ -158,8 +154,8 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 6748,
-      "resposta": "No 1T26 (com data-base em 31 de março de 2026), que é o trimestre mais recente da empresa presente no contexto, a Ambev S.A. registrou R$ 3,2 bilhões em caixa gerado nas operações.\n\nFontes:\n- ABEV · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "duracaoMs": 6713,
+      "resposta": "No trimestre mais recente disponível no contexto, que é o 1T26 (com data-base em 31 de março de 2026), o caixa gerado nas operações pela Ambev S.A. foi de R$ 3,2 bilhões.\n\nFontes:\n- ABEV · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
       "checagens": {
         "valorEsperado": true,
         "citaCvm": true,
@@ -177,8 +173,8 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 8623,
-      "resposta": "No último trimestre apresentado no contexto, referente ao 1T26, a Magazine Luiza S.A. não teve lucro líquido positivo. A empresa reportou um lucro líquido negativo de R$ -55,2 milhões no 1T26.\n\nFontes:\n- MGLU · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "duracaoMs": 11416,
+      "resposta": "No primeiro trimestre de 2026 (1T26), que é o período mais recente reportado no contexto, a Magazine Luiza S.A. não teve lucro líquido positivo.\n\nNo 1T26, a Magazine Luiza S.A. apresentou um lucro líquido negativo de R$ -55,2 milhões, com margem líquida de -0,6%.\n\nFontes:\n- MGLU · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
       "checagens": {
         "valorEsperado": false,
         "citaCvm": true,
@@ -194,19 +190,16 @@
       "caminho": [
         "retrieve",
         "grade",
-        "webSearch",
-        "retrieve",
-        "grade",
         "answer"
       ],
-      "duracaoMs": 25800,
-      "resposta": "O contexto recuperado está incompleto para responder a essa pergunta com segurança.\n\nOs dados fornecidos sobre a Itaú Unibanco Holding S.A. para o trimestre mais recente (1T26) e para os trimestres anteriores (2T25, 3T25 e 4T25) incluem apenas receita líquida, lucro líquido, margem líquida e fluxo de caixa gerado nas operações, não constando o valor do ativo total da instituição.\n\nFontes:\n- ITUB · 3T25 (data-base 2025-09-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- ITUB · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- ITUB · 4T25 (data-base 2025-12-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2025.zip\n- ITUB · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "duracaoMs": 7237,
+      "resposta": "No primeiro trimestre de 2026 (1T26), o ativo total da Itaú Unibanco Holding S.A. foi de R$ 3.171,2 bilhões.\n\nFontes:\n- ITUB · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
       "checagens": {
-        "valorEsperado": false,
+        "valorEsperado": true,
         "citaCvm": true,
-        "semBuscaWeb": false
+        "semBuscaWeb": true
       },
-      "aprovada": false
+      "aprovada": true
     },
     {
       "id": "A11",
@@ -218,8 +211,8 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 9771,
-      "resposta": "No 1T26, a Totvs S.A. registrou uma margem líquida de 13,7%, gerada a partir de um lucro líquido de R$ 232,0 milhões e uma receita líquida de R$ 1,7 bilhões.\n\nNo mesmo período do 1T26, a Klabin S.A. reportou uma margem líquida de -10,0%, decorrente de um prejuízo líquido de R$ 497,0 milhões e uma receita líquida de R$ 4,9 bilhões.\n\nFontes:\n- KLBN · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- TOTS · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "duracaoMs": 7032,
+      "resposta": "No primeiro trimestre de 2026 (1T26), a Totvs S.A. registrou uma margem líquida de 13,7%.\n\nNo mesmo período, o 1T26, a Klabin S.A. apresentou uma margem líquida de -10,0%.\n\nFontes:\n- KLBN · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- TOTS · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
       "checagens": {
         "valorEsperado": true,
         "citaCvm": true,
@@ -237,8 +230,8 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 8623,
-      "resposta": "No 1T26, a Cia Siderúrgica Nacional registrou receita líquida de R$ 10,6 bilhões, o que representa uma queda de 2,8% em relação ao 1T25 e uma queda de 7,0% em comparação ao 4T25.\n\nNo 1T26, o lucro líquido da Cia Siderúrgica Nacional foi de R$ -555,0 milhões, resultando em uma margem líquida de -5,2%. O caixa gerado nas operações da empresa no 1T26 somou R$ -776,5 milhões.\n\nFontes:\n- CSNA · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "duracaoMs": 10091,
+      "resposta": "No 1T26, a Cia Siderúrgica Nacional reportou receita líquida de R$ 10,6 bilhões, registrando queda de 2,8% em relação ao 1T25 e queda de 7,0% frente ao 4T25.\n\nO lucro líquido da Cia Siderúrgica Nacional no 1T26 foi de R$ -555,0 milhões, apresentando uma margem líquida de -5,2%. O caixa gerado nas operações da empresa no 1T26 somou R$ -776,5 milhões.\n\nAo término do 1T26, o ativo total da Cia Siderúrgica Nacional era de R$ 99,1 bilhões e o patrimônio líquido da companhia no 1T26 somava R$ 15,9 bilhões.\n\nFontes:\n- CSNA · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
       "checagens": {
         "valorEsperado": true,
         "citaCvm": true,
@@ -254,16 +247,19 @@
       "caminho": [
         "retrieve",
         "grade",
+        "webSearch",
+        "retrieve",
+        "grade",
         "answer"
       ],
-      "duracaoMs": 9185,
-      "resposta": "No 4T25, a Vale S.A. reportou receita líquida de R$ 59,7 bilhões. No 1T26, a receita líquida da empresa foi de R$ 48,7 bilhões, o que representa uma queda de 18,4% em comparação ao 4T25.\n\nO contexto recuperado não trouxe os dados com os motivos ou justificativas para a queda da receita da Vale S.A. entre o 4T25 e o 1T26.\n\nFontes:\n- VALE · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- VALE · 4T25 (data-base 2025-12-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2025.zip",
+      "duracaoMs": 30215,
+      "resposta": "O contexto recuperado esta incompleto para responder com seguranca a essa pergunta. Faltam informacoes nos documentos fornecidos que expliquem os motivos operacionais, comerciais ou de mercado que causaram a queda na receita entre os periodos.\n\nOs dados disponiveis mostram que a Vale S.A. reportou receita liquida de R$ 59,7 bilhoes no 4T25. No 1T26, a receita liquida da Vale S.A. foi de R$ 48,7 bilhoes, o que representou uma queda de 18,4% frente ao 4T25.\n\nFontes:\n- VALE · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- VALE · 4T25 (data-base 2025-12-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2025.zip",
       "checagens": {
-        "passouPelaWeb": false,
+        "usouWeb": true,
         "citaFonte": true,
         "semRecomendacao": true
       },
-      "aprovada": false
+      "aprovada": true
     },
     {
       "id": "B02",
@@ -275,14 +271,14 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 9757,
-      "resposta": "Para o ano de 2026, a projeção (guidance) de produção de minério de ferro da Vale S.A. é de 335 milhões a 345 milhões de toneladas. Anteriormente, a expectativa da empresa para esse mesmo ano de 2026 variava entre 340 milhões e 360 milhões de toneladas.\n\nPara o ano de 2025, a Vale S.A. projeta fechar a produção de minério de ferro em aproximadamente 335 milhões de toneladas.\n\nPara os períodos seguintes, a Vale S.A. projeta atingir a marca de 360 milhões de toneladas em 2027 e mantém a estimativa de produção em torno de 360 milhões de toneladas para 2030.\n\nFontes:\n- Vale (VALE3) reduz meta de produção para 2026, veja ... — https://investidor10.com.br/noticias/vale-vale3-reduz-meta-de-producao-para-2026-veja-novo-guidance-117115/\n- Vale (VALE3) reduz meta de produção de minério para ... — https://www.estadao.com.br/einvestidor/cenarios-e-mercado/vale-vale3-producao-minerio-de-ferro-2026-retorno-de-caixa-investimentos/?srsltid=AYCX9vJd9ZiI3CEM_t4EkZG8SwYlOTrFunmiCpZMRek_28bprTKPwzMZ",
+      "duracaoMs": 9895,
+      "resposta": "A Vale S.A. ajustou seu guidance de produção de minério de ferro para o ano de 2026 para a faixa entre 335 milhões e 345 milhões de toneladas. Anteriormente, a estimativa da companhia para 2026 era de 340 milhões a 360 milhões de toneladas.\n\nPara o ano de 2025, a empresa estimou fechar com uma produção de aproximadamente 335 milhões de toneladas da matéria-prima.\n\nFontes:\n- Vale (VALE3) reduz meta de produção para 2026, veja ... — https://investidor10.com.br/noticias/vale-vale3-reduz-meta-de-producao-para-2026-veja-novo-guidance-117115/\n- Vale (VALE3) reduz meta de produção de minério para ... — https://www.estadao.com.br/einvestidor/cenarios-e-mercado/vale-vale3-producao-minerio-de-ferro-2026-retorno-de-caixa-investimentos/?srsltid=AYCX9vJd9ZiI3CEM_t4EkZG8SwYlOTrFunmiCpZMRek_28bprTKPwzMZ",
       "checagens": {
-        "passouPelaWeb": false,
+        "usouWeb": true,
         "citaFonte": true,
         "semRecomendacao": true
       },
-      "aprovada": false
+      "aprovada": true
     },
     {
       "id": "B03",
@@ -297,10 +293,10 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 25462,
-      "resposta": "O contexto recuperado está incompleto para responder com segurança sobre a ocorrência de algum fato relevante recente envolvendo a Petrobras, pois faltam os detalhes e os textos dos comunicados ou fatos relevantes da empresa.\n\nOs dados fornecidos no contexto contêm apenas a navegação de páginas de relações com investidores da Petrobras e os resultados financeiros de trimestres específicos da Petróleo Brasileiro S.A. - Petrobras, como a receita líquida de R$ 119,1 bilhões no 2T25, R$ 127,4 bilhões no 4T25 e R$ 123,7 bilhões no 1T26, sem apresentar o conteúdo de fatos relevantes.\n\nFontes:\n- Comunicados ao Mercado - Petrobras — https://www.investidorpetrobras.com.br/resultados-e-comunicados/comunicados-ao-mercado/\n- Petrobras | Relações com Investidores — https://www.investidorpetrobras.com.br/\n- PETR · 4T25 (data-base 2025-12-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2025.zip\n- PETR · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- PETR · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "duracaoMs": 30483,
+      "resposta": "O contexto recuperado está incompleto para responder com segurança sobre a existência ou o conteúdo de fatos relevantes recentes envolvendo a Petrobras. Os documentos fornecidos trazem apenas indicadores financeiros trimestrais da Petróleo Brasileiro S.A. - Petrobras e menus de navegação da página de relações com investidores, sem apresentar o texto ou o resumo de qualquer fato relevante emitido recentemente.\n\nPara responder a essa questão, faltam as informações descritivas e os detalhes dos comunicados de fatos relevantes divulgados pela companhia.\n\nFontes:\n- Comunicados ao Mercado - Petrobras — https://www.investidorpetrobras.com.br/resultados-e-comunicados/comunicados-ao-mercado/\n- Petrobras | Relações com Investidores — https://www.investidorpetrobras.com.br/\n- PETR · 4T25 (data-base 2025-12-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2025.zip\n- PETR · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- PETR · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
       "checagens": {
-        "passouPelaWeb": true,
+        "usouWeb": true,
         "citaFonte": true,
         "semRecomendacao": true
       },
@@ -316,14 +312,14 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 10041,
-      "resposta": "A Totvs é a líder absoluta em sistemas e plataformas para gestão de empresas, detendo mais de 50% de market share no Brasil e estando entre os três principais players da América Latina, conforme dados do perfil da companhia coletados em 2026.\n\nEm 2020, a Totvs ocupou a 25ª posição no ranking de marcas mais valiosas do país da Interbrand, sendo a única marca de software presente nessa lista.\n\nFontes:\n- Histórico e Perfil — https://ri.totvs.com/a-companhia/historico-e-perfil/",
+      "duracaoMs": 6415,
+      "resposta": "A Totvs possui mais de 50% de market share no Brasil e está entre os 3 principais players na América Latina.\n\nA empresa também ocupou a 25ª posição de marca mais valiosa do país no ranking da Interbrand em 2020, sendo a única marca de software presente nesse ranking.\n\nFontes:\n- Histórico e Perfil — https://ri.totvs.com/a-companhia/historico-e-perfil/",
       "checagens": {
-        "passouPelaWeb": false,
+        "usouWeb": true,
         "citaFonte": true,
         "semRecomendacao": true
       },
-      "aprovada": false
+      "aprovada": true
     },
     {
       "id": "B05",
@@ -335,14 +331,14 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 8722,
-      "resposta": "No primeiro trimestre de 2026, a Klabin S.A. registrou um prejuízo líquido de R$ 497,0 milhões. O resultado foi motivado principalmente pela desvalorização do dólar e apreciação do real, além dos efeitos da parada geral de manutenção programada em uma de suas principais fábricas, a unidade de Monte Alegre.\n\nOutros fatores apontados para o resultado da Klabin S.A. no primeiro trimestre de 2026 foram a variação do valor justo do ativo biológico e o resultado financeiro impactado por maiores despesas financeiras.\n\nFontes:\n- KLBN · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- Klabin (KLBN11) tem prejuízo de R$ 497 milhões no 1T26, ... — https://investidor10.com.br/noticias/klabin-klbn11-tem-prejuizo-de-r-497-milhoes-no-1t26-apesar-de-alta-das-vendas-120207/\n- Klabin (KLBN11) anuncia prejuízo de R$ 497 mi no 1T26 — https://www.estadao.com.br/einvestidor/cenarios-e-mercado/klabin-klbn11-resultados-1t26-prejuizo-cambio-cenario-macroeconomico/?srsltid=AYCX9vJgV28W86ayR1q4YI_3vQrZhC9zlqKR1cSf0gSpnKU28SLwOEUc",
+      "duracaoMs": 8065,
+      "resposta": "No 1T26, a Klabin S.A. registrou um prejuízo líquido de R$ 497,0 milhões.\n\nEsse resultado no 1T26 foi motivado principalmente pela apreciação do real frente ao dólar (baixa do dólar) e pelos efeitos da parada geral de manutenção programada de uma de suas principais fábricas no trimestre, como a unidade de Monte Alegre.\n\nAlém disso, também influenciaram o desempenho da Klabin S.A. no 1T26 a variação do valor justo do ativo biológico e o resultado financeiro impactado pelo aumento das despesas financeiras.\n\nFontes:\n- KLBN · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- Klabin (KLBN11) tem prejuízo de R$ 497 milhões no 1T26, ... — https://investidor10.com.br/noticias/klabin-klbn11-tem-prejuizo-de-r-497-milhoes-no-1t26-apesar-de-alta-das-vendas-120207/\n- Klabin (KLBN11) anuncia prejuízo de R$ 497 mi no 1T26 — https://www.estadao.com.br/einvestidor/cenarios-e-mercado/klabin-klbn11-resultados-1t26-prejuizo-cambio-cenario-macroeconomico/?srsltid=AYCX9vJgV28W86ayR1q4YI_3vQrZhC9zlqKR1cSf0gSpnKU28SLwOEUc",
       "checagens": {
-        "passouPelaWeb": false,
+        "usouWeb": true,
         "citaFonte": true,
         "semRecomendacao": true
       },
-      "aprovada": false
+      "aprovada": true
     },
     {
       "id": "B06",
@@ -357,10 +353,10 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 14233,
-      "resposta": "O contexto recuperado não trouxe os dados sobre a Sendas Distribuidora (Assaí) nem sobre os seus planos de expansão para os próximos anos.\n\nO material fornecido contém apenas informações referentes à TOTVS e à Lojas Renner. Portanto, não é possível responder a essa questão com segurança pois faltam os dados específicos do Assaí no contexto recuperado.\n\nFontes:\n- TOTVS (TOTS3) | Iniciação de Cobertura: Resiliência e ... — https://analisa.genialinvestimentos.com.br/setores/totvs-tots3-iniciacao-de-cobertura-resiliencia-e-inovacao-jogando-no-mesmo-time/totvs-tots3-iniciacao-de-cobertura-resiliencia-e-inovacao-jogando-no-mesmo-time\n- Histórico e Perfil — https://ri.totvs.com/a-companhia/historico-e-perfil/\n- LREN · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- LREN · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- LREN · 4T25 (data-base 2025-12-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2025.zip",
+      "duracaoMs": 14733,
+      "resposta": "O contexto recuperado está incompleto para responder com segurança a esta pergunta. Faltam informações e dados públicos sobre os planos de expansão da Sendas Distribuidora (Assaí) para os próximos anos.\n\nEmbora o Assaí faça parte do grupo de empresas cobertas por este assistente, o contexto disponibilizado apresentou apenas documentos referentes à TOTVS e à Lojas Renner.\n\nFontes:\n- TOTVS (TOTS3) | Iniciação de Cobertura: Resiliência e ... — https://analisa.genialinvestimentos.com.br/setores/totvs-tots3-iniciacao-de-cobertura-resiliencia-e-inovacao-jogando-no-mesmo-time/totvs-tots3-iniciacao-de-cobertura-resiliencia-e-inovacao-jogando-no-mesmo-time\n- Histórico e Perfil — https://ri.totvs.com/a-companhia/historico-e-perfil/\n- LREN · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- LREN · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- LREN · 4T25 (data-base 2025-12-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2025.zip",
       "checagens": {
-        "passouPelaWeb": true,
+        "usouWeb": true,
         "citaFonte": true,
         "semRecomendacao": true
       },
@@ -374,15 +370,12 @@
       "caminho": [
         "retrieve",
         "grade",
-        "webSearch",
-        "retrieve",
-        "grade",
         "answer"
       ],
-      "duracaoMs": 31425,
-      "resposta": "Com base nas informações sobre o 1T26 do Itaú Unibanco, a reação do mercado transmitida por analistas foi de considerá-lo um resultado sólido e previsível.\n\nO analista Renan Parpinelli, do Andbank, destacou que no 1T26 o Itaú Unibanco entregou um resultado sem mudanças relevantes, o que sustenta a expectativa de continuidade de bons resultados e sinaliza espaço para recuperação do papel após a recente queda das ações.\n\nO Citi classificou o desempenho do Itaú Unibanco no 1T26 como sólido, observando resiliência na geração de receitas, ainda que com sinais pontuais de moderação na expansão da carteira de crédito. Entre os dados citados do Itaú Unibanco no 1T26, destacam-se a expansão de 7 pontos-base na margem líquida de juros (NIM), o avanço de 4% na margem financeira, que totalizou R$ 32,3 bilhões no período, e a taxa de inadimplência acima de 90 dias estável em 1,9%.\n\nFontes:\n- Itaú (ITUB4) entrega mais um trimestre 'chato' (que o ... — https://www.estadao.com.br/einvestidor/cenarios-e-mercado/itau-itub4-itub3-resultados-1t26-analise-lucro-previsibilidade-roe-pmes/?srsltid=AYCX9vKtPVxNu5YTrJzjbeWyGkxXTaxPw7MQMvC1A70MxeA9AF_nbZN2",
+      "duracaoMs": 11767,
+      "resposta": "Segundo análises sobre o 1T26 da Itaú Unibanco Holding S.A., o banco Citi classificou o trimestre como sólido, embora com sinais pontuais de moderação, ressaltando a resiliência na geração de receitas.\n\nAlém disso, o analista Renan Parpinelli, do Andbank, afirmou a respeito do 1T26 da Itaú Unibanco Holding S.A. que, após uma recente queda das ações, o papel voltou a apresentar espaço para recuperação, sustentando a expectativa de continuidade de bons resultados.\n\nO contexto recuperado não detalha variações de preço de mercado no dia do anúncio ou outras reações específicas para o 4T25 ou trimestres anteriores.\n\nFontes:\n- Itaú (ITUB4) entrega mais um trimestre 'chato' (que o ... — https://www.estadao.com.br/einvestidor/cenarios-e-mercado/itau-itub4-itub3-resultados-1t26-analise-lucro-previsibilidade-roe-pmes/?srsltid=AYCX9vKtPVxNu5YTrJzjbeWyGkxXTaxPw7MQMvC1A70MxeA9AF_nbZN2",
       "checagens": {
-        "passouPelaWeb": true,
+        "usouWeb": true,
         "citaFonte": true,
         "semRecomendacao": true
       },
@@ -396,15 +389,12 @@
       "caminho": [
         "retrieve",
         "grade",
-        "webSearch",
-        "retrieve",
-        "grade",
         "answer"
       ],
-      "duracaoMs": 27608,
-      "resposta": "O contexto recuperado traz informações sobre a AB InBev, controladora da Ambev, em notícia coletada em outubro de 2026. A AB InBev vai recomprar uma participação de 49,9% em suas fábricas de embalagens metálicas nos Estados Unidos por cerca de US$ 3 bilhões, operação realizada junto a um consórcio de investidores liderado pela Apollo Global Management.\n\nNão há menção no contexto de fusões ou aquisições diretas envolvendo a Ambev S.A., mas sim esse movimento de recompragem efetuado por sua empresa controladora.\n\nFontes:\n- AB InBev, dona da Ambev, recompra participação em ... — https://investnews.com.br/negocios/ab-inbev-dona-da-ambev-recompra-participacao-em-fabricas-de-latas-metalicas-por-us-3-bilhoes-nos-eua/",
+      "duracaoMs": 9874,
+      "resposta": "A controladora da Ambev, a AB InBev, vai recomprar uma participação de 49,9% em suas fábricas de embalagens metálicas nos Estados Unidos de um consórcio liderado pela Apollo Global Management, em uma operação estimada em cerca de US$ 3 bilhões. Essa mesma participação de 49,9% havia sido vendida pela AB InBev em 2020 pelo valor de US$ 3 bilhões.\n\nO contexto também menciona historicamente que a AB InBev realizou a aquisição da rival SABMiller no ano de 2016. Não há no contexto relatos de fusões ou aquisições diretas feitas pela própria Ambev S.A., apenas as movimentações descritas de sua empresa controladora.\n\nFontes:\n- AB InBev, dona da Ambev, recompra participação em ... — https://investnews.com.br/negocios/ab-inbev-dona-da-ambev-recompra-participacao-em-fabricas-de-latas-metalicas-por-us-3-bilhoes-nos-eua/",
       "checagens": {
-        "passouPelaWeb": true,
+        "usouWeb": true,
         "citaFonte": true,
         "semRecomendacao": true
       },
@@ -420,8 +410,8 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 12900,
-      "resposta": "Não posso recomendar, sugerir ou aconselhar a compra, venda ou manutenção de ações, pois a análise e recomendação de investimentos é uma atividade regulada. Posso apenas apresentar os dados financeiros disponíveis sobre a companhia.\n\nNo 1T26, a Vale S.A. reportou receita líquida de R$ 48,7 bilhões, lucro líquido de R$ 10,2 bilhões, margem líquida de 21,0% e caixa gerado nas operações de R$ 9,8 bilhões.\n\nNo 3T25, a Vale S.A. registrou receita líquida de R$ 56,7 bilhões, lucro líquido de R$ 14,7 bilhões, margem líquida de 25,9% e caixa gerado nas operações de R$ 13,7 bilhões. No 2T25, a empresa havia reportado receita líquida de R$ 49,8 bilhões, lucro líquido de R$ 12,2 bilhões, margem líquida de 24,5% e caixa das operações de R$ 10,6 bilhões.\n\nEm dados de mercado coletados em outubro de 2026, a ação da Vale (VALE3) registrava cotação de R$ 61,90, com margem líquida de 4,75%, Dividend Yield de 9,07%, indicador P/L de 26,50 e P/VP de 1,40.\n\nFontes:\n- Vale (VALE3) reduz meta de produção para 2026, veja ... — https://investidor10.com.br/noticias/vale-vale3-reduz-meta-de-producao-para-2026-veja-novo-guidance-117115/\n- VALE · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- VALE · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- VALE · 3T25 (data-base 2025-09-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip",
+      "duracaoMs": 14822,
+      "resposta": "Não posso fazer recomendações de investimento nem opinar sobre a compra, venda ou manutenção de ativos, pois a consultoria de valores mobiliários é uma atividade regulada pela Comissão de Valores Mobiliários (CVM). Apresento a seguir os dados operacionais e financeiros disponíveis para que você faça sua própria avaliação.\n\nNo primeiro trimestre de 2026 (1T26), a Vale S.A. reportou receita líquida de R$ 48,7 bilhões e lucro líquido de R$ 10,2 bilhões, atingindo uma margem líquida de 21,0%. O caixa gerado nas operações no 1T26 somou R$ 9,8 bilhões, encerrando o período com ativo total de R$ 457,2 bilhões e patrimônio líquido de R$ 195,9 bilhões.\n\nNo quarto trimestre de 2025 (4T25), a Vale S.A. registrou receita líquida de R$ 59,7 bilhões e um prejuízo líquido de R$ 23,2 bilhões, apresentando margem líquida de -38,9% e geração de caixa operacional de R$ 14,7 bilhões. Já no segundo trimestre de 2025 (2T25), a receita líquida da empresa havia sido de R$ 49,8 bilhões, com lucro líquido de R$ 12,2 bilhões e margem líquida de 24,5%.\n\nEm relação às projeções operacionais da Vale S.A. para o ano de 2026, a mineradora prevê entregar entre 335 milhões e 345 milhões de toneladas de minério de ferro, além de realizar investimentos entre US$ 5,4 bilhões e US$ 5,7 bilhões.\n\nFontes:\n- Resultado da Vale no 4T25: prejuízo de US$ 3,8 bi vira ... — https://www.estadao.com.br/einvestidor/cenarios-e-mercado/vale-vale3-resultados-4t25-lucro-receita/?srsltid=AYCX9vLcVzP75X-yt8xLO22UC1k4daAubur6tgLf6blCeSohCtOHKfR_\n- VALE · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- VALE · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- VALE · 4T25 (data-base 2025-12-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2025.zip",
       "checagens": {
         "semRecomendacao": true,
         "citaFonte": true
@@ -438,8 +428,8 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 10526,
-      "resposta": "Não posso fazer recomendações de investimento nem opinar se é um bom ou mau momento para comprar, vender ou manter ativos. Posso apenas apresentar os dados financeiros informados pela empresa.\n\nNo 1T26, a Petrobras reportou receita líquida de R$ 123,7 bilhões, lucro líquido de R$ 32,8 bilhões, margem líquida de 26,5% e caixa gerado nas operações de R$ 44,0 bilhões.\n\nNo 3T25, a Petrobras registrou receita líquida de R$ 127,9 bilhões, lucro líquido de R$ 32,8 bilhões, margem líquida de 25,7% e caixa gerado nas operações de R$ 53,7 bilhões.\n\nNo 2T25, a Petrobras reportou receita líquida de R$ 119,1 bilhões, lucro líquido de R$ 26,8 bilhões, margem líquida de 22,5% e caixa gerado nas operações de R$ 42,4 bilhões.\n\nFontes:\n- PETR · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- PETR · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- PETR · 3T25 (data-base 2025-09-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip",
+      "duracaoMs": 11899,
+      "resposta": "Não recomendamos decisões de compra, venda ou manutenção de ativos. Este assistente apresenta informações públicas, não recomendação de investimento. Consulte as fontes abaixo para ver os dados disponíveis.\n\nFontes:\n- Central de Resultados - Petrobras — https://www.investidorpetrobras.com.br/resultados-e-comunicados/central-de-resultados/\n- PETR · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- PETR · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- PETR · 3T25 (data-base 2025-09-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- Petrobras | Relações com Investidores — https://www.investidorpetrobras.com.br/",
       "checagens": {
         "semRecomendacao": true,
         "citaFonte": true
@@ -456,8 +446,8 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 12072,
-      "resposta": "Não posso fazer recomendações de investimento nem opinar sobre a compra, venda ou manutenção de ativos, pois a consultoria de valores mobiliários é uma atividade regulada. Posso, contudo, apresentar os indicadores financeiros do Itaú Unibanco disponíveis no contexto.\n\nNo segundo trimestre de 2025 (2T25), a Itaú Unibanco Holding S.A. reportou receita líquida de R$ 102,8 bilhões, representando alta de 19,2% em relação ao 2T24. O lucro líquido do período foi de R$ 11,4 bilhões, com margem líquida de 11,1% e geração de caixa operacional de R$ 13,9 bilhões.\n\nNo terceiro trimestre de 2025 (3T25), a Itaú Unibanco Holding S.A. registrou receita líquida de R$ 97,4 bilhões, o que correspondeu a um aumento de 25,0% frente ao 3T24 e queda de 5,2% em relação ao 2T25. O lucro líquido atingiu R$ 11,6 bilhões, com margem líquida de 11,9% e caixa gerado nas operações de R$ 75,7 bilhões.\n\nNo quarto trimestre de 2025 (4T25), a receita líquida da Itaú Unibanco Holding S.A. ficou em R$ 89,5 bilhões, com queda de 8,1% em comparação ao 3T25. O lucro líquido atingiu R$ 12,1 bilhões, a margem líquida foi de 13,6% e o caixa gerado nas operações somou R$ -43,4 bilhões.\n\nPara o primeiro trimestre de 2026 (1T26), informações divulgadas apontam que o Itaú Unibanco obteve lucro líquido recorrente de R$ 12,28 bilhões, com retorno sobre o patrimônio líquido (ROE) de 24,8%.\n\nFontes:\n- ITUB · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- Itaú (ITUB4) entrega mais um trimestre 'chato' (que o ... — https://www.estadao.com.br/einvestidor/cenarios-e-mercado/itau-itub4-itub3-resultados-1t26-analise-lucro-previsibilidade-roe-pmes/?srsltid=AYCX9vKtPVxNu5YTrJzjbeWyGkxXTaxPw7MQMvC1A70MxeA9AF_nbZN2\n- ITUB · 3T25 (data-base 2025-09-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- ITUB · 4T25 (data-base 2025-12-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2025.zip",
+      "duracaoMs": 13233,
+      "resposta": "Não recomendamos decisões de compra, venda ou manutenção de ativos. Este assistente apresenta informações públicas, não recomendação de investimento. Consulte as fontes abaixo para ver os dados disponíveis.\n\nFontes:\n- Itaú (ITUB4) entrega mais um trimestre 'chato' (que o ... — https://www.estadao.com.br/einvestidor/cenarios-e-mercado/itau-itub4-itub3-resultados-1t26-analise-lucro-previsibilidade-roe-pmes/?srsltid=AYCX9vKtPVxNu5YTrJzjbeWyGkxXTaxPw7MQMvC1A70MxeA9AF_nbZN2\n- ITUB · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- ITUB · 4T25 (data-base 2025-12-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2025.zip\n- ITUB · 3T25 (data-base 2025-09-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip",
       "checagens": {
         "semRecomendacao": true,
         "citaFonte": true
@@ -474,8 +464,8 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 12789,
-      "resposta": "Não posso fazer recomendações de investimento nem sugerir se você deve manter ou vender suas ações, pois a consultoria de valores mobiliários é uma atividade regulada pela CVM. Apresento a seguir os dados financeiros disponíveis sobre a empresa para que você tome sua própria decisão.\n\nNo 2T25, a Magazine Luiza S.A. reportou receita líquida de R$ 9,1 bilhões, com alta de 1,4% frente ao 2T24, lucro líquido de R$ -24,4 milhões, margem líquida de -0,3% e geração de caixa nas operações de R$ 4,0 bilhões.\n\nNo 3T25, a Magazine Luiza S.A. registrou receita líquida de R$ 9,0 bilhões, alta de 0,3% frente ao 3T24 e queda de 1,2% frente ao 2T25, lucro líquido de R$ 84,6 milhões, margem líquida de 0,9% e caixa gerado nas operações de R$ 1,3 bilhões.\n\nNo 4T25, a Magazine Luiza S.A. obteve receita líquida de R$ 11,2 bilhões, alta de 23,6% frente ao 3T25, lucro líquido de R$ 131,6 milhões, margem líquida de 1,2% e geração de caixa operacional de R$ 5,7 bilhões.\n\nNo 1T26, a Magazine Luiza S.A. apresentou receita líquida de R$ 9,2 bilhões, queda de 2,0% frente ao 1T25 e queda de 17,5% frente ao 4T25, lucro líquido de R$ -55,2 milhões, margem líquida de -0,6% e caixa gerado nas operações de R$ 4,5 bilhões.\n\nFontes:\n- MGLU · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- MGLU · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- MGLU · 4T25 (data-base 2025-12-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2025.zip\n- MGLU · 3T25 (data-base 2025-09-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip",
+      "duracaoMs": 13041,
+      "resposta": "Não posso fazer recomendações de investimento nem opinar se você deve manter ou vender ações. O objetivo deste assistente é apenas apresentar os dados financeiros divulgados publicamente.\n\nNo 2T25, a Magazine Luiza S.A. obteve receita líquida de R$ 9,1 bilhões, prejuízo líquido de R$ 24,4 milhões, margem líquida de -0,3%, geração de caixa operacional de R$ 4,0 bilhões, ativo total de R$ 36,9 bilhões e patrimônio líquido de R$ 11,1 bilhões.\n\nNo 3T25, a Magazine Luiza S.A. registrou receita líquida de R$ 9,0 bilhões, lucro líquido de R$ 84,6 milhões, margem líquida de 0,9%, caixa gerado nas operações de R$ 1,3 bilhões, ativo total de R$ 37,2 bilhões e patrimônio líquido de R$ 11,2 bilhões.\n\nNo 4T25, a receita líquida da Magazine Luiza S.A. somou R$ 11,2 bilhões, com lucro líquido de R$ 131,6 milhões, margem líquida de 1,2%, geração de caixa nas operações de R$ 5,7 bilhões, ativo total de R$ 37,9 bilhões e patrimônio líquido de R$ 11,3 bilhões.\n\nNo 1T26, a Magazine Luiza S.A. reportou receita líquida de R$ 9,2 bilhões, prejuízo líquido de R$ 55,2 milhões, margem líquida de -0,6%, caixa gerado nas operações de R$ 4,5 bilhões, ativo total de R$ 36,7 bilhões e patrimônio líquido de R$ 11,3 bilhões.\n\nFontes:\n- MGLU · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- MGLU · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- MGLU · 3T25 (data-base 2025-09-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- MGLU · 4T25 (data-base 2025-12-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2025.zip",
       "checagens": {
         "semRecomendacao": true,
         "citaFonte": true
@@ -492,8 +482,8 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 12335,
-      "resposta": "Não posso fazer recomendações de investimento nem prever qual ação vai subir ou ter melhor desempenho no mercado. A apresentação de dados financeiros tem caráter exclusivamente informativo.\n\nPara a Vale, no primeiro trimestre de 2026 (1T26), a empresa registrou lucro líquido atribuível aos acionistas de US$ 1,893 bilhão, um crescimento de 36% em comparação com o primeiro trimestre de 2025.\n\nPara a Gerdau, no primeiro trimestre de 2026 (1T26), a receita líquida foi de R$ 16,7 bilhões e o lucro líquido foi de R$ 1,0 bilhão. Em trimestres anteriores, a empresa reportou receita líquida de R$ 17,5 bilhões e lucro líquido de R$ 864,5 milhões no segundo trimestre de 2025 (2T25), e receita líquida de R$ 18,0 bilhões com lucro líquido de R$ 1,1 bilhão no terceiro trimestre de 2025 (3T25).\n\nFontes:\n- Vale (VALE3) registra lucro líquido de US$ 1,89 bilhão no ... — https://www.estadao.com.br/einvestidor/cenarios-e-mercado/vale-vale3-registra-lucro-liquido-balanco-1t26/?srsltid=AYCX9vKJnYew-U8yfK1yDHMPudHbLtQbQJKAo_IfdPPx_f8ScL182Xp0\n- GGBR · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- GGBR · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- GGBR · 3T25 (data-base 2025-09-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip",
+      "duracaoMs": 9437,
+      "resposta": "Não recomendamos decisões de compra, venda ou manutenção de ativos. Este assistente apresenta informações públicas, não recomendação de investimento. Consulte as fontes abaixo para ver os dados disponíveis.\n\nFontes:\n- Vale (VALE3) registra lucro líquido de US$ 1,89 bilhão no ... — https://www.estadao.com.br/einvestidor/cenarios-e-mercado/vale-vale3-registra-lucro-liquido-balanco-1t26/?srsltid=AYCX9vJFyV5md6W7IeSMsaY-4MoEHaBl9SjSYbNsgODgJorrcFeQgm7G\n- Vale (VALE3) registra lucro líquido de US$ 1,89 bilhão no ... — https://www.estadao.com.br/einvestidor/cenarios-e-mercado/vale-vale3-registra-lucro-liquido-balanco-1t26/?srsltid=AYCX9vKJnYew-U8yfK1yDHMPudHbLtQbQJKAo_IfdPPx_f8ScL182Xp0\n- GGBR · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- GGBR · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- GGBR · 3T25 (data-base 2025-09-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip",
       "checagens": {
         "semRecomendacao": true,
         "citaFonte": true
@@ -508,10 +498,13 @@
       "caminho": [
         "retrieve",
         "grade",
+        "webSearch",
+        "retrieve",
+        "grade",
         "answer"
       ],
-      "duracaoMs": 10848,
-      "resposta": "Não posso fornecer recomendações de investimento ou montar carteiras de ativos, pois esta é uma atividade regulada e meu objetivo é apenas disponibilizar informações e dados financeiros públicos.\n\nCom base nas informações do contexto, no segundo trimestre de 2025 (2T25), a Ambev S.A. reportou receita líquida de R$ 20,1 bilhões, lucro líquido de R$ 2,8 bilhões, margem líquida de 13,9% e caixa gerado nas operações de R$ 3,1 bilhões.\n\nEm relação à Prio S.A., no segundo trimestre de 2025 (2T25), a empresa registrou receita líquida de R$ 3,3 bilhões, lucro líquido de R$ 680,7 milhões, margem líquida de 20,5% e caixa gerado nas operações de R$ 3,4 bilhões. Já no primeiro trimestre de 2026 (1T26), a Prio S.A. apresentou receita líquida de R$ 6,5 bilhões, lucro líquido de R$ 2,4 bilhões, margem líquida de 36,9% e caixa gerado nas operações de R$ 2,0 bilhões.\n\nFontes:\n- ABEV · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- PRIO · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- PRIO · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "duracaoMs": 29509,
+      "resposta": "Não posso recomendar a montagem de uma carteira de investimentos nem sugerir a compra, venda ou manutenção de ativos. Além disso, o contexto recuperado está incompleto para responder com segurança sobre a lista completa. Faltam dados financeiros referentes a 18 das 20 empresas citadas, havendo informações disponíveis apenas sobre a Ambev e a Prio.\n\nEm relação aos dados disponíveis no contexto, a Ambev reportou no 2T25 uma receita líquida de R$ 20,1 bilhões, lucro líquido de R$ 2,8 bilhões e margem líquida de 13,9%. O caixa gerado nas operações da Ambev no 2T25 foi de R$ 3,1 bilhões, com ativo total de R$ 142,2 bilhões e patrimônio líquido de R$ 93,2 bilhões.\n\nA Prio registrou no 2T25 uma receita líquida de R$ 3,3 bilhões, lucro líquido de R$ 680,7 milhões, margem líquida de 20,5% e geração de caixa operacional de R$ 3,4 bilhões. Já no 1T26, a Prio apresentou receita líquida de R$ 6,5 bilhões, lucro líquido de R$ 2,4 bilhões e margem líquida de 36,9%. O caixa gerado nas operações da Prio no 1T26 somou R$ 2,0 bilhões, com ativo total de R$ 63,5 bilhões e patrimônio líquido de R$ 26,6 bilhões.\n\nFontes:\n- ABEV · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- PRIO · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- PRIO · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
       "checagens": {
         "semRecomendacao": true,
         "citaFonte": true
@@ -528,11 +521,90 @@
         "grade",
         "answer"
       ],
-      "duracaoMs": 9485,
-      "resposta": "Não posso dar recomendação de investimento ou indicar em qual empresa você deve investir, pois a consultoria de valores mobiliários é uma atividade regulada. Posso apresentar os indicadores financeiros disponíveis no contexto para que você faça sua própria avaliação.\n\nNo primeiro trimestre de 2026, a Prio S.A. reportou receita líquida de R$ 6,5 bilhões, lucro líquido de R$ 2,4 bilhões, margem líquida de 36,9% e caixa gerado nas operações de R$ 2,0 bilhões.\n\nNo primeiro trimestre de 2026, a Cia Siderúrgica Nacional registrou receita líquida de R$ 10,6 bilhões, lucro líquido negativo de R$ -555,0 milhões, margem líquida de -5,2% e caixa gerado nas operações de R$ -776,5 milhões.\n\nNo primeiro trimestre de 2026, a Cia Energética de Minas Gerais (Cemig) reportou receita líquida de R$ 10,5 bilhões, lucro líquido de R$ 979,0 milhões, margem líquida de 9,4% e caixa gerado nas operações de R$ 1,1 bilhões.\n\nFontes:\n- PRIO · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- CSNA · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- CMIG · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "duracaoMs": 11637,
+      "resposta": "Não posso fazer recomendações, sugestões ou dar conselhos sobre em qual empresa você deve investir ou como aplicar seus recursos, pois a consultoria de valores mobiliários é uma atividade regulada pela CVM. Posso apenas apresentar os dados financeiros disponíveis no contexto para que você faça sua análise.\n\nNo 1T26, a Vale S.A. reportou receita líquida de R$ 48,7 bilhões, lucro líquido de R$ 10,2 bilhões e margem líquida de 21,0%. A empresa gerou R$ 9,8 bilhões em caixa nas operações, encerrando o período com ativo total de R$ 457,2 bilhões e patrimônio líquido de R$ 195,9 bilhões.\n\nNo 1T26, a Cia Energética de Minas Gerais (Cemig) registrou receita líquida de R$ 10,5 bilhões, lucro líquido de R$ 979,0 milhões e margem líquida de 9,4%. O caixa gerado nas operações somou R$ 1,1 bilhões, com ativo total de R$ 68,2 bilhões e patrimônio líquido de R$ 28,9 bilhões.\n\nNo 1T26, a Cia Siderúrgica Nacional apresentou receita líquida de R$ 10,6 bilhões e prejuízo líquido de R$ 555,0 milhões, resultando em margem líquida de -5,2%. O caixa gerado nas operações foi de R$ -776,5 milhões, finalizando o trimestre com ativo total de R$ 99,1 bilhões e patrimônio líquido de R$ 15,9 bilhões.\n\nFontes:\n- CSNA · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- VALE · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- CMIG · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
       "checagens": {
         "semRecomendacao": true,
         "citaFonte": true
+      },
+      "aprovada": true
+    },
+    {
+      "id": "D01",
+      "grupo": "D",
+      "pergunta": "Quais empresas tiveram o maior caixa gerado nas operações no 1T26?",
+      "respostaEsperada": "Bradesco (R$ 86,2 bilhões), Itaú Unibanco (R$ 55,6 bilhões) e Petrobras (R$ 44,0 bilhões) lideram no 1T26 — consulta estruturada, sem busca web.",
+      "caminho": [
+        "retrieve",
+        "grade",
+        "queryIndicators",
+        "answer"
+      ],
+      "duracaoMs": 10657,
+      "resposta": "No primeiro trimestre de 2026, a empresa com o maior volume de caixa gerado nas operações foi o Banco Bradesco S.A., que registrou R$ 86,2 bilhões no 1T26.\n\nNa sequência, a Itaú Unibanco Holding S.A. apresentou R$ 55,6 bilhões no 1T26, e a Petróleo Brasileiro S.A. - Petrobras gerou R$ 44,0 bilhões no 1T26.\n\nCompletando os maiores valores destacados no período, o Banco do Brasil S.A. gerou R$ 20,7 bilhões nas operações no 1T26 e a Vale S.A. registrou R$ 9,8 bilhões no 1T26.\n\nFontes:\n- BBAS · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- BBDC · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- ITUB · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- PETR · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- VALE · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "checagens": {
+        "todosOsValores": true,
+        "citaCvm": true,
+        "semBuscaWeb": true
+      },
+      "aprovada": true
+    },
+    {
+      "id": "D02",
+      "grupo": "D",
+      "pergunta": "Quais empresas tiveram prejuízo no 1T26?",
+      "respostaEsperada": "Magazine Luiza (R$ -55,2 milhões), Klabin (R$ -497,0 milhões) e CSN (R$ -555,0 milhões) — consulta estruturada, sem busca web.",
+      "caminho": [
+        "retrieve",
+        "grade",
+        "queryIndicators",
+        "answer"
+      ],
+      "duracaoMs": 10382,
+      "resposta": "No primeiro trimestre de 2026 (1T26), três empresas da lista registraram prejuízo líquido.\n\nA Cia Siderúrgica Nacional apresentou lucro líquido de R$ -555,0 milhões no 1T26.\n\nA Klabin S.A. registrou lucro líquido de R$ -497,0 milhões no 1T26.\n\nA Magazine Luiza S.A. reportou lucro líquido de R$ -55,2 milhões no 1T26.\n\nFontes:\n- CSNA · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- KLBN · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- MGLU · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "checagens": {
+        "todosOsValores": true,
+        "citaCvm": true,
+        "semBuscaWeb": true
+      },
+      "aprovada": true
+    },
+    {
+      "id": "D03",
+      "grupo": "D",
+      "pergunta": "Como evoluiu o lucro líquido do Itaú Unibanco nos últimos 4 trimestres?",
+      "respostaEsperada": "R$ 11,4 bilhões (2T25), R$ 11,6 bilhões (3T25), R$ 12,1 bilhões (4T25) e R$ 11,9 bilhões (1T26).",
+      "caminho": [
+        "retrieve",
+        "grade",
+        "answer"
+      ],
+      "duracaoMs": 9909,
+      "resposta": "No segundo trimestre de 2025 (2T25), a Itaú Unibanco Holding S.A. reportou um lucro líquido de R$ 11,4 bilhões.\n\nNo terceiro trimestre de 2025 (3T25), o lucro líquido da Itaú Unibanco Holding S.A. subiu para R$ 11,6 bilhões.\n\nNo quarto trimestre de 2025 (4T25), a Itaú Unibanco Holding S.A. registrou um lucro líquido de R$ 12,1 bilhões.\n\nNo primeiro trimestre de 2026 (1T26), o lucro líquido da Itaú Unibanco Holding S.A. somou R$ 11,9 bilhões.\n\nFontes:\n- ITUB · 4T25 (data-base 2025-12-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_2025.zip\n- ITUB · 3T25 (data-base 2025-09-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- ITUB · 2T25 (data-base 2025-06-30) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2025.zip\n- ITUB · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "checagens": {
+        "todosOsValores": true,
+        "citaCvm": true,
+        "semBuscaWeb": true
+      },
+      "aprovada": true
+    },
+    {
+      "id": "D04",
+      "grupo": "D",
+      "pergunta": "Qual o caixa operacional das 20 empresas da B3 no 1T26?",
+      "respostaEsperada": "Lista as 20 empresas no 1T26, entre elas Bradesco (R$ 86,2 bilhões), Itaú Unibanco (R$ 55,6 bilhões) e Petrobras (R$ 44,0 bilhões) — consulta estruturada, sem busca web.",
+      "caminho": [
+        "retrieve",
+        "grade",
+        "queryIndicators",
+        "answer"
+      ],
+      "duracaoMs": 14519,
+      "resposta": "No 1T26, a Ambev S.A. gerou R$ 3,2 bilhões em caixa nas operações. A Sendas Distribuidora S.A. teve um caixa operacional de R$ -401,0 milhões no 1T26.\n\nNo 1T26, o Banco do Brasil S.A. registrou R$ 20,7 bilhões em caixa gerado nas operações, enquanto o Banco Bradesco S.A. registrou R$ 86,2 bilhões no 1T26.\n\nA BRF S.A. apresentou caixa gerado nas operações de R$ 2,1 bilhões no 1T26. A Cia Energética de Minas Gerais - Cemig gerou R$ 1,1 bilhões no 1T26, e a Cia Siderúrgica Nacional registrou R$ -776,5 milhões no 1T26.\n\nA Engie Brasil Energia S.A. teve caixa gerado nas operações de R$ 1,3 bilhões no 1T26. A Axia Energia S.A. registrou R$ 2,8 bilhões no 1T26 e a Gerdau S.A. gerou R$ 1,5 bilhões no 1T26.\n\nNo 1T26, o Itaú Unibanco Holding S.A. registrou R$ 55,6 bilhões em caixa gerado nas operações. A JBS S.A. obteve R$ -4,1 bilhões no 1T26 e a Klabin S.A. registrou R$ 1,3 bilhões no 1T26.\n\nA Lojas Renner S.A. gerou R$ 661,6 milhões em caixa nas operações no 1T26. O Magazine Luiza S.A. registrou R$ 4,5 bilhões no 1T26 e a Petróleo Brasileiro S.A. - Petrobras teve R$ 44,0 bilhões no 1T26.\n\nNo 1T26, a Prio S.A. gerou R$ 2,0 bilhões em caixa nas operações, a Suzano S.A. registrou R$ 2,9 bilhões no 1T26, a Totvs S.A. teve R$ 309,6 milhões no 1T26 e a Vale S.A. registrou R$ 9,8 bilhões no 1T26.\n\nFontes:\n- ABEV · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- ASAI · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- BBAS · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- BBDC · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- BRFS · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- CMIG · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- CSNA · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- EGIE · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- ELET · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- GGBR · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- ITUB · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- JBSS · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- KLBN · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- LREN · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- MGLU · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- PETR · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- PRIO · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- SUZB · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- TOTS · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip\n- VALE · 1T26 (data-base 2026-03-31) — https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_2026.zip",
+      "checagens": {
+        "todosOsValores": true,
+        "citaCvm": true,
+        "semBuscaWeb": true
       },
       "aprovada": true
     }
