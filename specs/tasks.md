@@ -107,12 +107,12 @@
 
 ## Evolução futura (fora do plano atual)
 
-- [ ] **T103a** Contratos: evento `queryIndicators` (`durationMs`, `documents`) e `consultaEstruturada` opcional no evento do `grade`. ⚠ contrato (aprovado).
-- [ ] **T103b** Agente: campo `consulta` no estado e na saída do `grade` (+ regra no prompt), consulta SQL por indicadores/tickers/períodos, nó `queryIndicators`, aresta `grade → queryIndicators → answer`; demo sem banco; testes de roteamento com LLM fake.
-- [ ] **T103c** API: tradução dos eventos novos para SSE.
-- [ ] **T103d** Web: `GraphStore` prevê o caminho estruturado; painel mostra a etapa "consulta · indicadores".
-- [ ] **T103e** Avaliação: grupo D no `evals/dataset.json` (perguntas agregadas e comparativas, respostas do corpus) e checagem no runner; rodada com Vertex real.
-- [ ] **T103** Caminho estruturado para perguntas agregadas: detectar pedido sobre várias empresas/trimestres (ex.: "caixa operacional das 20 empresas nos últimos 4 trimestres") e consultar as colunas de indicadores direto no Postgres, sem passar os 80 parágrafos pelo LLM. Exige nó novo, prompt, testes com LLM fake e casos novos no `evals/dataset.json`. Motivo: limitação de top-k documentada em spec.md §3 (2026-10-25).
+- [x] **T103a** Contratos: evento `queryIndicators` (`durationMs`, `documents`) e `consultaEstruturada` opcional no evento do `grade`. ⚠ contrato (aprovado).
+- [x] **T103b** Agente: campo `consulta` no estado e na saída do `grade` (+ regra no prompt), consulta SQL por indicadores/tickers/períodos, nó `queryIndicators`, aresta `grade → queryIndicators → answer`; demo sem banco; testes de roteamento com LLM fake.
+- [x] **T103c** API: tradução dos eventos novos para SSE.
+- [x] **T103d** Web: `GraphStore` prevê o caminho estruturado; painel mostra a etapa "consulta · indicadores".
+- [x] **T103e** Avaliação: grupo D no `evals/dataset.json` (perguntas agregadas e comparativas, respostas do corpus) e checagem no runner; rodada com Vertex real. Rodada final (31 perguntas): A 12/12, B 5+3 parciais, C 7/7, D 4/4. Primeira tentativa do D01 deu ranking errado (grade aceitou 5 empresas); corrigido com regra de ranking no prompt do grade.
+- [x] **T103** Caminho estruturado para perguntas agregadas: detectar pedido sobre várias empresas/trimestres (ex.: "caixa operacional das 20 empresas nos últimos 4 trimestres") e consultar as colunas de indicadores direto no Postgres, sem passar os 80 parágrafos pelo LLM. Exige nó novo, prompt, testes com LLM fake e casos novos no `evals/dataset.json`. Motivo: limitação de top-k documentada em spec.md §3 (2026-10-25).
 
 ## Rastreabilidade
 

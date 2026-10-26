@@ -308,13 +308,16 @@ No primeiro deploy ainda não existe uma revisão estável anterior. Nesse caso,
 
 ### Avaliação mais recente
 
-Em 2026-10-26, com as 27 perguntas do dataset ([detalhes](evals/resultados/2026-10-26.md)): grupo A (dados do corpus) 9 corretas, 1 parcial e 2 erradas; grupo B (fallback web) 5 corretas e 3 parciais; grupo C (pedidos de recomendação) 7 de 7 recusadas. Nenhuma resposta recomendou nem inventou número. As duas erradas vinham de uma lacuna do corpus (o parágrafo não citava ativo total nem patrimônio líquido), corrigida no mesmo dia: o template ganhou a frase de balanço, os 80 parágrafos foram regerados sem nova coleta e as duas perguntas passaram a acertar o valor esperado.
+Em 2026-10-26, com as 31 perguntas do dataset ([detalhes](evals/resultados/2026-10-26.md)): grupo A (dados do corpus) 12 de 12; grupo B (fallback web) 5 corretas e 3 parciais, em que a busca não trouxe o conteúdo e a resposta diz isso; grupo C (pedidos de recomendação) 7 de 7 recusadas; grupo D (agregadas e comparativas) 4 de 4. Nenhuma resposta recomendou nem inventou número.
+
+### Consulta estruturada
+
+Perguntas que pedem um indicador de várias empresas ou trimestres (ranking, "todas as empresas", comparação) não cabem no top-5 do retrieve. Nesses casos o `grade` devolve um pedido `consulta` (indicadores, tickers, períodos) e a aresta leva ao nó `queryIndicators`, que lê as colunas de indicadores direto no Postgres e vai ao `answer` sem passar pela web. O painel mostra a etapa como "consulta · indicadores".
 
 ### Limitações conhecidas
 
-- Perguntas agregadas ("caixa operacional das 20 empresas nos últimos 4 trimestres") recebem resposta parcial: o retrieve traz 5 parágrafos. A evolução prevista é uma consulta estruturada aos indicadores (`specs/tasks.md`, T103).
 - Para empresas fora do corpus, a resposta avisa e usa só páginas da web; a página mais recente nem sempre é a que a busca traz.
-- Perguntas comparativas podem trazer só uma das empresas, pelo mesmo limite de top-k.
+- A consulta estruturada depende de o `grade` reconhecer a pergunta como agregada; uma formulação muito indireta pode seguir pelo caminho comum, com resposta parcial.
 - Com busca web, a resposta pode passar de 45 s; o Firebase Hosting corta em 60 s.
 
 ## Organização do repositório
@@ -401,7 +404,7 @@ Validação desta entrega:
 - [ ] Traces no Langfuse (aguarda conta e chaves).
 - [x] Deploy canary e rollback exercitados.
 - [ ] Vídeo do showcase.
-- [ ] Consulta estruturada para perguntas agregadas (T103).
+- [x] Consulta estruturada para perguntas agregadas e comparativas (T103).
 
 ## Custos e encerramento do laboratório
 
