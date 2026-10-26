@@ -1,11 +1,14 @@
 import type { EmbeddingsInterface } from '@langchain/core/embeddings';
 import type { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { Annotation, END, START, StateGraph } from '@langchain/langgraph';
+import type { Consulta } from './consulta.js';
+import type { ConsultarIndicadores } from './db/consultar-indicadores.js';
 import type { BuscarDocumentosSimilares } from './db/retrieve-similar.js';
 import type { InserirDocumentosWeb } from './db/inserir-documentos-web.js';
 import type { DocumentoRecuperado } from './documento.js';
 import { makeAnswerNode } from './nodes/answer.js';
 import { makeGradeNode } from './nodes/grade.js';
+import { makeQueryIndicatorsNode } from './nodes/query-indicators.js';
 import { makeRetrieveNode } from './nodes/retrieve.js';
 import { makeWebSearchNode } from './nodes/web-search.js';
 import type { SearchProvider } from './search/types.js';
@@ -36,6 +39,11 @@ export const ResearchState = Annotation.Root({
     reducer: (anterior, novo) => anterior + novo,
     default: () => 0,
   }),
+  // Pedido de consulta estruturada que o grade produz e o queryIndicators atende (RF-13).
+  consulta: Annotation<Consulta | null>({
+    reducer: (_anterior, novo) => novo,
+    default: () => null,
+  }),
   // Não pode se chamar "answer": o LangGraph não aceita canal com o mesmo nome de um nó.
   answerText: Annotation<string>({
     reducer: (_anterior, novo) => novo,
@@ -55,12 +63,18 @@ export interface GraphDeps {
   searchProvider: SearchProvider;
   buscarPagina: BuscarPagina;
   inserirDocumentosWeb: InserirDocumentosWeb;
+  consultarIndicadores: ConsultarIndicadores;
 }
 
 // A regra de negócio do loop vive aqui, na aresta — os nós só produzem os dados. Estourar
 // o limite não é erro: é resposta com contexto parcial, que o answer avisa ao usuário.
-export function decidirAposGrade(state: ResearchStateType): 'webSearch' | 'answer' {
+// Pergunta agregada ou comparativa (o grade pediu consulta) vai para os dados exatos do
+// banco, não para a web: a web não traz indicador de 20 empresas.
+export function decidirAposGrade(
+  state: ResearchStateType,
+): 'webSearch' | 'queryIndicators' | 'answer' {
   if (state.sufficient) return 'answer';
+  if (state.consulta) return 'queryIndicators';
   if (state.iterations >= MAX_ITERATIONS) return 'answer';
   return 'webSearch';
 }
@@ -78,11 +92,13 @@ export function buildGraph(deps: GraphDeps) {
         inserirDocumentosWeb: deps.inserirDocumentosWeb,
       }),
     )
+    .addNode('queryIndicators', makeQueryIndicatorsNode({ consultar: deps.consultarIndicadores }))
     .addNode('answer', makeAnswerNode(deps.answerLlm))
     .addEdge(START, 'retrieve')
     .addEdge('retrieve', 'grade')
-    .addConditionalEdges('grade', decidirAposGrade, ['webSearch', 'answer'])
+    .addConditionalEdges('grade', decidirAposGrade, ['webSearch', 'queryIndicators', 'answer'])
     .addEdge('webSearch', 'retrieve')
+    .addEdge('queryIndicators', 'answer')
     .addEdge('answer', END)
     .compile();
 }

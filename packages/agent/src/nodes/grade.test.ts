@@ -25,7 +25,7 @@ describe('makeGradeNode', () => {
 
     const update = await grade({ question: 'Receita da Vale no 3T25?', documents: [documento] });
 
-    expect(update).toEqual({ sufficient: true, missingAspects: [], iterations: 1 });
+    expect(update).toEqual({ sufficient: true, missingAspects: [], iterations: 1, consulta: null });
   });
 
   it('pergunta qualitativa: insuficiente, com o que falta para a busca web', async () => {
@@ -42,6 +42,7 @@ describe('makeGradeNode', () => {
       sufficient: false,
       missingAspects: ['último fato relevante da Vale'],
       iterations: 1,
+      consulta: null,
     });
   });
 
@@ -55,8 +56,61 @@ describe('makeGradeNode', () => {
 
     const update = await makeGradeNode(llm)({ question: 'Receita da Vale?', documents: [] });
 
-    expect(update).toEqual({ sufficient: false, missingAspects: [], iterations: 1 });
+    expect(update).toEqual({
+      sufficient: false,
+      missingAspects: [],
+      iterations: 1,
+      consulta: null,
+    });
     expect(chamadas).toBe(0);
+  });
+
+  // RF-13: pergunta agregada ou comparativa. O grade só produz o pedido; quem decide a rota é
+  // a aresta.
+  it('pergunta agregada: insuficiente, com o pedido de consulta estruturada', async () => {
+    const consulta = {
+      indicadores: ['caixa_operacional'],
+      tickers: [],
+      periodos: [],
+    };
+    const grade = makeGradeNode(
+      fakeLlm({ sufficient: false, missingAspects: ['caixa das 20 empresas'], consulta }),
+    );
+
+    const update = await grade({
+      question: 'Caixa operacional das 20 empresas nos últimos 4 trimestres?',
+      documents: [documento],
+    });
+
+    expect(update.consulta).toEqual(consulta);
+  });
+
+  it('contexto suficiente descarta a consulta, mesmo que o modelo mande uma', async () => {
+    const grade = makeGradeNode(
+      fakeLlm({
+        sufficient: true,
+        missingAspects: [],
+        consulta: { indicadores: ['receita_liquida'], tickers: ['VALE'], periodos: [] },
+      }),
+    );
+
+    const update = await grade({ question: 'Receita da Vale no 3T25?', documents: [documento] });
+
+    expect(update.consulta).toBeNull();
+  });
+
+  it('consulta com indicador fora dos seis do corpus é recusada pelo schema', async () => {
+    const grade = makeGradeNode(
+      fakeLlm({
+        sufficient: false,
+        missingAspects: [],
+        consulta: { indicadores: ['ebitda'], tickers: [], periodos: [] },
+      }),
+    );
+
+    await expect(
+      grade({ question: 'Ebitda das empresas?', documents: [documento] }),
+    ).rejects.toThrow();
   });
 
   it('rejeita saída do LLM fora do schema em vez de decidir a rota no chute', async () => {

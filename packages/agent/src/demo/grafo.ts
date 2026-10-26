@@ -1,5 +1,6 @@
 import type { EmbeddingsInterface } from '@langchain/core/embeddings';
 import { FakeListChatModel } from '@langchain/core/utils/testing';
+import type { ConsultarIndicadores } from '../db/consultar-indicadores.js';
 import type { BuscarDocumentosSimilares } from '../db/retrieve-similar.js';
 import type { InserirDocumentosWeb } from '../db/inserir-documentos-web.js';
 import { EMBEDDING_DIMENSIONS } from '../db/schema.js';
@@ -38,6 +39,9 @@ export const demoBuscar: BuscarDocumentosSimilares = async () => [DOCUMENTO_VALE
 
 // O grade demo nunca manda para a web, mas, se mandasse, nada seria gravado no banco.
 export const demoInserirDocumentosWeb: InserirDocumentosWeb = async () => {};
+
+// O grade demo também nunca pede consulta estruturada; se pedisse, viria o mesmo documento.
+export const demoConsultarIndicadores: ConsultarIndicadores = async () => [DOCUMENTO_VALE_3T25];
 
 // Os mesmos modelos falsos dos testes do grafo: devolvem sempre o texto da lista. O grade
 // devolve o JSON que o withStructuredOutput espera.

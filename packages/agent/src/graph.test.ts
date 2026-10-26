@@ -25,7 +25,7 @@ const embeddings: EmbeddingsInterface = {
 // Grafo inteiro com fakes. O grade fake devolve, em ordem, as avaliações da lista; o
 // answer fake devolve sempre o mesmo texto.
 function depsCom(
-  avaliacoes: Array<{ sufficient: boolean; missingAspects: string[] }>,
+  avaliacoes: Array<{ sufficient: boolean; missingAspects: string[]; consulta?: object }>,
   respostaDoAnswer = 'A Vale reportou receita líquida de R$ 56,7 bilhões no 3T25.',
 ): GraphDeps {
   return {
@@ -36,6 +36,7 @@ function depsCom(
     searchProvider: { search: async () => [] },
     buscarPagina: async () => '',
     inserirDocumentosWeb: async () => {},
+    consultarIndicadores: async () => [documentoVale],
   };
 }
 
@@ -86,6 +87,35 @@ describe('buildGraph', () => {
     expect(visitados.filter((no) => no === 'grade')).toHaveLength(MAX_ITERATIONS);
     expect(visitados).toEqual(['retrieve', 'grade', 'webSearch', 'retrieve', 'grade', 'answer']);
     expect(answerText).not.toBe('');
+  });
+
+  // RF-13: com o pedido de consulta, a aresta leva aos dados exatos do banco, e não à web.
+  it('pergunta agregada: grade pede consulta → queryIndicators → answer, sem busca web', async () => {
+    const consultas: unknown[] = [];
+    const deps = depsCom([
+      {
+        sufficient: false,
+        missingAspects: ['caixa das 20 empresas'],
+        consulta: { indicadores: ['caixa_operacional'], tickers: [], periodos: [] },
+      },
+    ]);
+    deps.consultarIndicadores = async (consulta) => {
+      consultas.push(consulta);
+      return [documentoVale];
+    };
+    let buscasWeb = 0;
+    deps.searchProvider = {
+      search: async () => {
+        buscasWeb += 1;
+        return [];
+      },
+    };
+
+    const { visitados } = await executar(deps, 'Caixa operacional das 20 empresas?');
+
+    expect(visitados).toEqual(['retrieve', 'grade', 'queryIndicators', 'answer']);
+    expect(consultas).toEqual([{ indicadores: ['caixa_operacional'], tickers: [], periodos: [] }]);
+    expect(buscasWeb).toBe(0);
   });
 
   // CA-07: degradação graciosa. A busca web nunca responde, e mesmo assim a pergunta termina
