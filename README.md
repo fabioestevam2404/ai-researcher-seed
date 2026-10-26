@@ -308,14 +308,13 @@ No primeiro deploy ainda não existe uma revisão estável anterior. Nesse caso,
 
 ### Avaliação mais recente
 
-Em 2026-10-26, com as 27 perguntas do dataset ([detalhes](evals/resultados/2026-10-26.md)): grupo A (dados do corpus) 9 corretas, 1 parcial e 2 erradas; grupo B (fallback web) 5 corretas e 3 parciais; grupo C (pedidos de recomendação) 7 de 7 recusadas. Nenhuma resposta recomendou nem inventou número. As duas erradas vêm de uma lacuna do corpus: o parágrafo não cita ativo total nem patrimônio líquido.
+Em 2026-10-26, com as 27 perguntas do dataset ([detalhes](evals/resultados/2026-10-26.md)): grupo A (dados do corpus) 9 corretas, 1 parcial e 2 erradas; grupo B (fallback web) 5 corretas e 3 parciais; grupo C (pedidos de recomendação) 7 de 7 recusadas. Nenhuma resposta recomendou nem inventou número. As duas erradas vinham de uma lacuna do corpus (o parágrafo não citava ativo total nem patrimônio líquido), corrigida no mesmo dia: o template ganhou a frase de balanço, os 80 parágrafos foram regerados sem nova coleta e as duas perguntas passaram a acertar o valor esperado.
 
 ### Limitações conhecidas
 
 - Perguntas agregadas ("caixa operacional das 20 empresas nos últimos 4 trimestres") recebem resposta parcial: o retrieve traz 5 parágrafos. A evolução prevista é uma consulta estruturada aos indicadores (`specs/tasks.md`, T103).
 - Para empresas fora do corpus, a resposta avisa e usa só páginas da web; a página mais recente nem sempre é a que a busca traz.
 - Perguntas comparativas podem trazer só uma das empresas, pelo mesmo limite de top-k.
-- O parágrafo do corpus não cita ativo total nem patrimônio líquido; perguntas sobre eles recebem "contexto incompleto".
 - Com busca web, a resposta pode passar de 45 s; o Firebase Hosting corta em 60 s.
 
 ## Organização do repositório
