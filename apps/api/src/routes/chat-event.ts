@@ -39,7 +39,9 @@ function resumirDocumento(doc: unknown): DocumentoResumo {
 export function traduzirPasso(passo: Record<string, unknown>, durationMs: number): ChatEvent[] {
   return Object.entries(passo).flatMap(([node, update]): ChatEvent[] => {
     switch (node) {
-      case 'retrieve': {
+      // Os dois nós que trazem documentos: por similaridade e pela consulta estruturada.
+      case 'retrieve':
+      case 'queryIndicators': {
         const documents = campo(update, 'documents');
         return [
           {
@@ -58,6 +60,8 @@ export function traduzirPasso(passo: Record<string, unknown>, durationMs: number
             sufficient: campo(update, 'sufficient') === true,
             missingAspects: Array.isArray(missingAspects) ? missingAspects.map(String) : [],
             iterations: Number(campo(update, 'iterations') ?? 0),
+            // O painel usa para prever o próximo nó: consulta estruturada em vez da web.
+            consultaEstruturada: Boolean(campo(update, 'consulta')),
           },
         ];
       }

@@ -77,6 +77,50 @@ describe('POST /api/chat', () => {
     }
   });
 
+  it('consulta estruturada: o grade avisa e o queryIndicators vira evento com os documentos', async () => {
+    const app = build({
+      getChatGraph: async () =>
+        grafoFake([
+          {
+            grade: {
+              sufficient: false,
+              missingAspects: [],
+              iterations: 1,
+              consulta: { indicadores: ['caixa_operacional'], tickers: [], periodos: [] },
+            },
+          },
+          {
+            queryIndicators: {
+              documents: [
+                {
+                  origem: 'cvm',
+                  ticker: 'VALE',
+                  period: '1T26',
+                  sourceUrl: 'https://cvm/x.zip',
+                  similaridade: 1,
+                },
+              ],
+              sufficient: true,
+            },
+          },
+          { answer: { answerText: 'ok' } },
+        ]),
+    });
+
+    const response = await app.inject({
+      method: 'POST',
+      url: '/api/chat',
+      payload: { question: 'Caixa das 20 empresas?' },
+    });
+
+    const [grade, consulta] = lerEventos(response.body);
+    expect(grade).toMatchObject({ node: 'grade', consultaEstruturada: true });
+    expect(consulta).toMatchObject({
+      node: 'queryIndicators',
+      documents: [{ rotulo: 'VALE · 1T26', similaridade: 1 }],
+    });
+  });
+
   it('o evento do grade traz o total de iterações, não o incremento do nó', async () => {
     const umaPassagem = { grade: { sufficient: false, missingAspects: ['x'], iterations: 1 } };
     const app = build({ getChatGraph: async () => grafoFake([umaPassagem, umaPassagem]) });
