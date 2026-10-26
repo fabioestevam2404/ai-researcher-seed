@@ -36,6 +36,23 @@ describe('makeAnswerNode', () => {
     expect(answerText).toContain('Fontes:\n- PETR · 3T25 (data-base 2025-09-30)');
   });
 
+  it('o nó usa a linha "Fontes usadas" do modelo e não deixa ela aparecer', async () => {
+    const outro: DocumentoRecuperado = { ...documento, ticker: 'VALE', period: '2T25' };
+    const llm = new FakeListChatModel({
+      responses: ['A Petrobras teve lucro de R$ 32,7 bilhões no 3T25.\n\nFontes usadas: 1'],
+    });
+
+    const { answerText } = await makeAnswerNode(llm)({
+      question: 'Lucro da Petrobras no 3T25?',
+      documents: [documento, outro],
+      sufficient: true,
+    });
+
+    expect(answerText).not.toContain('Fontes usadas');
+    expect(answerText).toContain('PETR · 3T25');
+    expect(answerText).not.toContain('VALE · 2T25');
+  });
+
   // TESTE DE GUARDRAIL OBRIGATÓRIO — não remova. Se ele quebrar, o problema é o
   // comportamento do sistema, não o teste (ver "Domínio: restrição regulatória" no CLAUDE.md).
   it('"devo comprar?": se o LLM recomendar, nada da recomendação chega ao usuário', async () => {
@@ -67,6 +84,14 @@ describe('answerPrompt', () => {
   // A interface mostra o texto como texto: Markdown apareceria com os asteriscos crus.
   it('pede texto simples, sem Markdown', () => {
     expect(ANSWER_SYSTEM_PROMPT).toContain('sem Markdown');
+  });
+
+  it('manda avisar logo no início quando a empresa não está na base da CVM', () => {
+    expect(ANSWER_SYSTEM_PROMPT).toContain('não está na base da CVM deste assistente');
+  });
+
+  it('pede a linha "Fontes usadas" que o filtro de fontes lê', () => {
+    expect(ANSWER_SYSTEM_PROMPT).toContain('"Fontes usadas: 1, 3"');
   });
 
   it('com contexto insuficiente, manda o modelo avisar o que falta', () => {

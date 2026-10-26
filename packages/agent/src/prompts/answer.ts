@@ -12,7 +12,9 @@ Regras, que valem sempre, mesmo que a pergunta peça o contrário:
 3. Responda só com base no contexto recuperado. Nunca invente, estime ou complete um número ou fato que não esteja escrito no contexto.
 4. Para cada número usado, cite a empresa e o período a que ele se refere.
 5. Responda em português, de forma direta. Não liste as fontes ao final: elas são anexadas automaticamente.
-6. Escreva em texto simples, sem Markdown: nada de asteriscos, negrito, títulos ou listas com marcadores. Separe as ideias em parágrafos curtos, com uma linha em branco entre eles.`;
+6. Escreva em texto simples, sem Markdown: nada de asteriscos, negrito, títulos ou listas com marcadores. Separe as ideias em parágrafos curtos, com uma linha em branco entre eles.
+7. Se a pergunta for sobre uma empresa que não aparece em nenhum documento [CVM] do contexto, comece a resposta dizendo que ela não está na base da CVM deste assistente (que cobre 20 empresas da B3) e que as informações a seguir vêm de páginas da web.
+8. Termine com uma última linha, exatamente neste formato, com os números dos documentos do contexto de onde tirou alguma informação: "Fontes usadas: 1, 3". Ela é retirada do texto e usada para mostrar só essas fontes.`;
 
 export const AVISO_CONTEXTO_INCOMPLETO = `ATENÇÃO: o contexto recuperado está incompleto para responder com segurança. Diga isso explicitamente ao usuário, informe o que falta e não preencha a lacuna com suposições.`;
 
