@@ -20,16 +20,23 @@ function semTrechosRepetidos(web: DocumentoWeb[]): DocumentoWeb[] {
   });
 }
 
-// Junta as duas fontes e fica com os top-k mais próximos da pergunta, sem preferência de
-// origem: quem decide se o contexto basta é o grade, não a ordem da busca.
+// Teto de trechos web no top-k. Uma página genérica (lista de ações, home de RI) costuma ficar
+// parecida com qualquer pergunta e, sem teto, ocupava todas as vagas e empurrava o corpus da
+// CVM para fora. Com 2 de 5, pelo menos 3 vagas ficam para os dados oficiais.
+export const MAX_TRECHOS_WEB = 2;
+
+// Junta as duas fontes e fica com os top-k mais próximos da pergunta. Dentro do teto da web,
+// não há preferência de origem: quem decide se o contexto basta é o grade, não a ordem da busca.
 export function combinarPorSimilaridade(
   cvm: DocumentoCvm[],
   web: DocumentoWeb[],
   topK: number,
 ): DocumentoRecuperado[] {
-  return [...cvm, ...semTrechosRepetidos(web)]
+  const melhoresWeb = semTrechosRepetidos(web)
     .sort((a, b) => b.similaridade - a.similaridade)
-    .slice(0, topK);
+    .slice(0, MAX_TRECHOS_WEB);
+
+  return [...cvm, ...melhoresWeb].sort((a, b) => b.similaridade - a.similaridade).slice(0, topK);
 }
 
 // Busca os top-k documentos mais próximos do embedding da pergunta, no corpus da CVM e nos

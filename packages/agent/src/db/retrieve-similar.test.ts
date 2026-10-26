@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { DocumentoCvm, DocumentoWeb } from '../documento.js';
-import { combinarPorSimilaridade } from './retrieve-similar.js';
+import { combinarPorSimilaridade, MAX_TRECHOS_WEB } from './retrieve-similar.js';
 
 function cvm(period: string, similaridade: number): DocumentoCvm {
   return {
@@ -38,14 +38,17 @@ describe('combinarPorSimilaridade', () => {
     expect(resultado.map((d) => d.origem)).toEqual(['cvm', 'web', 'cvm', 'web']);
   });
 
-  it('corta no top-k depois de juntar, não antes', () => {
+  it('a web ocupa no máximo MAX_TRECHOS_WEB vagas, mesmo mais parecida que a CVM', () => {
     const resultado = combinarPorSimilaridade(
-      [cvm('3T25', 0.5), cvm('2T25', 0.4)],
+      [cvm('3T25', 0.5), cvm('2T25', 0.4), cvm('1T25', 0.3)],
       [web('a', 0.95), web('b', 0.9), web('c', 0.85)],
-      3,
+      5,
     );
 
-    expect(resultado.map((d) => d.origem)).toEqual(['web', 'web', 'web']);
+    expect(MAX_TRECHOS_WEB).toBe(2);
+    expect(resultado.map((d) => d.origem)).toEqual(['web', 'web', 'cvm', 'cvm', 'cvm']);
+    // Ficam os trechos web mais parecidos, não os primeiros que chegaram.
+    expect(resultado.slice(0, 2).map((d) => d.similaridade)).toEqual([0.95, 0.9]);
   });
 
   it('o mesmo trecho web gravado duas vezes ocupa uma vaga só', () => {
