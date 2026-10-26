@@ -144,6 +144,8 @@ flowchart TB
     agentGraph["agentGraph"]
     retrieve["retrieve: evidências"]
     grade{"grade: suficiente?"}
+    consulta{"Pediu consulta estruturada?"}
+    queryIndicators["queryIndicators: indicadores direto do banco"]
     limite{"Limite atingido?"}
     webSearch["webSearch e upsert com TTL"]
     answer["answer: resposta e fontes"]
@@ -153,7 +155,10 @@ flowchart TB
     agentGraph --> retrieve
     retrieve --> grade
     grade -->|"Sim"| answer
-    grade -->|"Não"| limite
+    grade -->|"Não"| consulta
+    consulta -->|"Sim: agregada ou comparativa"| queryIndicators
+    queryIndicators --> answer
+    consulta -->|"Não"| limite
     limite -->|"Não"| webSearch
     webSearch --> retrieve
     limite -->|"Sim: contexto parcial"| answer
