@@ -17,6 +17,7 @@
     "collect": "pnpm --filter @hero/corpus run collect",
     "db:migrate": "pnpm --filter @hero/agent run db:migrate",
     "seed": "pnpm --filter @hero/agent run seed",
+    "eval": "tsx evals/runner.ts",
     "capstone:check": "tsx scripts/capstone-check.ts"
   },
   "devDependencies": {
