@@ -13,3 +13,6 @@ packages/agent/drizzle/meta
 
 # Exportado do canvas de design: fica como a ferramenta gerou
 docs/design/prototype/*.html
+
+# Gerado pelo runner de avaliação (pnpm eval): fica como foi gravado
+evals/resultados/*.json
