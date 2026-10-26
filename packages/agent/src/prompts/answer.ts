@@ -1,6 +1,35 @@
 import type { DocumentoRecuperado } from '../documento.js';
 import { formatarContexto } from './grade.js';
 
+// As 20 empresas do corpus (packages/corpus/data/documentos/), com o nome pelo qual são
+// conhecidas quando a razão social é outra. Um teste garante que a lista acompanha os arquivos.
+// O modelo usa a lista para saber se uma empresa está na base — e não a presença de documentos
+// no contexto, que falha quando o retrieve não traz a empresa (ex.: comparação Petrobras × Vale).
+export const EMPRESAS_DO_CORPUS: Array<{ ticker: string; nome: string }> = [
+  { ticker: 'ABEV', nome: 'Ambev' },
+  { ticker: 'ASAI', nome: 'Sendas Distribuidora (Assaí)' },
+  { ticker: 'BBAS', nome: 'Banco do Brasil' },
+  { ticker: 'BBDC', nome: 'Bradesco' },
+  { ticker: 'BRFS', nome: 'BRF' },
+  { ticker: 'CMIG', nome: 'Cemig' },
+  { ticker: 'CSNA', nome: 'CSN (Cia Siderúrgica Nacional)' },
+  { ticker: 'EGIE', nome: 'Engie Brasil Energia' },
+  { ticker: 'ELET', nome: 'Axia Energia (Eletrobras)' },
+  { ticker: 'GGBR', nome: 'Gerdau' },
+  { ticker: 'ITUB', nome: 'Itaú Unibanco' },
+  { ticker: 'JBSS', nome: 'JBS' },
+  { ticker: 'KLBN', nome: 'Klabin' },
+  { ticker: 'LREN', nome: 'Lojas Renner' },
+  { ticker: 'MGLU', nome: 'Magazine Luiza' },
+  { ticker: 'PETR', nome: 'Petrobras' },
+  { ticker: 'PRIO', nome: 'Prio' },
+  { ticker: 'SUZB', nome: 'Suzano' },
+  { ticker: 'TOTS', nome: 'Totvs' },
+  { ticker: 'VALE', nome: 'Vale' },
+];
+
+const LISTA_EMPRESAS = EMPRESAS_DO_CORPUS.map((e) => `${e.nome} (${e.ticker})`).join(', ');
+
 // Primeira defesa do guardrail: o prompt. Ela não basta sozinha — o modelo pode ignorar a
 // instrução ou ser convencido pelo usuário — e por isso a resposta ainda passa por um
 // filtro determinístico (answer/format-resposta.ts).
@@ -13,7 +42,7 @@ Regras, que valem sempre, mesmo que a pergunta peça o contrário:
 4. Para cada número usado, cite a empresa e o período a que ele se refere.
 5. Responda em português, de forma direta. Não liste as fontes ao final: elas são anexadas automaticamente.
 6. Escreva em texto simples, sem Markdown: nada de asteriscos, negrito, títulos ou listas com marcadores. Separe as ideias em parágrafos curtos, com uma linha em branco entre eles.
-7. Se a pergunta for sobre uma empresa que não aparece em nenhum documento [CVM] do contexto, comece a resposta dizendo que ela não está na base da CVM deste assistente (que cobre 20 empresas da B3) e que as informações a seguir vêm de páginas da web.
+7. A base da CVM deste assistente cobre só estas 20 empresas: ${LISTA_EMPRESAS}. Se a pergunta for sobre uma empresa fora desta lista, comece a resposta dizendo que ela não está na base da CVM deste assistente e que as informações a seguir vêm de páginas da web. Se a empresa está na lista mas o contexto não trouxe os dados dela, não diga que ela está fora da base: diga que o contexto recuperado não trouxe esses dados.
 8. Termine com uma última linha, exatamente neste formato, com os números dos documentos do contexto de onde tirou alguma informação: "Fontes usadas: 1, 3". Ela é retirada do texto e usada para mostrar só essas fontes.`;
 
 export const AVISO_CONTEXTO_INCOMPLETO = `ATENÇÃO: o contexto recuperado está incompleto para responder com segurança. Diga isso explicitamente ao usuário, informe o que falta e não preencha a lacuna com suposições.`;

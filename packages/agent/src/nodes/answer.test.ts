@@ -1,3 +1,6 @@
+import { readdirSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { FakeListChatModel } from '@langchain/core/utils/testing';
 import { AVISO_GUARDRAIL } from '../answer/format-resposta.js';
@@ -6,8 +9,14 @@ import {
   ANSWER_SYSTEM_PROMPT,
   AVISO_CONTEXTO_INCOMPLETO,
   answerPrompt,
+  EMPRESAS_DO_CORPUS,
 } from '../prompts/answer.js';
 import { makeAnswerNode } from './answer.js';
+
+const DOCUMENTOS_DO_CORPUS = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '../../../corpus/data/documentos',
+);
 
 const documento: DocumentoRecuperado = {
   origem: 'cvm',
@@ -88,6 +97,22 @@ describe('answerPrompt', () => {
 
   it('manda avisar logo no início quando a empresa não está na base da CVM', () => {
     expect(ANSWER_SYSTEM_PROMPT).toContain('não está na base da CVM deste assistente');
+  });
+
+  // A regra decide pela lista de empresas, não pela presença de documentos no contexto: numa
+  // comparação, o retrieve pode trazer só uma das empresas, e a outra não está "fora da base".
+  it('a regra de empresa fora da base usa a lista das 20 empresas do corpus', () => {
+    expect(ANSWER_SYSTEM_PROMPT).toContain('Petrobras (PETR)');
+    expect(ANSWER_SYSTEM_PROMPT).toContain('não diga que ela está fora da base');
+  });
+
+  it('a lista de empresas do prompt acompanha os arquivos do corpus', () => {
+    const corpus = readdirSync(DOCUMENTOS_DO_CORPUS)
+      .filter((arquivo) => arquivo.endsWith('.json'))
+      .map((arquivo) => arquivo.replace('.json', ''))
+      .sort();
+
+    expect(EMPRESAS_DO_CORPUS.map((e) => e.ticker).sort()).toEqual(corpus);
   });
 
   it('pede a linha "Fontes usadas" que o filtro de fontes lê', () => {
