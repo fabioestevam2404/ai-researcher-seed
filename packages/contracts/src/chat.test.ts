@@ -28,6 +28,33 @@ describe('chatEventSchema', () => {
     expect(chatEventSchema.parse({ node: 'webSearch', durationMs: 900 }).node).toBe('webSearch');
   });
 
+  it('consulta estruturada: grade com a flag e o evento do queryIndicators com os documentos', () => {
+    expect(
+      chatEventSchema.parse({
+        node: 'grade',
+        durationMs: 120,
+        sufficient: false,
+        missingAspects: [],
+        iterations: 1,
+        consultaEstruturada: true,
+      }),
+    ).toMatchObject({ consultaEstruturada: true });
+    expect(
+      chatEventSchema.parse({
+        node: 'queryIndicators',
+        durationMs: 40,
+        documents: [
+          {
+            origem: 'cvm',
+            rotulo: 'VALE · 1T26',
+            sourceUrl: 'https://dados.cvm.gov.br/x.zip',
+            similaridade: 1,
+          },
+        ],
+      }).node,
+    ).toBe('queryIndicators');
+  });
+
   it('recusa evento de answer sem o texto', () => {
     expect(chatEventSchema.safeParse({ node: 'answer', durationMs: 10 }).success).toBe(false);
   });

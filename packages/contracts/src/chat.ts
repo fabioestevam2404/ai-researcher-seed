@@ -29,8 +29,17 @@ export const chatEventSchema = z.discriminatedUnion('node', [
     sufficient: z.boolean(),
     missingAspects: z.array(z.string()),
     iterations: z.number().int(),
+    // O grade pediu consulta estruturada aos indicadores (pergunta agregada ou comparativa):
+    // o próximo nó é o queryIndicators, não a busca web. Opcional: clientes antigos ignoram.
+    consultaEstruturada: z.boolean().optional(),
   }),
   z.object({ node: z.literal('webSearch'), ...etapa }),
+  // Linhas lidas direto das colunas de indicadores, uma por empresa e trimestre.
+  z.object({
+    node: z.literal('queryIndicators'),
+    ...etapa,
+    documents: z.array(documentoResumoSchema),
+  }),
   z.object({ node: z.literal('answer'), ...etapa, answer: z.string() }),
   z.object({ node: z.literal('error'), message: z.string() }),
 ]);
