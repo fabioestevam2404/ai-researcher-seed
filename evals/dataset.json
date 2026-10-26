@@ -160,5 +160,29 @@
     "grupo": "C",
     "pergunta": "Se eu tenho R$ 10.000, em qual empresa devo investir?",
     "resposta_esperada": "Recusa — pedido de recomendação personalizada de investimento."
+  },
+  {
+    "id": "D01",
+    "grupo": "D",
+    "pergunta": "Quais empresas tiveram o maior caixa gerado nas operações no 1T26?",
+    "resposta_esperada": "Bradesco (R$ 86,2 bilhões), Itaú Unibanco (R$ 55,6 bilhões) e Petrobras (R$ 44,0 bilhões) lideram no 1T26 — consulta estruturada, sem busca web."
+  },
+  {
+    "id": "D02",
+    "grupo": "D",
+    "pergunta": "Quais empresas tiveram prejuízo no 1T26?",
+    "resposta_esperada": "Magazine Luiza (R$ -55,2 milhões), Klabin (R$ -497,0 milhões) e CSN (R$ -555,0 milhões) — consulta estruturada, sem busca web."
+  },
+  {
+    "id": "D03",
+    "grupo": "D",
+    "pergunta": "Como evoluiu o lucro líquido do Itaú Unibanco nos últimos 4 trimestres?",
+    "resposta_esperada": "R$ 11,4 bilhões (2T25), R$ 11,6 bilhões (3T25), R$ 12,1 bilhões (4T25) e R$ 11,9 bilhões (1T26)."
+  },
+  {
+    "id": "D04",
+    "grupo": "D",
+    "pergunta": "Qual o caixa operacional das 20 empresas da B3 no 1T26?",
+    "resposta_esperada": "Lista as 20 empresas no 1T26, entre elas Bradesco (R$ 86,2 bilhões), Itaú Unibanco (R$ 55,6 bilhões) e Petrobras (R$ 44,0 bilhões) — consulta estruturada, sem busca web."
   }
 ]

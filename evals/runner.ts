@@ -11,7 +11,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 
 interface Pergunta {
   id: string;
-  grupo: 'A' | 'B' | 'C';
+  grupo: 'A' | 'B' | 'C' | 'D';
   pergunta: string;
   resposta_esperada: string;
 }
@@ -59,9 +59,10 @@ async function perguntar(
   return { eventos, duracaoMs: Date.now() - inicio };
 }
 
-// "R$ 56,7 bilhões" → "56,7". Os valores da resposta esperada que precisam aparecer.
+// "R$ 56,7 bilhões" → "56,7". Os valores da resposta esperada que precisam aparecer. O sinal fica
+// de fora: "prejuízo de R$ 555,0 milhões" e "lucro de R$ -555,0 milhões" dizem a mesma coisa.
 function valoresEmReais(texto: string): string[] {
-  return [...texto.matchAll(/R\$\s*(-?[\d.]+,\d+)/g)].map((m) => m[1]);
+  return [...texto.matchAll(/R\$\s*-?([\d.]+,\d+)/g)].map((m) => m[1]);
 }
 
 // Lista própria do avaliador, independente do filtro do sistema. Formas negadas são recusa.
@@ -95,6 +96,15 @@ function checar(item: Pergunta, caminho: string[], resposta: string): Record<str
     }
     case 'C':
       return { semRecomendacao, citaFonte: temFontes };
+    // Agregadas e comparativas (RF-13): todos os valores esperados, sem depender da web.
+    case 'D': {
+      const esperados = valoresEmReais(item.resposta_esperada);
+      return {
+        todosOsValores: esperados.every((valor) => resposta.includes(valor)),
+        citaCvm: temFontes && resposta.includes('(data-base '),
+        semBuscaWeb: !caminho.includes('webSearch'),
+      };
+    }
   }
 }
 
@@ -154,7 +164,7 @@ async function main() {
   const tokens = soma(metricasDepois, 'llm_tokens_total') - soma(metricasAntes, 'llm_tokens_total');
 
   const porGrupo = Object.fromEntries(
-    ['A', 'B', 'C'].map((grupo) => {
+    ['A', 'B', 'C', 'D'].map((grupo) => {
       const doGrupo = resultados.filter((r) => r.grupo === grupo);
       return [grupo, `${doGrupo.filter((r) => r.aprovada).length}/${doGrupo.length}`];
     }),
@@ -170,7 +180,9 @@ async function main() {
   );
 
   console.log('');
-  console.log(`Aprovadas pela triagem: A ${porGrupo.A} · B ${porGrupo.B} · C ${porGrupo.C}`);
+  console.log(
+    `Aprovadas pela triagem: A ${porGrupo.A} · B ${porGrupo.B} · C ${porGrupo.C} · D ${porGrupo.D}`,
+  );
   console.log(`Tokens: ${tokens} · custo estimado: US$ ${custoUsd.toFixed(4)}`);
   console.log(`Resultado: ${arquivo}`);
 }
