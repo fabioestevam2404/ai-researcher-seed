@@ -40,6 +40,20 @@ function comando(programa: string, args: string[]): string {
   }).trim();
 }
 
+// Consultas de leitura a serviços externos (health, Langfuse, Cloud Monitoring, métricas,
+// vídeo): uma falha de rede passageira não deve reprovar o item, então há uma nova tentativa.
+// Só para erro de rede — uma resposta HTTP, mesmo de erro, é o resultado do teste. As perguntas
+// reais (itens 5 e 10) e a rajada do rate limit (7) não usam isto: repetir gastaria tokens e
+// distorceria a contagem.
+async function buscarComNovaTentativa(url: string, init?: RequestInit): Promise<Response> {
+  try {
+    return await fetch(url, init);
+  } catch {
+    await new Promise((resolve) => setTimeout(resolve, 2_000));
+    return fetch(url, init);
+  }
+}
+
 function mensagem(error: unknown): string {
   return error instanceof Error ? error.message.split('\n')[0] : String(error);
 }
@@ -50,7 +64,7 @@ async function checarEndpointPublico(url: string): Promise<CheckResult> {
   const alvo = `${url}/api/health`;
   const inicio = Date.now();
   try {
-    const resposta = await fetch(alvo);
+    const resposta = await buscarComNovaTentativa(alvo);
     const duracaoMs = Date.now() - inicio;
     const https = alvo.startsWith('https://');
     const ok = resposta.ok && https;
@@ -293,7 +307,7 @@ async function checarObservabilidade(): Promise<CheckResult> {
   // Ela lista observações (spans e gerações); cada trace é o conjunto delas com o mesmo traceId.
   const LIMITE = 100;
   try {
-    const resposta = await fetch(
+    const resposta = await buscarComNovaTentativa(
       `${host}/api/public/v2/observations?fromStartTime=${desde}&toStartTime=${ate}&limit=${LIMITE}`,
       {
         headers: {
@@ -334,7 +348,7 @@ async function checarRateLimiting(url: string, projeto: string | undefined): Pro
   if (projeto) {
     try {
       const token = comando('gcloud', ['auth', 'print-access-token']);
-      const resposta = await fetch(
+      const resposta = await buscarComNovaTentativa(
         `https://monitoring.googleapis.com/v3/projects/${projeto}/alertPolicies`,
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -401,7 +415,7 @@ function somaDaMetrica(texto: string, nome: string): number | undefined {
 async function checarCustoPorPergunta(url: string): Promise<CheckResult> {
   const base = { numero: 9, titulo: 'Custo por pergunta' };
   try {
-    const texto = await (await fetch(`${url}/api/metrics`)).text();
+    const texto = await (await buscarComNovaTentativa(`${url}/api/metrics`)).text();
     const custo = somaDaMetrica(texto, 'llm_cost_usd_total');
     const perguntas = somaDaMetrica(texto, 'chat_perguntas_total');
     if (custo === undefined || perguntas === undefined) {
@@ -446,7 +460,7 @@ async function checarShowcase(showcase: string | undefined): Promise<CheckResult
   const base = { numero: 12, titulo: 'Showcase' };
   if (!showcase) return { ...base, ok: false, detalhe: 'URL não informada (--showcase)' };
   try {
-    const resposta = await fetch(showcase, { method: 'GET', redirect: 'follow' });
+    const resposta = await buscarComNovaTentativa(showcase, { method: 'GET', redirect: 'follow' });
     return {
       ...base,
       ok: resposta.ok,
