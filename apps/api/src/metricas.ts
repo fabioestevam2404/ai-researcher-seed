@@ -8,14 +8,15 @@ export interface UsoDeTokens {
   tokensSaida: number;
 }
 
-// Preço em US$ por 1 milhão de tokens, padrão do Vertex AI. ⚠ CONFERIR na página oficial
-// (cloud.google.com/vertex-ai/generative-ai/pricing) antes de confiar no valor em dólar: em
-// 2026-10-24 ela não pôde ser lida e os números abaixo vêm de agregadores. Onde as fontes
-// divergiam, ficou o valor mais alto — superestimar custo é o erro seguro para um teto de gasto.
-// Os tokens são exatos (usage_metadata); só a conversão para dólar depende desta tabela.
+// Preço em US$ por 1 milhão de tokens, padrão do Vertex AI. Conferido em 2026-10-27 contra a
+// tabela de modelos do Langfuse (custo calculado nos traces reais de produção). A saída inclui
+// os tokens de raciocínio ("thinking"), cobrados como saída. ⚠ O gemini-3.6-flash está com preço
+// promocional até 2026-12-31; a partir de 2027 o padrão anunciado é US$ 1,50 / 7,50 — revisar
+// esta tabela em janeiro. Os tokens são exatos (usage_metadata); só a conversão para dólar
+// depende daqui.
 export const PRECOS_USD_POR_MILHAO: Record<string, { entrada: number; saida: number }> = {
   'gemini-3.5-flash-lite': { entrada: 0.3, saida: 2.5 },
-  'gemini-3.6-flash': { entrada: 1.5, saida: 7.5 },
+  'gemini-3.6-flash': { entrada: 0.75, saida: 3.75 },
 };
 
 export function custoUsd({ modelo, tokensEntrada, tokensSaida }: UsoDeTokens): number {

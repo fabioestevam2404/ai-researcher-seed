@@ -11,7 +11,7 @@ describe('custoUsd', () => {
     ).toBeCloseTo(0.3);
     expect(
       custoUsd({ modelo: 'gemini-3.6-flash', tokensEntrada: 0, tokensSaida: 1_000_000 }),
-    ).toBeCloseTo(7.5);
+    ).toBeCloseTo(3.75);
   });
 
   it('modelo fora da tabela não inventa preço: custo zero (os tokens ainda contam)', () => {
@@ -61,7 +61,8 @@ describe('GET /api/metrics', () => {
       'llm_tokens_total{modelo="gemini-3.5-flash-lite",tipo="entrada"} 1200',
     );
     expect(resposta.body).toContain('llm_tokens_total{modelo="gemini-3.6-flash",tipo="saida"} 80');
-    expect(resposta.body).toMatch(/llm_cost_usd_total\{modelo="gemini-3.6-flash"\} 0\.001/);
+    // 900 × 0,75 + 80 × 3,75 por milhão = US$ 0,000975.
+    expect(resposta.body).toMatch(/llm_cost_usd_total\{modelo="gemini-3.6-flash"\} 0\.00097/);
     // Denominador do custo por pergunta (item 9 do capstone:check).
     expect(resposta.body).toContain('chat_perguntas_total 1');
   });
