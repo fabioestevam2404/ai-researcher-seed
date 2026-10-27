@@ -287,18 +287,26 @@ async function checarObservabilidade(): Promise<CheckResult> {
     return { ...base, ok: false, detalhe: 'chaves do Langfuse ausentes no .env' };
 
   const host = (process.env.LANGFUSE_BASE_URL ?? 'https://cloud.langfuse.com').replace(/\/$/, '');
+  const ate = new Date().toISOString();
   const desde = new Date(Date.now() - 24 * 3_600_000).toISOString();
+  // API v2: a /api/public/traces responde 410 para organizações criadas a partir de 2026-09-16.
+  // Ela lista observações (spans e gerações); cada trace é o conjunto delas com o mesmo traceId.
+  const LIMITE = 100;
   try {
-    const resposta = await fetch(`${host}/api/public/traces?fromTimestamp=${desde}&limit=1`, {
-      headers: {
-        Authorization: `Basic ${Buffer.from(`${publica}:${secreta}`).toString('base64')}`,
+    const resposta = await fetch(
+      `${host}/api/public/v2/observations?fromStartTime=${desde}&toStartTime=${ate}&limit=${LIMITE}`,
+      {
+        headers: {
+          Authorization: `Basic ${Buffer.from(`${publica}:${secreta}`).toString('base64')}`,
+        },
       },
-    });
+    );
     if (!resposta.ok)
       return { ...base, ok: false, detalhe: `Langfuse respondeu ${resposta.status}` };
-    const { meta } = (await resposta.json()) as { meta?: { totalItems?: number } };
-    const total = meta?.totalItems ?? 0;
-    return { ...base, ok: total > 0, detalhe: `${total} traces em 24h` };
+    const { data = [] } = (await resposta.json()) as { data?: Array<{ traceId?: string }> };
+    const traces = new Set(data.map((o) => o.traceId).filter(Boolean)).size;
+    const prefixo = data.length >= LIMITE ? '≥ ' : '';
+    return { ...base, ok: traces > 0, detalhe: `${prefixo}${traces} traces em 24h` };
   } catch (error) {
     return { ...base, ok: false, detalhe: `falhou (${mensagem(error)})` };
   }
