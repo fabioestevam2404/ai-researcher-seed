@@ -106,10 +106,13 @@ jobs:
             GOOGLE_CLOUD_PROJECT=${{ env.PROJECT_ID }}
             GOOGLE_CLOUD_LOCATION=global
             SEARCH_PROVIDER=serper
+            LANGFUSE_BASE_URL=https://cloud.langfuse.com
           # Segredos vêm do Secret Manager; nada disto passa pelo GitHub.
           secrets: |-
             DATABASE_URL=database-url:latest
             SERPER_API_KEY=serper-api-key:latest
+            LANGFUSE_PUBLIC_KEY=langfuse-public-key:latest
+            LANGFUSE_SECRET_KEY=langfuse-secret-key:latest
           flags: --add-cloudsql-instances=${{ env.PROJECT_ID }}:${{ env.REGION }}:ai-researcher-db
 
       # Smoke na URL da candidata e promoção 5 → 25 → 50 → 100%, com gate em cada degrau.
