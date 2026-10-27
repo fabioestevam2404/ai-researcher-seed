@@ -3,7 +3,7 @@
 
 > **Aviso regulatório:** este assistente apresenta informações públicas para fins educacionais e informativos. Não constitui recomendação de investimento nem orientação para comprar, vender ou manter ativos. As respostas devem identificar suas fontes e datas-base e indicar quando as evidências forem insuficientes.
 
-**Status:** em produção em <https://ai-researcher-fabio.web.app> (Cloud Run + Firebase Hosting + Cloud SQL), com deploy canary e rollback exercitado. O `capstone:check` passa em 10 de 12 itens; faltam os traces no Langfuse (conta e chaves) e o vídeo do showcase. O andamento detalhado está em [`specs/tasks.md`](specs/tasks.md).
+**Status:** em produção em <https://ai-researcher-fabio.web.app> (Cloud Run + Firebase Hosting + Cloud SQL), com deploy canary e rollback exercitado. O `capstone:check` passa em 11 de 12 itens; o vídeo do showcase fica para o encerramento. O andamento detalhado está em [`specs/tasks.md`](specs/tasks.md).
 
 ## Visão geral
 
@@ -389,7 +389,7 @@ O primeiro uso baixa a CLI e o navegador que ela usa para renderizar. A imagem g
 - [x] Interface, fontes e MCP.
 - [x] Testes automatizados e avaliação do agente.
 - [x] Limites de consumo e métricas de custo.
-- [ ] Traces no Langfuse (aguarda conta e chaves).
+- [x] Traces no Langfuse (modelo, tokens e custo por nó).
 - [x] Deploy canary e rollback exercitados.
 - [ ] Vídeo do showcase.
 - [x] Consulta estruturada para perguntas agregadas e comparativas (T103).
